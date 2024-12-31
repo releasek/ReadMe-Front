@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
 
-namespace ReadMe_Front.Models
+namespace ReadMe_Front.Models.EFModels
 {
     public partial class AppDbContext : DbContext
     {
         public AppDbContext()
-            : base("name=AppDbContext")
+            : base("name=AppDbContext1")
         {
         }
 
@@ -21,7 +21,6 @@ namespace ReadMe_Front.Models
         public virtual DbSet<ParentCategory> ParentCategories { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Promotion> Promotions { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Wishlist> Wishlists { get; set; }
 
