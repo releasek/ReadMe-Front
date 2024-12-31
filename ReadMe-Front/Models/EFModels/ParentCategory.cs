@@ -1,4 +1,4 @@
-namespace ReadMe_Front.Models
+namespace ReadMe_Front.Models.EFModels
 {
     using System;
     using System.Collections.Generic;
@@ -6,25 +6,21 @@ namespace ReadMe_Front.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Order
+    public partial class ParentCategory
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Order()
+        public ParentCategory()
         {
-            OrderDetails = new HashSet<OrderDetail>();
+            Categories = new HashSet<Category>();
         }
 
         public int Id { get; set; }
 
-        public int UserID { get; set; }
-
-        public int TotalAmount { get; set; }
-
-        public DateTime OrderDate { get; set; }
+        [Required]
+        [StringLength(255)]
+        public string ParentCategoriesName { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
-
-        public virtual User User { get; set; }
+        public virtual ICollection<Category> Categories { get; set; }
     }
 }

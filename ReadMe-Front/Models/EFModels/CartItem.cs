@@ -1,4 +1,4 @@
-namespace ReadMe_Front.Models
+namespace ReadMe_Front.Models.EFModels
 {
     using System;
     using System.Collections.Generic;
@@ -6,14 +6,18 @@ namespace ReadMe_Front.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Wishlist")]
-    public partial class Wishlist
+    [Table("CartItem")]
+    public partial class CartItem
     {
         public int Id { get; set; }
 
-        public int UserId { get; set; }
+        public int CartId { get; set; }
 
         public int ProductId { get; set; }
+
+        public int Quantity { get; set; }
+
+        public virtual Cart Cart { get; set; }
 
         public virtual Product Product { get; set; }
     }

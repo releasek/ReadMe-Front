@@ -1,4 +1,4 @@
-namespace ReadMe_Front.Models
+namespace ReadMe_Front.Models.EFModels
 {
     using System;
     using System.Collections.Generic;

@@ -145,19 +145,18 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AdminPermission.cs" />
-    <Compile Include="Models\AppDbContext.cs" />
-    <Compile Include="Models\Cart.cs" />
-    <Compile Include="Models\CartItem.cs" />
-    <Compile Include="Models\Category.cs" />
-    <Compile Include="Models\Order.cs" />
-    <Compile Include="Models\OrderDetail.cs" />
-    <Compile Include="Models\ParentCategory.cs" />
-    <Compile Include="Models\Product.cs" />
-    <Compile Include="Models\Promotion.cs" />
-    <Compile Include="Models\sysdiagram.cs" />
-    <Compile Include="Models\User.cs" />
-    <Compile Include="Models\Wishlist.cs" />
+    <Compile Include="Models\EFModels\AdminPermission.cs" />
+    <Compile Include="Models\EFModels\AppDbContext.cs" />
+    <Compile Include="Models\EFModels\Cart.cs" />
+    <Compile Include="Models\EFModels\CartItem.cs" />
+    <Compile Include="Models\EFModels\Category.cs" />
+    <Compile Include="Models\EFModels\Order.cs" />
+    <Compile Include="Models\EFModels\OrderDetail.cs" />
+    <Compile Include="Models\EFModels\ParentCategory.cs" />
+    <Compile Include="Models\EFModels\Product.cs" />
+    <Compile Include="Models\EFModels\Promotion.cs" />
+    <Compile Include="Models\EFModels\User.cs" />
+    <Compile Include="Models\EFModels\Wishlist.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-namespace ReadMe_Front.Models
+namespace ReadMe_Front.Models.EFModels
 {
     using System;
     using System.Collections.Generic;
@@ -6,22 +6,25 @@ namespace ReadMe_Front.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Cart")]
-    public partial class Cart
+    public partial class Order
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Cart()
+        public Order()
         {
-            CartItems = new HashSet<CartItem>();
+            OrderDetails = new HashSet<OrderDetail>();
         }
 
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(255)]
-        public string MemberAccount { get; set; }
+        public int UserID { get; set; }
+
+        public int TotalAmount { get; set; }
+
+        public DateTime OrderDate { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CartItem> CartItems { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+
+        public virtual User User { get; set; }
     }
 }
