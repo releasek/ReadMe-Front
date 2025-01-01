@@ -225,6 +225,7 @@
     <Content Include="image\ERP開發勝經.jpeg" />
     <Content Include="image\MBTI 戀愛心理學.jpeg" />
     <Content Include="image\Notion與Notion AI全能實戰手冊：生活、學習與職場的智慧策略 .jpeg" />
+    <Content Include="image\readme-high-resolution-logo-transparent.png" />
     <Content Include="image\SQL × Power Automate × Python 自動化 Excel 與 Pandas 資料分析.jpeg" />
     <Content Include="image\【暢銷紀念版】學校沒有教的戀愛心理學：調整好自我認知，有些苦根本不必吃.jpeg" />
     <Content Include="image\三體.jpg" />
@@ -302,6 +303,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\vue.global.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
