@@ -219,6 +219,10 @@
     <Content Include="image\7.jpg" />
     <Content Include="image\8.jpg" />
     <Content Include="image\9.jpg" />
+    <Content Include="image\banner\banner1.jpg" />
+    <Content Include="image\banner\banner2.jpg" />
+    <Content Include="image\banner\banner3.jpg" />
+    <Content Include="image\banner\banner4.jpg" />
     <Content Include="image\ChatGPT × Excel 自動化工作聖經.jpeg" />
     <Content Include="image\ChatGPT 全方位攻略：技巧與示例 .jpeg" />
     <Content Include="image\Dustykid - 高敏塵抗內耗手記.jpeg" />
