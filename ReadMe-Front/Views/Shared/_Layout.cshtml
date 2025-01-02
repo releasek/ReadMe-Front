@@ -49,10 +49,10 @@
             </form>
         </div>
     </nav>
-    <div class="container body-content">
+    <div class="container body-content" style="display: flex; flex-direction: column; min-height: 100vh;">
         @RenderBody()
         <hr />
-        <footer>
+        <footer style="background-color: red; padding: 10px 0; text-align: center; margin-top: auto;">
             <p>&copy; @DateTime.Now.Year - Readme電子書</p>
         </footer>
     </div>
