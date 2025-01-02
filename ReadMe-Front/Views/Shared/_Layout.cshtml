@@ -9,7 +9,46 @@
     <script src="~/Scripts/vue.global.js"></script>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <style>
+		/* 設置購物車和愛心圖標為 Logo 顏色 */
+		.navbar i.fa-cart-plus,
+		.navbar i.fa-heart {
+			font-size: 20px; /* 調整圖標大小 */
+			color: #7AB8B8; /* 替換成 Logo 的顏色 */
+		}
+
+		/* 登入按鈕樣式 */
+		.btn-outline-danger.newline,
+		.btn-outline-primary.newline {
+			background-color: white; /* 白底 */
+			color: gray; /* 字體顏色設置為灰色 */
+			border-color: gray; /* 邊框顏色設置為灰色 */
+		}
+
+	   .btn-outline-danger.newline:hover,
+	   .btn-outline-primary.newline:hover {
+			background-color: #f8f9fa; /* Hover時背景變淡灰 */
+			color: black; /* Hover時文字變黑 */
+			border-color: gray; /* 邊框仍保持灰色 */
+	   }
+		/*footer*/
+		.footer {
+			margin-top: 50px;
+			padding: 15px;
+			background-color: #7AB8B8; /* 背景颜色 */
+			color: #ffffff; /* 字体颜色 */
+		}
+		.footer a {
+		    color: #ffffff; /* 颜色 */
+			font-size: 14px; /* 调整字體大小 */
+		}
+		.footer a:hover {
+			text-decoration: underline; /* 鼠標停留時有下滑線 */
+		}
+    </style>
+	
 </head>
+
 
 <body>
     <!--<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
@@ -28,9 +67,9 @@
             </div>
         </div>
     </nav>-->
-    <nav nav class="navbar navbar-expand-sm fixed-top bg-light">
-        <div class="container d-flex" style="height: 50px;">
-            <a class="navbar-brand" href="#"><img src="~/image/readme-high-resolution-logo-transparent.png" alt="" class="img-fluid" style="height: 50px; object-fit: contain;"></a>
+    <nav nav class="navbar navbar-expand-sm fixed-top bg-white">
+        <div class="container d-flex" style="height: 70px;">
+            <a class="navbar-brand" href="#"><img src="~/image/readme-high-resolution-logo-transparent.png" alt="" class="img-fluid" style="height: 70px; object-fit: contain;"></a>
 
             <div class="d-flex ms-2 flex-grow-1">
                 <form class="d-flex row w-100" role="search">
@@ -41,21 +80,29 @@
                 </form>
             </div>
             <form class="d-flex ms-auto">
-                <a href="@Url.Action("Cart", "Members", new { area = "" })" class="ms-3"><i class="fa-solid fa-cart-plus picture" style="color: #1D597D; vertical-align: middle;"></i></a>
-                <a href="@Url.Action("Wishlist", "Members", new { area = "" })" class="ms-3"><i class="fa-solid fa-heart picture" style="color: red; vertical-align: middle;"></i></a>
+                <a href="@Url.Action("Cart", "Members", new { area = "" })" class="ms-3"><i class="fa-solid fa-cart-plus picture" style="vertical-align: middle;"></i></a>
+                <a href="@Url.Action("Wishlist", "Members", new { area = "" })" class="ms-3"><i class="fa-solid fa-heart picture" style="vertical-align: middle;"></i></a>
                 <a href="@Url.Action("Login", "Members", new { area = "" })" class="ms-3 btn btn-sm btn-outline-primary newline">登入</a>
                 <a href="@Url.Action("Register", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-danger newline">註冊</a>
                 <a href="@Url.Action("Index", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-secondary newline"><i class="fa-solid fa-user"></i></a>
             </form>
         </div>
     </nav>
-    <div class="container body-content">
+    <div class="container body-content" style="display: flex; flex-direction: column; min-height: 100vh;">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Readme電子書</p>
-        </footer>
     </div>
+        <hr />
+		<footer class="footer">
+			<div class="container d-flex justify-content-between align-items-center py-3">
+				<div class="d-flex align-items-center">
+					<span class="text-white">&copy; 2025 Readme. All rights reserved.</span>
+				</div>
+				<div class="d-flex">
+					<a href="#" class="text-decoration-none text-white mx-2">隱私政策</a>
+					<a href="#" class="text-decoration-none text-white mx-2">服務條款</a>
+				</div>
+			</div>
+		</footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

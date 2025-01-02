@@ -74,5 +74,7 @@ namespace ReadMe_Front.Models.EFModels
                 .WithRequired(e => e.User)
                 .WillCascadeOnDelete(false);
         }
+
+        public System.Data.Entity.DbSet<ReadMe_Front.Models.ViewModels.CategoryVm> CategoryVms { get; set; }
     }
 }
