@@ -21,7 +21,7 @@ namespace ReadMe_Front.Models.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<ProductDetailVm> GetById(int id)
+        public ProductDetailVm GetById(int id)
         {
             using (var db = new AppDbContext())
             {
@@ -50,7 +50,7 @@ namespace ReadMe_Front.Models.Repositories
                                 PublishDate = product.PublishDate,
                                 ImageURL = product.ImageURL
                             };
-                return result.ToList();
+                return result.FirstOrDefault();
 
             }
             

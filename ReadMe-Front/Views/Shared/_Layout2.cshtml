@@ -71,14 +71,14 @@
         <div class="container d-flex" style="height: 70px;">
             <a class="navbar-brand" href="#"><img src="~/image/readme-high-resolution-logo-transparent.png" alt="" class="img-fluid" style="height: 70px; object-fit: contain;"></a>
 
-            <div class="d-flex ms-2 flex-grow-1">
+            @*<div class="d-flex ms-2 flex-grow-1">
                 <form class="d-flex row w-100" role="search">
                     <input class="form-control col" type="search" placeholder="Search" aria-label="Search" style="width: 400px;">
                     <button type="button" class="btn col-auto">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </form>
-            </div>
+            </div>*@
             <form class="d-flex ms-auto">
                 <a href="@Url.Action("購物車", "Members", new { area = "" })" class="ms-3"><i class="fa-solid fa-cart-plus picture" style="vertical-align: middle;"></i></a>
                 <a href="@Url.Action("收藏", "Members", new { area = "" })" class="ms-3"><i class="fa-solid fa-heart picture" style="vertical-align: middle;"></i></a>

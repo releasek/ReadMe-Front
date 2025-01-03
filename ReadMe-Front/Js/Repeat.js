@@ -2,7 +2,7 @@ const NavBar={
     template:`<nav class="navbar navbar-expand-sm fixed-top bg-light">
     <div class="container d-flex justify-content-between align-items-center" style="height: 50px;">
         <a class="navbar-brand" href="#">
-            <img src="/images/readme-high-resolution-logo-transparent.png" alt="Logo" class="img-fluid" style="height: 50px; object-fit: contain;">
+            <img src="~/images/readme-high-resolution-logo-transparent.png" alt="Logo" class="img-fluid" style="height: 50px; object-fit: contain;">
         </a>
         <form class="d-flex ms-auto align-items-center">
             <a href="/Cart.html" class="ms-3">

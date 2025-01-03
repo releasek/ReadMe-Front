@@ -196,6 +196,7 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Css\Repeat.css" />
+    <Content Include="Css\styles.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -313,9 +314,6 @@
     <Content Include="Js\Repeat.js" />
     <Content Include="Js\vue.global.js" />
     <Content Include="Readme.txt" />
-    <Content Include="RepeatExample\NavBar.html" />
-    <Content Include="RepeatExample\Progress.html" />
-    <Content Include="RepeatExample\RepeatExample.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />

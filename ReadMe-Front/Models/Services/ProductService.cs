@@ -20,13 +20,15 @@ namespace ReadMe_Front.Models.Services
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public List<ProductDetailVm> GetProductById(int id)
+        public ProductDetailVm GetProductById(int id)
         {
-           var productItem = _productRepo.GetById(id);
-            if (productItem == null || !productItem.Any())
+            var productItem = _productRepo.GetById(id);
+
+            if (productItem == null)
             {
-                throw new Exception("找不到商品");
+                throw new KeyNotFoundException("找不到指定的商品。");
             }
+
             return productItem;
         }
     }
