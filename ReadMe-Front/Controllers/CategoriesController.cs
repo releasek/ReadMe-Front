@@ -27,7 +27,7 @@ namespace ReadMe_Front.Controllers
                                        {
                                            CategoryName = group.Key.CategoryName,
                                            ParentCategoryName = group.Key.ParentCategoriesName,
-                                           Data = group.Select(product => new ProductVm
+                                           Data = group.Select(product => new ProductDetailVm
                                            {
                                                Id = product.Id,
                                                Title = product.Title,

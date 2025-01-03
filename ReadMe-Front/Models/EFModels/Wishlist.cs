@@ -13,7 +13,7 @@ namespace ReadMe_Front.Models.EFModels
 
         public int UserId { get; set; }
 
-        public int ProductId { get; set; }
+        public int? ProductId { get; set; }
 
         public virtual Product Product { get; set; }
     }
