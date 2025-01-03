@@ -56,6 +56,53 @@ namespace ReadMe_Front.Models.Repositories
             
         }
 
+        /// <summary>
+        /// 新增商品
+        /// </summary>
+        /// <param name="product"></param>
+        public void Create(Product product)
+        {
+            using (var db = new AppDbContext())
+            {
+                db.Products.Add(product);
+                db.SaveChanges();
+            }
+        }
+        /// <summary>
+        /// 更新商品
+        /// </summary>
+        /// <param name="product"></param>
+        public void Update(Product product)
+        {
+            using (var db = new AppDbContext())
+            {
+                var oldProduct = db.Products.Find(product.Id);
+                oldProduct.Title = product.Title;
+                oldProduct.Author = product.Author;
+                oldProduct.Publisher = product.Publisher;
+                oldProduct.Price = product.Price;
+                oldProduct.Description = product.Description;
+                oldProduct.CategoryId = product.CategoryId;
+                oldProduct.PromotionId = product.PromotionId;
+                oldProduct.PublishDate = product.PublishDate;
+                oldProduct.ImageURL = product.ImageURL;
+                db.SaveChanges();
+            }
+        }
+        /// <summary>
+        /// 刪除商品
+        /// </summary>
+        /// <param name="id"></param>
+        public void Delete(int id)
+        {
+            using (var db = new AppDbContext())
+            {
+                var product = db.Products.Find(id);
+                db.Products.Remove(product);
+                db.SaveChanges();
+            }
+        }
+        
 
     }
 }
