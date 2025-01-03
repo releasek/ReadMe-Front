@@ -45,14 +45,15 @@ namespace ReadMe_Front.Controllers
                 return View("Error");
             }
         }
-        public ActionResult ProductAuthor(int id)
+        public ActionResult ProductAuthor(string Author)
         {
-            var productDetail = _productService.GetProductById(id);
-            if (productDetail == null)
+          
+            var AuthorBook = _productService.GetAuthorBook(Author);
+            if (AuthorBook == null)
             {
-                return HttpNotFound("找不到商品");
+                return HttpNotFound("找不到相關作者");
             }
-            var AuthorBook = _productService.GetA(productDetail.Author);
+            return View(AuthorBook);
         }
     }
 }

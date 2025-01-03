@@ -32,12 +32,12 @@ namespace ReadMe_Front.Models.Services
             return productItem;
         }
         
-        public List<ProductDetailVm> GetAuthorBook(string author)
+        public List<ProductDetailVm> GetAuthorBook(string Author)
         {
-            var authorBook = _productRepo.GetAuthor(author);
+            var authorBook = _productRepo.GetAuthor(Author);
             if (authorBook == null || !authorBook.Any())
             {
-                throw new KeyNotFoundException($"未找到相關作者{author}的書籍");
+                throw new KeyNotFoundException($"未找到相關作者{Author}的書籍");
             }
             return authorBook;
         }

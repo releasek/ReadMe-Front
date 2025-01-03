@@ -60,11 +60,11 @@ namespace ReadMe_Front.Models.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<ProductDetailVm> GetAuthor(string Name)
+        public List<ProductDetailVm> GetAuthor(string Author)
         {
             using (var db = new AppDbContext())
             {
-                var result = db.Products.Where(x => x.Author == Name).Select(x => new ProductDetailVm
+                var result = db.Products.Where(x => x.Author == Author).Select(x => new ProductDetailVm
                 {
                     Id = x.Id,
                     Title = x.Title,
