@@ -55,5 +55,7 @@ namespace ReadMe_Front.Controllers
             }
             return View(AuthorBook);
         }
+        //public ActionResult Favorite()
+
     }
 }
