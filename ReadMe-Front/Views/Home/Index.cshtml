@@ -116,14 +116,18 @@
 		<!-- 限時優惠 -->
 		<section class="mb-2 mt-3">
 			<div class="d-flex justify-content-between align-items-center">
-				<h2>限時優惠</h2>
+				<h2>限時優惠-3件85折專區</h2>
 				<button class="btn btn-outline-secondary btn-sm">More</button>
 			</div>
 			<div class="row">
+				@{
+					Html.RenderAction("_PromotePartial");
+					
+				}
 				<!-- 商品卡片 -->
-				<div class="col-6 col-md-3 col-lg-2">
+				<!--<div class="col-6 col-md-3 col-lg-2">-->
 					<!-- 包在 <a> 裡，使整張卡片可被點擊 -->
-					<a href="your-target-page.html" class="text-decoration-none text-reset">
+					<!--<a href="your-target-page.html" class="text-decoration-none text-reset">
 						<div class="card">
 							<img src="~/image/二千零四十七夜.jpg" class="card-img-top" alt="Product">
 							<div class="card-body">
@@ -132,7 +136,7 @@
 							</div>
 						</div>
 					</a>
-				</div>
+				</div>-->
 			</div>
 		</section>
 		<hr>

@@ -152,6 +152,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DTOs\CategoryDto.cs" />
+    <Compile Include="Models\DTOs\ProductDto.cs" />
     <Compile Include="Models\DTOs\RegisterDto.cs" />
     <Compile Include="Models\EFModels\AdminPermission.cs" />
     <Compile Include="Models\EFModels\AppDbContext.cs" />
@@ -242,12 +243,15 @@
     <Content Include="image\banner\banner2.jpg" />
     <Content Include="image\banner\banner3.jpg" />
     <Content Include="image\banner\banner4.jpg" />
+    <Content Include="image\C# 最強入門邁向頂尖高手之路王者歸來.jpg" />
     <Content Include="image\ChatGPT × Excel 自動化工作聖經.jpeg" />
     <Content Include="image\ChatGPT 全方位攻略：技巧與示例 .jpeg" />
+    <Content Include="image\C語言初學指引【第六版】── 成為高手的奠基之路.jpg" />
     <Content Include="image\Dustykid - 高敏塵抗內耗手記.jpeg" />
     <Content Include="image\ERP開發勝經.jpeg" />
     <Content Include="image\MBTI 戀愛心理學.jpeg" />
     <Content Include="image\Notion與Notion AI全能實戰手冊：生活、學習與職場的智慧策略 .jpeg" />
+    <Content Include="image\React 思維進化：一次打破常見的觀念誤解，躍升專業前端開發者（iThome鐵人賽系列書）.jpg" />
     <Content Include="image\readme-high-resolution-logo-transparent.png" />
     <Content Include="image\SQL × Power Automate × Python 自動化 Excel 與 Pandas 資料分析.jpeg" />
     <Content Include="image\【暢銷紀念版】學校沒有教的戀愛心理學：調整好自我認知，有些苦根本不必吃.jpeg" />
@@ -265,12 +269,14 @@
     <Content Include="image\少年來了.jpg" />
     <Content Include="image\巴菲特與蓋茲.jpg" />
     <Content Include="image\張忠謀自傳全集（上下冊）.jpg" />
+    <Content Include="image\從零開始學Python程式設計（適用Python 3.5以上）.jpg" />
     <Content Include="image\心碎三行詩童話.jpg" />
     <Content Include="image\成為大人的滋味，有點酸有點澀.jpeg" />
     <Content Include="image\我只是改變一個觀點.jpeg" />
     <Content Include="image\我離開之後.jpeg" />
     <Content Include="image\戴枷鎖的舞者.jpg" />
     <Content Include="image\抓住每分錢：洛克菲勒自傳.jpg" />
+    <Content Include="image\掌握Java程式設計：使用長期支援版本JDK.jpg" />
     <Content Include="image\搞定你的心.jpeg" />
     <Content Include="image\會賺錢的人總是反常識.jpg" />
     <Content Include="image\月碎無聲.jpg" />
@@ -343,6 +349,7 @@
     <Content Include="Views\Categories\Index.cshtml" />
     <Content Include="Views\Products\ProductDetail.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Home\_PromotePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
