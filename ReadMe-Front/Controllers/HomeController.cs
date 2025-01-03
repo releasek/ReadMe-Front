@@ -22,6 +22,9 @@ namespace ReadMe_Front.Controllers
 			return View(data);
 		}
 
+
+
+
 		public ActionResult Login()
         {
             ViewBag.Message = "Your application description page.";
