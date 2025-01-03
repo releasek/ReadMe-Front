@@ -1,33 +1,213 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+	ViewBag.Title = "Home Page";
 }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
+<style>
+	.category-bar {
+		margin-top: 60px; /* 與 Navbar 留出間距 */
+		background-color: white; /* 背景色 */
+		padding: 10px 0;
+		border-bottom: 1px solid #ddd; /* 分隔線 */
+	}
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
-    </div>
-</main>
+	.carousel-item img {
+		height: 500px; /* 設定輪播圖高度 */
+		object-fit: cover; /* 確保圖片比例 */
+	}
+
+	.banner {
+		max-width: 1100px; /* 與 Bootstrap 的 container 最大寬度一致 */
+		margin: 0 auto; /* 置中 */
+		margin-bottom: 50px; /* 下方間距 */
+	}
+
+	section.mb-5 {
+		margin-top: 50px; /* 調整這裡的值來改變間距 */
+		margin-bottom: 20px; /* 縮小區塊下方距離 */
+	}
+
+	section h2 {
+		font-size: 20px; /* 設置標題字體大小 */
+		font-weight: bold; /* 確保字體加粗 */
+		margin-bottom: 10px; /* 縮小標題與內容間的距離 */
+		color: rgb(92, 90, 90);
+	}
+
+	section .btn {
+		margin-top: -10px; /* 調整按鈕稍微向上移 */
+		font-size: 14px;
+		padding: 3px 10px;
+		margin-left: auto; /* 確保按鈕靠右 */
+		border-radius: 5px; /* 可選：調整按鈕的圓角大小 */
+	}
+
+	.card {
+		display: flex;
+		flex-direction: column; /* 垂直排列 */
+		justify-content: space-between; /* 保持內容上下對齊 */
+		height: 100%; /* 設置卡片高度填滿容器 */
+	}
+
+	.card-body {
+		flex-grow: 1; /* 讓卡片的內容區域自動填滿空間 */
+	}
+
+	.card-img-top {
+		height: 230px; /* 設定固定高度 */
+		object-fit: cover; /* 保持圖片比例且填滿卡片 */
+	}
+
+	body {
+		padding-top: 20px;
+	}
+
+	.container {
+		max-width: 1140px; /* 與 Navbar 對齊 */
+		margin: 0 auto; /* 水平置中 */
+	}
+
+	.card-body {
+		padding: 12px; /* 縮小內間距 */
+		font-size: 14px; /* 調整字體大小 */
+		line-height: 1.2; /* 調整行距，縮小高度 */
+	}
+</style>
+
+
+<!--category-bar-->
+<div class="category-bar">
+	<div class="container d-flex justify-content-between align-items-center">
+		<div class="d-flex">
+			<a href="#" class="mx-2 text-dark text-decoration-none fw-bolder">全站分類</a>
+			<a href="#" class="mx-2 text-dark text-decoration-none fw-bolder">本月排行</a>
+			<a href="#" class="mx-2 text-dark text-decoration-none fw-bolder">限時優惠</a>
+			<a href="#" class="mx-2 text-dark text-decoration-none fw-bolder">熱門書籍</a>
+			<a href="#" class="mx-2 text-dark text-decoration-none fw-bolder">最新上架</a>
+		</div>
+	</div>
+</div>
+<!--category-bar-->
+
+<div class="banner">
+	<div class="containerbanner">
+		<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<img src="~/image/banner/banner1.jpg" class="d-block w-100" alt="Banner 1">
+				</div>
+				<div class="carousel-item">
+					<img src="~/image/banner/banner1.jpg" class="d-block w-100" alt="Banner 2">
+				</div>
+				<div class="carousel-item">
+					<img src="~/image/banner/banner1.jpg" class="d-block w-100" alt="Banner 2">
+				</div>
+			</div>
+			<button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			</button>
+		</div>
+	</div>
+</div>
+	<!-- Content Sections -->
+	<div class="container">
+		<!-- 限時優惠 -->
+		<section class="mb-2 mt-3">
+			<div class="d-flex justify-content-between align-items-center">
+				<h2>限時優惠-3件85折專區</h2>
+				<button class="btn btn-outline-secondary btn-sm">More</button>
+			</div>
+			<div class="row">
+				@{
+					Html.RenderAction("_PromotePartial");
+					
+				}
+				<!-- 商品卡片 -->
+				<!--<div class="col-6 col-md-3 col-lg-2">-->
+					<!-- 包在 <a> 裡，使整張卡片可被點擊 -->
+					<!--<a href="your-target-page.html" class="text-decoration-none text-reset">
+						<div class="card">
+							<img src="~/image/二千零四十七夜.jpg" class="card-img-top" alt="Product">
+							<div class="card-body">
+								<p class="card-title text-truncate">書名</p>
+								<p class="card-text text-muted">NT$ 199</p>
+							</div>
+						</div>
+					</a>
+				</div>-->
+			</div>
+		</section>
+		<hr>
+		<!-- 最新上架 -->
+		<section class="mb-2 mt-3">
+			<div class="d-flex justify-content-between align-items-center">
+				<h2>最新上架</h2>
+				<button class="btn btn-outline-secondary btn-sm">More</button>
+			</div>
+			<div class="row">
+				<!-- 商品卡片 -->
+				<div class="col-6 col-md-3 col-lg-2">
+					<!-- 包在 <a> 裡，使整張卡片可被點擊 -->
+					<a href="your-target-page.html" class="text-decoration-none text-reset">
+						<div class="card">
+							<img src="~/image/22.jpg" class="card-img-top" alt="Product">
+							<div class="card-body">
+								<p class="card-title text-truncate">書名</p>
+								<p class="card-text text-muted">NT$ 199</p>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</section>
+		<hr>
+		<!-- 熱門書籍 -->
+		<section class="mb-2 mt-3">
+			<div class="d-flex justify-content-between align-items-center">
+				<h2>熱門書籍</h2>
+				<button class="btn btn-outline-secondary btn-sm">More</button>
+			</div>
+			<div class="row">
+				<!-- 商品卡片 -->
+				<div class="col-6 col-md-3 col-lg-2">
+					<!-- 包在 <a> 裡，使整張卡片可被點擊 -->
+					<a href="your-target-page.html" class="text-decoration-none text-reset">
+						<div class="card">
+							<img src="~/image/張忠謀自傳全集（上下冊）.jpg" class="card-img-top" alt="Product">
+							<div class="card-body">
+								<p class="card-title text-truncate">書名</p>
+								<p class="card-text text-muted">NT$ 199</p>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</section>
+		<hr>
+		<!-- 本月排行 -->
+		<section class="mb-2 mt-3">
+			<div class="d-flex justify-content-between align-items-center">
+				<h2>本月排行</h2>
+				<button class="btn btn-outline-secondary btn-sm">More</button>
+			</div>
+			<div class="row">
+				<!-- 商品卡片 -->
+				<div class="col-6 col-md-3 col-lg-2">
+					<!-- 包在 <a> 裡，使整張卡片可被點擊 -->
+					<a href="your-target-page.html" class="text-decoration-none text-reset">
+						<div class="card">
+							<img src="~/image/少年來了.jpg" class="card-img-top" alt="Product">
+							<div class="card-body">
+								<p class="card-title text-truncate">書名</p>
+								<p class="card-text text-muted">NT$ 199</p>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</section>
+	</div>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

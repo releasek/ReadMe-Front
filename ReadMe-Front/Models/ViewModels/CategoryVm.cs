@@ -20,7 +20,7 @@ namespace ReadMe_Front.Models.ViewModels
         public List<GroupCategoryVm> Products { get; set; } = new List<GroupCategoryVm>();
 
         public int Id { get; set; }
-
+    public class ProductVm
         public string Title { get; set; }
 
         public string Author { get; set; }
@@ -30,5 +30,11 @@ namespace ReadMe_Front.Models.ViewModels
 
         public string ImageURL { get; set; }
 
+        public int Price { get; set; }
+
+        public string ImageURL { get; set; }
+        public int Price { get; set; }
+
+        public string ImageURL { get; set; }
     }
 }

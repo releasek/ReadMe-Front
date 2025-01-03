@@ -21,6 +21,7 @@ namespace ReadMe_Front.Models.EFModels
         public virtual DbSet<ParentCategory> ParentCategories { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Promotion> Promotions { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Wishlist> Wishlists { get; set; }
 
@@ -60,11 +61,6 @@ namespace ReadMe_Front.Models.EFModels
                 .WithRequired(e => e.Product)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Product>()
-                .HasMany(e => e.Wishlists)
-                .WithRequired(e => e.Product)
-                .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<Promotion>()
                 .Property(e => e.DiscountValue)
                 .HasPrecision(10, 2);
@@ -74,7 +70,5 @@ namespace ReadMe_Front.Models.EFModels
                 .WithRequired(e => e.User)
                 .WillCascadeOnDelete(false);
         }
-
-        public System.Data.Entity.DbSet<ReadMe_Front.Models.ViewModels.CategoryVm> CategoryVms { get; set; }
     }
 }

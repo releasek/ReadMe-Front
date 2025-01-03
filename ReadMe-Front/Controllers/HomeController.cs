@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ReadMe_Front.Models.Repositories;
+using ReadMe_Front.Models.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,14 +15,21 @@ namespace ReadMe_Front.Controllers
             return View();
         }
 
-        public ActionResult About()
+		public ActionResult _PromotePartial()
+		{
+            var data = new ProductEFRepo().GetBooks();
+
+			return View(data);
+		}
+
+		public ActionResult Login()
         {
             ViewBag.Message = "Your application description page.";
 
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult Logout()
         {
             ViewBag.Message = "Your contact page.";
 

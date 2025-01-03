@@ -1,0 +1,81 @@
+﻿@using ReadMe_Front.Models.ViewModels
+@model ProductDetailVm
+
+@{
+    ViewBag.Title = "ProductDetail";
+    Layout = "~/Views/Shared/_Layout2.cshtml"; // 指定 Layout
+}
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Readmoo 讀墨電子書</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="~/Content/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="~/Css/styles.css">
+    <style>
+        .newline {
+            white-space: nowrap;
+        }
+
+        .picture {
+            font-size: 20px
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="app" style="margin-top : 70px;">
+        <!-- 麵包start -->
+        <nav aria-label="breadcrumb" >
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">首頁</a></li>
+                <li class="breadcrumb-item"><a href="#">@Model.ParentCategoryName</a></li>
+                <li class="breadcrumb-item"><a href="#">@Model.CategoryName</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+            </ol>
+        </nav>
+        <!--麵包end -->
+        <!-- 書籍內容區 -->
+        <main class="book-content" style="margin-top : 70px">
+            <!-- 書籍資訊 -->
+            <div class="book-info">
+                <img src="@Model.ImageURL" alt="書籍封面">
+                <div class="details">
+                    <h1>@Model.Title</h1>
+                    <p>作者：@Model.Author</p>
+                    <p>出版社：@Model.Publisher</p>
+                    <p>出版日期：@Model.PublishDate</p>
+                    <p>電子書售價：<span class="price">@Model.Price</span></p>
+                    <p class="promotion">@Model.PromotionName</p>
+                </div>
+            </div>
+
+            <!-- 右側操作 -->
+            <aside class="book-actions">
+                <button>購買</button>
+                <button>加入代購清單</button>
+
+            </aside>
+        </main>
+
+        <!-- 書籍描述 -->
+        <section class="book-description">
+            <h2>書籍介紹</h2>
+            <p>
+                @Model.Description
+            </p>
+        </section>
+                  
+        <div class="container my-1">
+
+            <div class="related-books">
+                @Html.Action("ProductAuthor", "Products", new { author = Model.Author })
+            </div>
+        </div>
+            
+    </div>
+</body>
+</html>
