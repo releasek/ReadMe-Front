@@ -167,8 +167,10 @@
     <Compile Include="Models\Interfaces\ICategoryRepo.cs" />
     <Compile Include="Models\Repositories\CategoryDapperRepo.cs" />
     <Compile Include="Models\Repositories\CategoryEFRepo.cs" />
+    <Compile Include="Models\Repositories\ProductEFRepo.cs" />
     <Compile Include="Models\Services\CategoryService.cs" />
     <Compile Include="Models\ViewModels\CategoryVm.cs" />
+    <Compile Include="Models\ViewModels\ProductDetailVm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

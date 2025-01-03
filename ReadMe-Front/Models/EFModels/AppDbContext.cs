@@ -8,7 +8,7 @@ namespace ReadMe_Front.Models.EFModels
     public partial class AppDbContext : DbContext
     {
         public AppDbContext()
-            : base("name=AppDbContext")
+            : base("name=AppDbContext1")
         {
         }
 
@@ -58,11 +58,6 @@ namespace ReadMe_Front.Models.EFModels
 
             modelBuilder.Entity<Product>()
                 .HasMany(e => e.OrderDetails)
-                .WithRequired(e => e.Product)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Product>()
-                .HasMany(e => e.Wishlists)
                 .WithRequired(e => e.Product)
                 .WillCascadeOnDelete(false);
 
