@@ -16,6 +16,11 @@ namespace ReadMe_Front.Controllers
             _productService = new ProductService();
         }
         // GET: Products
+        /// <summary>
+        /// 單一商品資料
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult ProductDetail(int id)
         {
             try
@@ -39,6 +44,15 @@ namespace ReadMe_Front.Controllers
                 ViewBag.ErrorMessage = "發生未知錯誤：" + ex.Message;
                 return View("Error");
             }
+        }
+        public ActionResult ProductAuthor(int id)
+        {
+            var productDetail = _productService.GetProductById(id);
+            if (productDetail == null)
+            {
+                return HttpNotFound("找不到商品");
+            }
+            var AuthorBook = _productService.GetA(productDetail.Author);
         }
     }
 }

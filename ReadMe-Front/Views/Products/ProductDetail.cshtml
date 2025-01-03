@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="~/Content/bootstrap.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="stylesheet" href="~/Css/Repeat.css">
+    <link rel="stylesheet" href="~/Css/styles.css">
     <style>
         .newline {
             white-space: nowrap;
@@ -42,14 +42,14 @@
         <main class="book-content" style="margin-top : 70px">
             <!-- 書籍資訊 -->
             <div class="book-info">
-                <img src="book-cover.jpg" alt="書籍封面">
+                <img src="@Model.ImageURL" alt="書籍封面">
                 <div class="details">
                     <h1>@Model.Title</h1>
                     <p>作者：@Model.Author</p>
                     <p>出版社：@Model.Publisher</p>
                     <p>出版日期：@Model.PublishDate</p>
                     <p>電子書售價：<span class="price">@Model.Price</span></p>
-                    <p class="promotion">限時優惠：12/31前選購3本以上78折</p>
+                    <p class="promotion">@Model.PromotionName</p>
                 </div>
             </div>
 
@@ -65,8 +65,7 @@
         <section class="book-description">
             <h2>書籍介紹</h2>
             <p>
-                前傳之作！第一本被創造出來的《十二國記》！<br>
-                日本讀者超推薦，若從未看過《十二國記》，請從《魔性之子》讀起！
+                @Model.Description
             </p>
         </section>
 
@@ -101,7 +100,7 @@
                 <!-- 書籍卡片 #2 -->
                 <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
                     <div class="card h-100">
-                        <img src="https://via.placeholder.com/200x300?text=書籍封面"
+                        <img src="#"
                              class="card-img-top"
                              alt="書籍封面">
                         <div class="card-body p-2">
