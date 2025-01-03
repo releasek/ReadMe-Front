@@ -80,12 +80,16 @@
                 </form>
             </div>
             <form class="d-flex ms-auto">
-                <a href="@Url.Action("Cart", "Members", new { area = "" })" class="ms-3"><i class="fa-solid fa-cart-plus picture" style="vertical-align: middle;"></i></a>
-                <a href="@Url.Action("Wishlist", "Members", new { area = "" })" class="ms-3"><i class="fa-solid fa-heart picture" style="vertical-align: middle;"></i></a>
-                <a href="@Url.Action("Login", "Members", new { area = "" })" class="ms-3 btn btn-sm btn-outline-primary newline">登入</a>
-                <a href="@Url.Action("Register", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-danger newline">註冊</a>
-                <a href="@Url.Action("Index", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-secondary newline"><i class="fa-solid fa-user"></i></a>
+                <a href="@Url.Action("購物車", "Members", new { area = "" })" class="ms-3"><i class="fa-solid fa-cart-plus picture" style="vertical-align: middle;"></i></a>
+                <a href="@Url.Action("收藏", "Members", new { area = "" })" class="ms-3"><i class="fa-solid fa-heart picture" style="vertical-align: middle;"></i></a>
+                <a href="@Url.Action("登入", "Members", new { area = "" })" class="ms-3 btn btn-sm btn-outline-primary newline">登入</a>
+                <a href="@Url.Action("註冊", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-danger newline">註冊</a>
+                <a href="@Url.Action("會員中心", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-secondary newline"><i class="fa-solid fa-user"></i></a>
             </form>
+
+
+
+
         </div>
     </nav>
     <div class="container body-content" style="display: flex; flex-direction: column; min-height: 100vh;">

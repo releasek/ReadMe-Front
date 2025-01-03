@@ -13,14 +13,14 @@ namespace ReadMe_Front.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Login()
         {
             ViewBag.Message = "Your application description page.";
 
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult Logout()
         {
             ViewBag.Message = "Your contact page.";
 
