@@ -1,4 +1,5 @@
-﻿using ReadMe_Front.Models.Repositories;
+﻿using ReadMe_Front.Models.EFModels;
+using ReadMe_Front.Models.Repositories;
 using ReadMe_Front.Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -42,4 +43,39 @@ namespace ReadMe_Front.Models.Services
             return authorBook;
         }
     }
+
+    public class GetProductService
+    {
+		private readonly ProductEFRepo _productRepo;
+
+		/// <summary>
+		/// 回傳五筆熱銷商品
+		/// </summary>
+		/// <returns></returns>
+		public List<Product> GetPromoteProducts() { 
+			return Enumerable.Range(1, 5)
+				.Select(i => new Product { Id = i, Title = $"商品{i}", Price = i * 100 })
+				.ToList();
+		}
+
+		public GetProductService()
+		{
+			_productRepo = new ProductEFRepo();
+		}
+		// 根據商品 Id 取得商品資訊（包含照片、書名、價錢）
+		public Product GetProductById(int id)
+		{
+			// 呼叫資料存取層的對應方法
+			var product = _productRepo.GetProductById(id);
+
+			if (product == null)
+			{
+				throw new Exception($"找不到 Id 為 {id} 的商品");
+			}
+
+			return product;
+		}
+
+	}
+
 }

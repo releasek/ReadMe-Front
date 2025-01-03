@@ -123,7 +123,41 @@ namespace ReadMe_Front.Models.Repositories
                 db.SaveChanges();
             }
         }
-        
 
-    }
+
+
+
+		public List<Product> GetBooks()
+		{
+			using (var db = new AppDbContext())
+			{
+				return db.Products.Take(6).ToList();
+			}
+		}
+		/// <summary>
+		/// 首頁根據商品 Id 取得商品資訊（包含照片、書名、價錢）
+		/// </summary>
+		/// <param name="Id">商品的 Id</param>
+		/// <returns>商品資訊的列表</returns>
+		public Product GetProductById(int Id)
+		{
+			using (var db = new AppDbContext())
+			{
+				// 查詢符合條件的商品
+				var product = db.Products
+					.Where(p => p.Id == Id)
+					.Select(p => new Product
+					{
+						Id = p.Id,
+						Title = p.Title,
+						Price = p.Price,
+						ImageURL = p.ImageURL
+					})
+					.FirstOrDefault();
+
+				return product;
+			}
+		}
+
+	}
 }
