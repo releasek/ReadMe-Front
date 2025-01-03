@@ -195,6 +195,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Css\Repeat.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -309,7 +310,12 @@
     <Content Include="image\骸骨花園.jpg" />
     <Content Include="image\高效偷懶.jpg" />
     <Content Include="image\鹽寮撿石頭.jpg" />
+    <Content Include="Js\Repeat.js" />
+    <Content Include="Js\vue.global.js" />
     <Content Include="Readme.txt" />
+    <Content Include="RepeatExample\NavBar.html" />
+    <Content Include="RepeatExample\Progress.html" />
+    <Content Include="RepeatExample\RepeatExample.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -343,6 +349,7 @@
     <Content Include="Views\Categories\Index.cshtml" />
     <Content Include="Views\Products\ProductDetail.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Shared\_Layout2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
