@@ -196,6 +196,8 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Css\Repeat.css" />
+    <Content Include="Css\styles.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -315,6 +317,8 @@
     <Content Include="image\骸骨花園.jpg" />
     <Content Include="image\高效偷懶.jpg" />
     <Content Include="image\鹽寮撿石頭.jpg" />
+    <Content Include="Js\Repeat.js" />
+    <Content Include="Js\vue.global.js" />
     <Content Include="Readme.txt" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />

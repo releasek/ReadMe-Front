@@ -1,0 +1,36 @@
+/* 設置購物車和愛心圖標為 Logo 顏色 */
+.navbar i.fa-cart-plus,
+.navbar i.fa-heart {
+    font-size: 20px; /* 調整圖標大小 */
+    color: #7AB8B8; /* 替換成 Logo 的顏色 */
+    transition: color 0.3s ease; /* 增加過渡效果 */
+}
+
+.navbar i.fa-cart-plus:hover,
+.navbar i.fa-heart:hover {
+    color: #569494; /* Hover 時的顏色變化 */
+}
+
+/* 登入、註冊按鈕樣式 */
+.btn-outline-primary.newline,
+.btn-outline-danger.newline,
+.btn-outline-secondary.newline {
+    background-color: white; /* 白底 */
+    color: gray; /* 字體顏色設置為灰色 */
+    border-color: gray; /* 邊框顏色設置為灰色 */
+    transition: all 0.3s ease; /* 增加過渡效果 */
+}
+
+.btn-outline-primary.newline:hover,
+.btn-outline-danger.newline:hover,
+.btn-outline-secondary.newline:hover {
+    background-color: #f8f9fa; /* Hover 時背景變淡灰 */
+    color: black; /* Hover 時文字變黑 */
+    border-color: gray; /* 邊框仍保持灰色 */
+}
+
+/* 圖標按鈕樣式 */
+.btn-outline-secondary.newline i {
+    font-size: 18px; /* 調整圖標大小 */
+    margin-right: 5px; /* 增加圖標與文字的間距 */
+}

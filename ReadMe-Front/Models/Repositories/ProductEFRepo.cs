@@ -21,7 +21,7 @@ namespace ReadMe_Front.Models.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<ProductDetailVm> GetById(int id)
+        public ProductDetailVm GetById(int id)
         {
             using (var db = new AppDbContext())
             {
@@ -50,10 +50,31 @@ namespace ReadMe_Front.Models.Repositories
                                 PublishDate = product.PublishDate,
                                 ImageURL = product.ImageURL
                             };
-                return result.ToList();
+                return result.FirstOrDefault();
 
             }
             
+        }
+        /// <summary>
+        /// 找相關作者的書籍
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<ProductDetailVm> GetAuthor(string Name)
+        {
+            using (var db = new AppDbContext())
+            {
+                var result = db.Products.Where(x => x.Author == Name).Select(x => new ProductDetailVm
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Author = x.Author,               
+                    Price = x.Price,
+                    ImageURL=x.ImageURL
+                }).Take(6).ToList();
+
+                return result;
+            }
         }
 
         /// <summary>
