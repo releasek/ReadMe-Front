@@ -161,6 +161,7 @@
     <Compile Include="Models\EFModels\ParentCategory.cs" />
     <Compile Include="Models\EFModels\Product.cs" />
     <Compile Include="Models\EFModels\Promotion.cs" />
+    <Compile Include="Models\EFModels\sysdiagram.cs" />
     <Compile Include="Models\EFModels\User.cs" />
     <Compile Include="Models\EFModels\Wishlist.cs" />
     <Compile Include="Models\Interfaces\ICategoryRepo.cs" />
@@ -334,7 +335,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

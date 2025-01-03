@@ -15,7 +15,7 @@ namespace ReadMe_Front.Models.EFModels
 
         public int ProductId { get; set; }
 
-        public int Quantity { get; set; }
+        public int Price { get; set; }
 
         public virtual Cart Cart { get; set; }
 
