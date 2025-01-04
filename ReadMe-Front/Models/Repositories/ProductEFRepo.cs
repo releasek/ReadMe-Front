@@ -124,9 +124,6 @@ namespace ReadMe_Front.Models.Repositories
             }
         }
 
-
-
-
 		public List<Product> GetBooks()
 		{
 			using (var db = new AppDbContext())
