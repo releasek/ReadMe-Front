@@ -55,7 +55,14 @@ namespace ReadMe_Front.Controllers
             }
             return View(AuthorBook);
         }
-        //public ActionResult Favorite()
+        /// <summary>
+        /// 收藏清單
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Favorite()
+        {
+            return View();
+        }
 
     }
 }
