@@ -1,7 +1,5 @@
-using System;
-using System.ComponentModel.DataAnnotations.Schema;
+using ReadMe_Front.Models.ViewModels;
 using System.Data.Entity;
-using System.Linq;
 
 namespace ReadMe_Front.Models.EFModels
 {
@@ -69,6 +67,9 @@ namespace ReadMe_Front.Models.EFModels
                 .HasMany(e => e.Orders)
                 .WithRequired(e => e.User)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Ignore<CategoryVm>(); // 忽略 CategoryVm
+            modelBuilder.Ignore<GroupCategoryVm>(); // 忽略 GroupCategoryVm（如果需要）
         }
     }
 }

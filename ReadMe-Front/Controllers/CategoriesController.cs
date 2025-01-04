@@ -1,4 +1,5 @@
-﻿using ReadMe_Front.Models.Repositories;
+﻿using ReadMe_Front.Models.DTOs;
+using ReadMe_Front.Models.Repositories;
 using ReadMe_Front.Models.Services;
 using ReadMe_Front.Models.ViewModels;
 using System.Collections.Generic;
@@ -10,19 +11,21 @@ namespace ReadMe_Front.Controllers
     public class CategoriesController : Controller
     {
         private CategoryService _service;
-        private CategoryDapperRepo _repo;
+        private CategoryDapperRepo _dapperRepo;
+        private CategoryEFRepo _efRepo;
 
         public CategoriesController()
         {
             _service = new CategoryService();
-            _repo = new CategoryDapperRepo();
+            _dapperRepo = new CategoryDapperRepo();
+            _efRepo = new CategoryEFRepo();
         }
 
         // GET: Categories
         public ActionResult Index(CategoryVm vm)
         {
-            var categories = _repo.GetCategories();
-            var products = _repo.GetProducts();
+            var categories = _dapperRepo.GetCategories();
+            var products = _dapperRepo.GetProducts();
 
             var categoryDictionary = categories.GroupBy(c => c.ParentCategoriesName)
                                                .ToDictionary(
@@ -52,6 +55,32 @@ namespace ReadMe_Front.Controllers
             }).ToList();
 
             vm.GroupProduct = groupProduct;
+
+            return View(vm);
+        }
+
+        public ActionResult ParentCategory(string parentCategoryName)
+        {
+            List<CategoryDto> parent = _efRepo.GetCategoryBooks(parentCategoryName);
+            var groupProduct = parent.GroupBy(p => p.CategoryName) // 按 CategoryName 分組
+                                .Select(group => new GroupCategoryVm
+                                {
+                                    CategoryName = group.Key,
+                                    ParentCategoryName = parentCategoryName,
+                                    Products = group.Select(product => new GroupCategoryVm
+                                    {
+                                        Id = product.Id,
+                                        Title = product.Title,
+                                        Author = product.Author,
+                                        Price = product.Price,
+                                        ImageURL = product.ImageURL
+                                    }).ToList()
+                                }).ToList();
+
+            var vm = new CategoryVm
+            {
+                GroupProduct = groupProduct
+            };
 
             return View(vm);
         }
