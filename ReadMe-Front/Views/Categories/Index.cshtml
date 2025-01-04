@@ -80,7 +80,7 @@
                 <div class=" row justify-content-center">
                     <div class="row">
                         <h4 class="col-11">@itemGroup.ParentCategoryName</h4>
-                        <a href="/Category/ParentCategory/@itemGroup.ParentCategoryName" class="btn btn-light btn-sm col-auto">More></a>
+                        <a href="@Url.Action("ParentCategory","Categories",new { parentCategoryName = itemGroup.ParentCategoryName })" class="btn btn-light btn-sm col-auto">More></a>
                     </div>
                     @foreach (var item in itemGroup.Products.Take(5))
                     {

@@ -1,9 +1,9 @@
-﻿using ReadMe_Front.Models.DTOs;
-using ReadMe_Front.Models.Repositories;
+﻿using ReadMe_Front.Models.Repositories;
 using ReadMe_Front.Models.Services;
 using ReadMe_Front.Models.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 
 namespace ReadMe_Front.Controllers
@@ -61,7 +61,11 @@ namespace ReadMe_Front.Controllers
 
         public ActionResult ParentCategory(string parentCategoryName)
         {
-            List<CategoryDto> parent = _efRepo.GetCategoryBooks(parentCategoryName);
+            if (parentCategoryName == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var parent = _efRepo.GetCategoryBooks(parentCategoryName);
             var groupProduct = parent.GroupBy(p => p.CategoryName) // 按 CategoryName 分組
                                 .Select(group => new GroupCategoryVm
                                 {
@@ -81,6 +85,22 @@ namespace ReadMe_Front.Controllers
             {
                 GroupProduct = groupProduct
             };
+
+            var categories = _dapperRepo.GetCategories();
+            var categoryDictionary = categories.GroupBy(c => c.ParentCategoriesName)
+                                               .ToDictionary(
+                                                    group => group.Key, // Key 為 ParentCategoryName
+                                                    group => group.Select(item => item.CategoryName).ToList() // Value 為其子 CategoryName 的列表
+                                                );
+
+
+            vm.GroupCategory = categoryDictionary.Select(d => new GroupCategoryVm
+            {
+                ParentCategoryName = d.Key,
+                CategoryName = string.Join(", ", d.Value)
+            }).ToList();
+
+            ViewBag.CurrentId = parentCategoryName;
 
             return View(vm);
         }
