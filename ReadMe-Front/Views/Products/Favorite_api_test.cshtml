@@ -1,0 +1,255 @@
+﻿@model IEnumerable<ReadMe_Front.Models.ViewModels.ProductDetailVm>
+
+@{
+    ViewBag.Title = "Favorite";
+    Layout = "~/Views/Shared/_Layout2.cshtml"; // 指定 Layout
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購物車頁面</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        /* === 全局樣式設定 === */
+        body {
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 1000px;
+        }
+
+        /* === 購物車區 === */
+        .cart-section {
+            padding: 20px;
+            background-color: #fff;
+            margin: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+
+            .tabs a {
+                padding: 10px 20px;
+                color: #333;
+                text-decoration: none;
+                font-weight: bold;
+                border-bottom: 3px solid transparent;
+                transition: all 0.3s ease;
+            }
+
+                .tabs a.active {
+                    color: #007bff;
+                    border-bottom: 3px solid #007bff;
+                }
+
+        .dropdown-filter {
+            margin: 10px 0;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+            .dropdown-filter select {
+                padding: 5px 10px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                background-color: #fff;
+            }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .item-actions {
+            text-align: right;
+        }
+
+            /* .item-actions button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-right: 5px;
+        } */
+
+            .item-actions button {
+                background-color: orangered;
+                color: #fff;
+                border: none;
+                padding: 5px 10px;
+                cursor: pointer;
+                margin-right: 5px;
+            }
+
+        /* 標籤列 */
+
+        .cart-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .cart-item span {
+            display: inline-block;
+            text-align: right;
+            min-width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="app">
+
+        <!-- NavBar Start -->
+        <navbar-component></navbar-component>
+        <!-- Navbar End -->
+        <!-- 標題列 -->
+        <!-- 標籤區 -->
+        <div class="tabs" style="margin-top : 70px; ">
+            <a href="#">待購清單</a>
+        </div>
+
+        <!-- 篩選器 -->
+        <div class="dropdown-filter">
+            <label for="filter">篩選加入：</label>
+            <select id="filter">
+                <option value="all">全部</option>
+                <option value="books">日期排序</option>
+                <option value="electronics">價格高</option>
+                <option value="electronics">價格低</option>
+            </select>
+        </div>
+        <!-- 標籤類 -->
+        <div class="cart-header">
+            <div class="" style="padding-right: 5px;">商品資訊</div>
+            <div class="">售價</div>
+        </div>
+        <!-- 商品列表區 -->
+        <div>
+            <section class="cart-section">
+                <!-- 如果有商品 -->
+                <div v-if="favorites.length > 0">
+                    <div class="cart-item" v-for="item in favorites" :key="item.id">
+                        <div class="item-info">
+                            <img :src="item.imageURL" alt="商品封面" style="width: 100px;">
+                            <div>
+                                <h3>{{ item.title }}</h3>
+                                <p>作者：{{ item.author }}</p>
+                                <p>贈品：{{ item.gift }}</p>
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <span>NT$ {{ item.price }}</span>
+                            <button class="btn btn-secondary btn-sm" v-on:click="addToCart(item.id)">加入購物車</button>
+                            <button class="btn btn-danger btn-sm" v-on:click="removeFavorite(item.id)">移除</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- 如果沒有商品 -->
+                <div v-else>
+                    <p>{{ emptyMessage }}</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- 結算區 end-->
+        <div class="d-flex justify-content-between">
+            <a href="#" class="btn btn-light btn-lg rounded-pill px-5">&larr; 繼續逛逛</a>
+            <a href="/OrderDetails.html" class="btn btn-light btn-lg rounded-pill px-5">付款 &rarr;</a>
+        </div>
+    </div>
+
+    <script src="~/Js/vue.global.js"></script>
+    <script src="~/Js/Repeat.js"></script>
+    <script>
+        const { createApp } = Vue;
+
+        const config = {
+            setup() {
+                const favorites = Vue.ref([]);
+                const emptyMessage = Vue.ref("");
+
+                // 獲取收藏清單
+                const fetchFavorites = async (userid) => {
+                    try {
+                        const response = await fetch(`/api/productapi/favorites?userid=${userid}`);
+                        const data = await response.json();
+
+                        if (data.hasItems) {
+                            favorites.value = data.items;
+                        } else {
+                            emptyMessage.value = data.message;
+                        }
+                    } catch (error) {
+                        console.error("Error fetching favorites:", error);
+                        emptyMessage.value = "無法獲取收藏清單";
+                    }
+                };
+
+                // 加入購物車
+                const addToCart = async (id) => {
+                    alert(`商品 ${id} 已加入購物車！`);
+                };
+
+                // 移除收藏
+                const removeFavorite = async (id) => {
+                    favorites.value = favorites.value.filter((item) => item.id !== id);
+                };
+
+
+                return {
+                    favorites,
+                    emptyMessage,
+                    addToCart,
+                    removeFavorite,
+                };
+            },
+        };
+
+        const app = createApp(config)
+        app.mount("#app")
+    </script>
+</body>
+
+</html>

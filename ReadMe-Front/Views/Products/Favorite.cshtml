@@ -1,0 +1,225 @@
+﻿@model IEnumerable<ReadMe_Front.Models.ViewModels.ProductDetailVm>
+
+@{
+    ViewBag.Title = "Favorite";
+    Layout = "~/Views/Shared/_Layout2.cshtml"; // 指定 Layout
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>收藏清單</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+   <style>
+
+    body {
+    background-color: #f9f9f9;
+    font-family: Arial, sans-serif;
+    }
+
+    .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    }
+
+    /* === 購物車區 === */
+    .cart-section {
+    padding: 20px;
+    background-color: #fff;
+    margin: 20px auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 標籤列 */
+    .tabs {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    }
+
+    .tabs a {
+    padding: 10px 20px;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    }
+
+    .tabs a.active {
+    color: #007bff;
+    border-bottom: 3px solid #007bff;
+    }
+
+    /* 篩選器 */
+    .dropdown-filter {
+    margin: 10px 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    }
+
+    .dropdown-filter select {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    }
+
+    /* 商品項目 */
+    .cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+    gap: 20px;
+    }
+
+    .item-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1; /* 彈性佔位，讓左右對齊 */
+    }
+
+    .item-info img {
+    width: 100px;
+    height: auto;
+    border-radius: 5px;
+    object-fit: cover;
+    }
+
+    .item-actions {
+    text-align: right;
+    min-width: 200px; /* 固定寬度以避免按鈕不對齊 */
+    }
+
+    .item-actions span {
+    font-weight: bold;
+    color: #333;
+    margin-right: 10px;
+    }
+
+    .item-actions button {
+    background-color: orangered;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 5px;
+    transition: background-color 0.3s ease;
+    }
+
+    .item-actions button:hover {
+    background-color: #e63946;
+    }
+
+    /* 商品清單容器 */
+    .cart-container {
+    width: 100%;
+    max-width: 800px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    }
+
+       .cart-header {
+           display: flex;
+           justify-content: space-around;
+           align-items: center;
+           padding: 10px 20px;
+           font-weight: bold;
+           color: #555;
+           background-color: #f8f8f8;
+       }
+
+    .cart-item:last-child {
+    border-bottom: none;
+    }
+
+    .cart-item input[type="checkbox"] {
+    margin-right: 10px;
+    }
+
+    .cart-item span {
+    display: inline-block;
+    text-align: right;
+    min-width: 100px;
+    }
+
+    /* 提示訊息樣式 */
+    .empty-message {
+    text-align: center;
+    color: #999;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 20px 0;
+    }
+
+   </style>
+</head>
+
+<body>
+    <div class="container" id="app"  style="margin-top : 100px; ">
+
+        <!-- 標籤區 -->
+        <div class="tabs">
+            <a href="#">待購清單</a>
+        </div>
+
+        <!-- 篩選器 -->
+        <div class="dropdown-filter">
+            <label for="filter">篩選加入：</label>
+            <select id="filter">
+                <option value="all">全部</option>
+                <option value="books">日期排序</option>
+                <option value="electronics">價格高</option>
+                <option value="electronics">價格低</option>
+            </select>
+        </div>
+        <!-- 標籤類 -->
+        <div class="cart-header">
+            <div class="" style="padding-right: 5px;">商品資訊</div>
+            <div class="">售價</div>
+        </div>
+
+        <!-- 商品列表區 -->
+        <section class="cart-section">
+            @foreach (var item in Model)
+            {
+                <div class="cart-item">
+                    <div class="item-info">
+                        <input type="checkbox">
+                        <img src="@item.ImageURL" alt="商品封面" style="width: 100px; height: auto;">
+                        <div>
+                            <h3>@item.Title</h3>
+                            <p>作者：@item.Author</p>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <span>NT$ @item.Price</span>
+                        <button type="button" class="btn btn-secondary btn-sm">加入購物車</button>
+                        <button type="button" class="btn btn-danger btn-sm">移除</button>
+                    </div>
+                </div>
+            }
+        </section>
+
+        <!-- 結算區 -->
+        <div class="d-flex justify-content-between">
+            <a href="#" class="btn btn-light btn-lg rounded-pill px-5">&larr; 繼續逛逛</a>
+            <a href="/OrderDetails.html" class="btn btn-light btn-lg rounded-pill px-5">付款 &rarr;</a>
+        </div>
+    </div>
+</body>
+
+</html>

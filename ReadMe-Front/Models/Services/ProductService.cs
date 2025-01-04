@@ -31,8 +31,12 @@ namespace ReadMe_Front.Models.Services
             }
 
             return productItem;
+        }  
+
+        public List<ProductDetailVm> GetFavoriteProducts(int useid)
+        {
+            return _productRepo.GetFavorite(useid);
         }
-        
         public List<ProductDetailVm> GetAuthorBook(string Author)
         {
             var authorBook = _productRepo.GetAuthor(Author);

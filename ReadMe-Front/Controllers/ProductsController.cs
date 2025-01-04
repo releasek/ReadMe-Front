@@ -1,4 +1,5 @@
 ﻿using ReadMe_Front.Models.Services;
+using ReadMe_Front.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,5 +56,49 @@ namespace ReadMe_Front.Controllers
             }
             return View(AuthorBook);
         }
+        /// <summary>
+        /// 收藏清單
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Favorite(int userid)
+        {
+            var favoriteProducts = _productService.GetFavoriteProducts(userid);
+            if (!favoriteProducts.Any() || favoriteProducts==null)
+            {
+                return View("NoFavorite");
+            }
+            else
+            {
+                return View("Favorite",favoriteProducts);
+            }
+        }
+        /// <summary>
+        /// 無收藏清單的page
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult NoFavorite()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 購物車
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Cart()
+        {
+            return View();
+        }
+        public ActionResult NoCart()
+        {
+            return View();
+        }
+        public ActionResult CartOrderDetails()
+        {
+            return View();
+        }
+
+
+
+
     }
 }
