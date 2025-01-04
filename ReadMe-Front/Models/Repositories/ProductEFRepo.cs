@@ -1,9 +1,7 @@
 ﻿using ReadMe_Front.Models.EFModels;
 using ReadMe_Front.Models.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace ReadMe_Front.Models.Repositories
 {
@@ -25,35 +23,35 @@ namespace ReadMe_Front.Models.Repositories
         {
             using (var db = new AppDbContext())
             {
-               var result = from product in db.Products
-                            join category in db.Categories
-                            on product.CategoryId equals category.Id
-                            join parentCategory in db.ParentCategories
-                            on category.ParentCategoryId equals parentCategory.Id
-                            join promotion in db.Promotions
-                            on product.PromotionId equals promotion.Id into promotionGroup
-                            from promo in promotionGroup.DefaultIfEmpty() // PromotionId 可能為 null
-                            where product.Id == id
-                            select new ProductDetailVm
-                            {
-                                Id = product.Id,
-                                Title = product.Title,
-                                Author = product.Author,
-                                Publisher = product.Publisher,
-                                Price = product.Price,
-                                Description = product.Description,
-                                CategoryId = product.CategoryId,
-                                CategoryName = category.CategoryName,
-                                ParentCategoryName = parentCategory.ParentCategoriesName, // 不需要判斷 null
-                                PromotionId = product.PromotionId,
-                                PromotionName = promo != null ? promo.PromotionName : string.Empty, // 預設空字串
-                                PublishDate = product.PublishDate,
-                                ImageURL = product.ImageURL
-                            };
+                var result = from product in db.Products
+                             join category in db.Categories
+                             on product.CategoryId equals category.Id
+                             join parentCategory in db.ParentCategories
+                             on category.ParentCategoryId equals parentCategory.Id
+                             join promotion in db.Promotions
+                             on product.PromotionId equals promotion.Id into promotionGroup
+                             from promo in promotionGroup.DefaultIfEmpty() // PromotionId 可能為 null
+                             where product.Id == id
+                             select new ProductDetailVm
+                             {
+                                 Id = product.Id,
+                                 Title = product.Title,
+                                 Author = product.Author,
+                                 Publisher = product.Publisher,
+                                 Price = product.Price,
+                                 Description = product.Description,
+                                 CategoryId = product.CategoryId,
+                                 CategoryName = category.CategoryName,
+                                 ParentCategoryName = parentCategory.ParentCategoriesName, // 不需要判斷 null
+                                 PromotionId = product.PromotionId,
+                                 PromotionName = promo != null ? promo.PromotionName : string.Empty, // 預設空字串
+                                 PublishDate = product.PublishDate,
+                                 ImageURL = product.ImageURL
+                             };
                 return result.FirstOrDefault();
 
             }
-            
+
         }
         /// <summary>
         /// 找相關作者的書籍
@@ -68,9 +66,9 @@ namespace ReadMe_Front.Models.Repositories
                 {
                     Id = x.Id,
                     Title = x.Title,
-                    Author = x.Author,               
+                    Author = x.Author,
                     Price = x.Price,
-                    ImageURL=x.ImageURL
+                    ImageURL = x.ImageURL
                 }).Take(6).ToList();
 
                 return result;
@@ -100,7 +98,6 @@ namespace ReadMe_Front.Models.Repositories
                 return result;
             }
         }
-
         /// <summary>
         /// 新增商品
         /// </summary>

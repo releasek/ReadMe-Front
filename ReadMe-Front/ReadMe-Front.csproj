@@ -169,11 +169,13 @@
     <Compile Include="Models\EFModels\Wishlist.cs" />
     <Compile Include="Models\Infra\DAHealper.cs" />
     <Compile Include="Models\Interfaces\ICategoryRepo.cs" />
+    <Compile Include="Models\Repositories\CartEFRepo.cs" />
     <Compile Include="Models\Repositories\CategoryDapperRepo.cs" />
     <Compile Include="Models\Repositories\CategoryEFRepo.cs" />
     <Compile Include="Models\Repositories\ProductEFRepo.cs" />
     <Compile Include="Models\Services\CategoryService.cs" />
     <Compile Include="Models\Services\ProductService.cs" />
+    <Compile Include="Models\ViewModels\CartVm.cs" />
     <Compile Include="Models\ViewModels\CategoryVm.cs" />
     <Compile Include="Controllers\ProductApiController.cs" />
     <Compile Include="Models\ViewModels\ProductDetailVm.cs" />
@@ -246,8 +248,7 @@
     <Content Include="image\banner\banner2.jpg" />
     <Content Include="image\banner\banner3.jpg" />
     <Content Include="image\banner\banner4.jpg" />
-    <Content Include="image\banner\Promotebanner.jpg" />
-    <Content Include="image\C# 最強入門邁向頂尖高手之路王者歸來.jpg" />
+    <Content Include="image\C最強入門邁向頂尖高手之路王者歸來.jpg" />
     <Content Include="image\ChatGPT × Excel 自動化工作聖經.jpg" />
     <Content Include="image\ChatGPT 全方位攻略：技巧與示例 .jpg" />
     <Content Include="image\C語言初學指引【第六版】── 成為高手的奠基之路.jpg" />
@@ -257,7 +258,6 @@
     <Content Include="image\Notion與Notion AI全能實戰手冊：生活、學習與職場的智慧策略 .jpg" />
     <Content Include="image\React 思維進化：一次打破常見的觀念誤解，躍升專業前端開發者（iThome鐵人賽系列書）.jpg" />
     <Content Include="image\readme-high-resolution-logo-transparent.png" />
-    <Content Include="image\readme-high-resolution-logo.png" />
     <Content Include="image\SQL × Power Automate × Python 自動化 Excel 與 Pandas 資料分析.jpg" />
     <Content Include="image\【暢銷紀念版】學校沒有教的戀愛心理學：調整好自我認知，有些苦根本不必吃.jpg" />
     <Content Include="image\三體.jpg" />
@@ -274,7 +274,7 @@
     <Content Include="image\少年來了.jpg" />
     <Content Include="image\巴菲特與蓋茲.jpg" />
     <Content Include="image\張忠謀自傳全集（上下冊）.jpg" />
-    <Content Include="image\從零開始學Python程式設計（適用Python 3.5以上）.jpg" />
+    <Content Include="image\從零開始學Python程式設計.jpg" />
     <Content Include="image\心碎三行詩童話.jpg" />
     <Content Include="image\成為大人的滋味，有點酸有點澀.jpg" />
     <Content Include="image\我只是改變一個觀點.jpg" />
@@ -286,8 +286,8 @@
     <Content Include="image\會賺錢的人總是反常識.jpg" />
     <Content Include="image\月碎無聲.jpg" />
     <Content Include="image\有時幸，有時傷.jpg" />
+    <Content Include="image\棒球驚嘆句2.jpg" />
     <Content Include="image\椅人：沒試過，怎麼知道你不行！.jpg" />
-    <Content Include="image\機器學習：最強入門邁向AI高手．王者歸來.jpg" />
     <Content Include="image\汽車品牌故事.jpg" />
     <Content Include="image\流量為王！迎接TikTok時代.jpg" />
     <Content Include="image\渺小一生（上、下冊）.jpg" />
@@ -306,12 +306,12 @@
     <Content Include="image\話數.jpg" />
     <Content Include="image\費爾普斯的經濟探索.jpg" />
     <Content Include="image\起厝.jpg" />
-    <Content Include="image\野球．人生.jpeg" />
     <Content Include="image\野球．人生.jpg" />
     <Content Include="image\開懷醫生.jpg" />
     <Content Include="image\開箱工程師腦洞大開的日常.jpg" />
     <Content Include="image\雖然是女生，但開著計程車.jpg" />
     <Content Include="image\零失誤工作法.jpg" />
+    <Content Include="image\電子商務與ChatGPT：物聯網‧KOL直播‧區塊鏈‧社群行銷‧大數據‧智慧商務.jpg" />
     <Content Include="image\震盪效應.jpg" />
     <Content Include="image\頂尖大學的高效思考課.jpg" />
     <Content Include="image\食言犬.jpg" />
@@ -356,13 +356,7 @@
     <Content Include="Views\Products\ProductDetail.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Shared\_Layout2.cshtml" />
-    <Content Include="Views\Home\_NewBooksPartial.cshtml" />
-    <Content Include="Views\Home\_TechBooksPartial.cshtml" />
-    <Content Include="Views\Home\_ComfortBooksPartial.cshtml" />
-    <Content Include="Views\Home\Promote.cshtml" />
-    <Content Include="Views\Home\New.cshtml" />
-    <Content Include="Views\Home\Comfort.cshtml" />
-    <Content Include="Views\Home\Tech.cshtml" />
+    <Content Include="Views\Categories\ParentCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
