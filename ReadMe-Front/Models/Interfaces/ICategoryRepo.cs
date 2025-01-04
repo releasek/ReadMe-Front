@@ -5,7 +5,7 @@ namespace ReadMe_Front.Models.Interfaces
 {
     public interface ICategoryRepo
     {
-        List<CategoryDto> GetAll();
+        List<CategoryDto> GetProducts();
 
     }
 }
