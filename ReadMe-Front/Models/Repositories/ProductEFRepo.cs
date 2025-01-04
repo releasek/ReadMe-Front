@@ -237,7 +237,7 @@ namespace ReadMe_Front.Models.Repositories
         /// 首頁取得科技與生活書籍
         /// </summary>
         /// <returns></returns>
-        public List<Product> GetBooksByParentCategoryId()
+        public List<Product> GetTechBooks()
         {
             using (var db = new AppDbContext())
             {
@@ -249,6 +249,17 @@ namespace ReadMe_Front.Models.Repositories
             }
         }
 
+        public List<Product> TechBooks()
+        {
+            using (var db = new AppDbContext())
+            {
+                // 篩選 ParentCategoryId 是 3 的產品
+                return db.Products
+                         .Where(p => p.Category.ParentCategoryId == 3)
+                         .Take(30)
+                         .ToList();
+            }
+        }
 
     }
 }

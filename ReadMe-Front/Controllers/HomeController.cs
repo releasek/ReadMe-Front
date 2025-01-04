@@ -44,7 +44,12 @@ namespace ReadMe_Front.Controllers
         }
         public ActionResult _TechBooksPartial()
         {
-            var data = new ProductEFRepo().GetBooksByParentCategoryId();
+            var data = new ProductEFRepo().GetTechBooks();
+            return View(data);
+        }
+        public ActionResult Tech()
+        {
+            var data = new ProductEFRepo().TechBooks();
             return View(data);
         }
 
