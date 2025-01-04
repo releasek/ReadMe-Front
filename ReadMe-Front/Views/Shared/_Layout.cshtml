@@ -69,7 +69,7 @@
     </nav>-->
     <nav nav class="navbar navbar-expand-sm fixed-top bg-white">
         <div class="container d-flex" style="height: 70px;">
-            <a class="navbar-brand" href="#"><img src="~/image/readme-high-resolution-logo-transparent.png" alt="" class="img-fluid" style="height: 70px; object-fit: contain;"></a>
+            <a class="navbar-brand" href="~/Home/Index"><img src="~/image/readme-high-resolution-logo-transparent.png" alt="" class="img-fluid" style="height: 70px; object-fit: contain;"></a>
 
             <div class="d-flex ms-2 flex-grow-1">
                 <form class="d-flex row w-100" role="search">
@@ -82,9 +82,9 @@
             <form class="d-flex ms-auto">
                 <a href="@Url.Action("購物車", "Members", new { area = "" ,userid=1})" class="ms-3"><i class="fa-solid fa-cart-plus picture" style="vertical-align: middle;"></i></a>
                 <a href="https://localhost:44395/Products/Favorite?userid=1" class="ms-3"><i class="fa-solid fa-heart picture" style="vertical-align: middle;"></i></a>
-                <a href="@Url.Action("登入", "Members", new { area = "" })" class="ms-3 btn btn-sm btn-outline-primary newline">登入</a>
-                <a href="@Url.Action("註冊", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-danger newline">註冊</a>
-                <a href="@Url.Action("會員中心", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-secondary newline"><i class="fa-solid fa-user"></i></a>
+                <a href="@Url.Action("Login", "Home", new { area = "" })" class="ms-3 btn btn-sm btn-outline-primary newline">登入</a>
+                <a href="@Url.Action("Register", "Home", new { area = "" })" class="ms-2 btn btn-sm btn-outline-danger newline">註冊</a>
+                <a href="@Url.Action("MemberCenter", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-secondary newline"><i class="fa-solid fa-user"></i></a>
             </form>
 
 

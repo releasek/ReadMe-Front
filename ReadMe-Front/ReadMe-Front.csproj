@@ -248,6 +248,9 @@
     <Content Include="image\banner\banner2.jpg" />
     <Content Include="image\banner\banner3.jpg" />
     <Content Include="image\banner\banner4.jpg" />
+    <Content Include="image\banner\最新上架banner.jpg" />
+    <Content Include="image\banner\療癒專區banner.jpg" />
+    <Content Include="image\banner\科技與生活banner.jpg" />
     <Content Include="image\ChatGPT 全方位攻略：技巧與示例.jpg" />
     <Content Include="image\C最強入門邁向頂尖高手之路王者歸來.jpg" />
     <Content Include="image\ChatGPT × Excel 自動化工作聖經.jpg" />
@@ -361,6 +364,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Members\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
