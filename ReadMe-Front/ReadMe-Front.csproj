@@ -248,14 +248,14 @@
     <Content Include="image\banner\banner2.jpg" />
     <Content Include="image\banner\banner3.jpg" />
     <Content Include="image\banner\banner4.jpg" />
+    <Content Include="image\ChatGPT 全方位攻略：技巧與示例.jpg" />
     <Content Include="image\C最強入門邁向頂尖高手之路王者歸來.jpg" />
     <Content Include="image\ChatGPT × Excel 自動化工作聖經.jpg" />
-    <Content Include="image\ChatGPT 全方位攻略：技巧與示例 .jpg" />
     <Content Include="image\C語言初學指引【第六版】── 成為高手的奠基之路.jpg" />
     <Content Include="image\Dustykid - 高敏塵抗內耗手記.jpg" />
     <Content Include="image\ERP開發勝經.jpg" />
     <Content Include="image\MBTI 戀愛心理學.jpg" />
-    <Content Include="image\Notion與Notion AI全能實戰手冊：生活、學習與職場的智慧策略 .jpg" />
+    <Content Include="image\Notion與Notion AI全能實戰手冊：生活、學習與職場的智慧策略.jpg" />
     <Content Include="image\React 思維進化：一次打破常見的觀念誤解，躍升專業前端開發者（iThome鐵人賽系列書）.jpg" />
     <Content Include="image\readme-high-resolution-logo-transparent.png" />
     <Content Include="image\SQL × Power Automate × Python 自動化 Excel 與 Pandas 資料分析.jpg" />
@@ -267,6 +267,7 @@
     <Content Include="image\台積電制霸全球未來.jpg" />
     <Content Include="image\和前任說再見.jpg" />
     <Content Include="image\喜弒臨門.jpg" />
+    <Content Include="image\報告力Max：Copilot Pro提升你的寫作效率.jpg" />
     <Content Include="image\夢醒癡人瘋語嘲.jpg" />
     <Content Include="image\好好吵架！──深入內心，挖出渴望，讓親密關係再進化（三版）.jpg" />
     <Content Include="image\好感溝通.jpg" />
