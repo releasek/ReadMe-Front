@@ -41,4 +41,10 @@ namespace ReadMe_Front.Models.ViewModels
         public string ParentCategoryName { get; set; }
 
     }
+    public class ProductFavoriteVm
+    {
+        public bool HasItems { get; set; }
+        public List<ProductDetailVm> FavoriteItem { get; set; }
+        public string Message { get; set; }
+    }
 }

@@ -1,0 +1,129 @@
+﻿@model IEnumerable<ReadMe_Front.Models.EFModels.Product>
+
+@{
+    ViewBag.Title = "限時優惠";
+}
+
+<h2>限時優惠</h2>
+
+<style>
+    .category-bar {
+        margin-top: 20px; /* 與 Navbar 留出間距 */
+        background-color: white; /* 背景色 */
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd; /* 分隔線 */
+    }
+
+    .row {
+        row-gap: 20px; /* 設置行間距 */
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column; /* 垂直排列 */
+        justify-content: space-between; /* 保持內容上下對齊 */
+        height: 100%; /* 設置卡片高度填滿容器 */
+        width: 170px; /* 設置固定寬度 */
+        margin-bottom: 10px;
+    }
+
+    .card-img-top {
+        width: 100%; /* 保持圖片寬度適應卡片容器 */
+        height: 210px; /* 設定固定高度 */
+        object-fit: cover; /* 保持圖片比例且填滿卡片 */
+    }
+
+    .card-text {
+        font-size: 14px;
+        color: #555;
+        text-align: left; /* 將價格對齊到右側 */
+        margin-top: auto; /* 確保價格始終在底部 */
+    }
+
+    body {
+        padding-top: 20px;
+    }
+
+    .container {
+        max-width: 1140px; /* 與 Navbar 對齊 */
+        margin: 0 auto; /* 水平置中 */
+    }
+
+    .card-title {
+        font-size: 13px;
+        font-weight: bold;
+        line-height: 1.5;
+        height: 3em; /* 固定高度，確保標題區域一致 */
+        overflow: hidden;
+        word-wrap: break-word;
+    }
+
+    .card-body {
+        height: 140px;
+        padding: 15px; /* 縮小內間距 */
+        font-size: 14px; /* 調整字體大小 */
+        line-height: 1.2; /* 調整行距，縮小高度 */
+        flex-grow: 1; /* 讓卡片的內容區域自動填滿空間 */
+        justify-content: space-between; /* 讓標題與價格分佈在頂部和底部 */
+    }
+
+    .product-actions {
+        display: flex; /* 使用 Flexbox */
+        justify-content: center; /* 水平置中 */
+    }
+
+    .product-actions button {
+         margin-top: 5px;
+         background-color: #7AB8B8;
+         border-color: #7AB8B8;
+         color: #fff; /* 字色用白色對比 */
+     }
+
+     .product-actions button:hover {
+         background-color: #69A2A2;
+         border-color: #69A2A2;
+      }
+
+    .promotebanner {
+        margin-bottom: 20px; /* 可調整成你想要的數值 */
+    }
+</style>
+<!--category-bar-->
+<div class="category-bar">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div class="d-flex">
+            <a href="~/Categories/Index" class="mx-2 text-dark text-decoration-none fw-bolder">全站分類</a>
+            <a href="~/Home/Promote" class="mx-2 text-dark text-decoration-none fw-bolder">限時優惠</a>
+            <a href="#" class="mx-2 text-dark text-decoration-none fw-bolder">最新上架</a>
+            <a href="#" class="mx-2 text-dark text-decoration-none fw-bolder">科技與生活</a>
+            <a href="#" class="mx-2 text-dark text-decoration-none fw-bolder">療癒專區</a>
+
+        </div>
+    </div>
+</div>
+<!--category-bar-->
+<div class="promotebanner">
+    <img src="~/image/banner/Promotebanner.jpg" alt="優惠活動" style="width: 100%; height: 350px; object-fit: cover;">
+</div>
+
+<!-- 商品卡片 -->
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-6 col-md-3 col-lg-2">
+
+            <div class="card h-100">
+                <a href="~/Products/ProductDetail/@item.Id">
+                    <img src="@item.ImageURL" class="card-img-top" alt="@item.Title">
+                </a>
+                <div class="card-body">
+                    <p class="card-title">@item.Title</p>
+                    <p class="card-text text-muted">NT$ @item.Price</p>
+                    <div class="product-actions">
+                        <button class="btn btn-sm btn-primary ">加入購物車</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

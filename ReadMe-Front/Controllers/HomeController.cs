@@ -17,15 +17,50 @@ namespace ReadMe_Front.Controllers
 
 		public ActionResult _PromotePartial()
 		{
-            var data = new ProductEFRepo().GetBooks();
+            var data = new ProductEFRepo().GetPromoteBooks();
 
 			return View(data);
 		}
 
+        public ActionResult Promote()
+        {
+            // 永遠只查詢 promotionId = 1 的書籍
+            var data = new ProductEFRepo().PromoteBooks(1);
 
+            return View(data);
+        }
 
+        public ActionResult _NewBooksPartial()
+        {
+            var data = new ProductEFRepo().GetBooksByPublishdate();
 
-		public ActionResult Login()
+            return View(data);
+        }
+        public ActionResult New()
+        {
+            var data = new ProductEFRepo().NewBooks();
+
+            return View(data);
+        }
+        public ActionResult _TechBooksPartial()
+        {
+            var data = new ProductEFRepo().GetBooksByParentCategoryId();
+            return View(data);
+        }
+
+        public ActionResult _ComfortBooksPartial()
+        {
+            var data = new ProductEFRepo().GetComfortBooks();
+
+            return View(data);
+        }
+        public ActionResult Comfort()
+        {
+            var data = new ProductEFRepo().ComfortBooks();
+            return View(data);
+        }
+
+        public ActionResult Login()
         {
             ViewBag.Message = "Your application description page.";
 

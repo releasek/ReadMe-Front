@@ -77,13 +77,14 @@
 <!--category-bar-->
 <div class="category-bar">
 	<div class="container d-flex justify-content-between align-items-center">
-		<div class="d-flex">
-			<a href="#" class="mx-2 text-dark text-decoration-none fw-bolder">全站分類</a>
-			<a href="#" class="mx-2 text-dark text-decoration-none fw-bolder">本月排行</a>
-			<a href="#" class="mx-2 text-dark text-decoration-none fw-bolder">限時優惠</a>
-			<a href="#" class="mx-2 text-dark text-decoration-none fw-bolder">熱門書籍</a>
-			<a href="#" class="mx-2 text-dark text-decoration-none fw-bolder">最新上架</a>
-		</div>
+        <div class="d-flex">
+            <a href="~/Categories/Index" class="mx-2 text-dark text-decoration-none fw-bolder">全站分類</a>
+            <a href="~/Home/Promote" class="mx-2 text-dark text-decoration-none fw-bolder">限時優惠</a>
+            <a href="~/Home/New" class="mx-2 text-dark text-decoration-none fw-bolder">最新上架</a>
+            <a href="~/Home/Comfort" class="mx-2 text-dark text-decoration-none fw-bolder">科技與生活</a>
+            <a href="#" class="mx-2 text-dark text-decoration-none fw-bolder">療癒專區</a>
+
+        </div>
 	</div>
 </div>
 <!--category-bar-->
@@ -112,102 +113,62 @@
 	</div>
 </div>
 	<!-- Content Sections -->
-	<div class="container">
-		<!-- 限時優惠 -->
-		<section class="mb-2 mt-3">
-			<div class="d-flex justify-content-between align-items-center">
-				<h2>限時優惠-3件85折專區</h2>
-				<button class="btn btn-outline-secondary btn-sm">More</button>
-			</div>
-			<div class="row">
-				@{
-					Html.RenderAction("_PromotePartial");
-					
-				}
-				<!-- 商品卡片 -->
-				<!--<div class="col-6 col-md-3 col-lg-2">-->
-					<!-- 包在 <a> 裡，使整張卡片可被點擊 -->
-					<!--<a href="your-target-page.html" class="text-decoration-none text-reset">
-						<div class="card">
-							<img src="~/image/二千零四十七夜.jpg" class="card-img-top" alt="Product">
-							<div class="card-body">
-								<p class="card-title text-truncate">書名</p>
-								<p class="card-text text-muted">NT$ 199</p>
-							</div>
-						</div>
-					</a>
-				</div>-->
-			</div>
-		</section>
-		<hr>
-		<!-- 最新上架 -->
-		<section class="mb-2 mt-3">
-			<div class="d-flex justify-content-between align-items-center">
-				<h2>最新上架</h2>
-				<button class="btn btn-outline-secondary btn-sm">More</button>
-			</div>
-			<div class="row">
-				<!-- 商品卡片 -->
-				<div class="col-6 col-md-3 col-lg-2">
-					<!-- 包在 <a> 裡，使整張卡片可被點擊 -->
-					<a href="your-target-page.html" class="text-decoration-none text-reset">
-						<div class="card">
-							<img src="~/image/22.jpg" class="card-img-top" alt="Product">
-							<div class="card-body">
-								<p class="card-title text-truncate">書名</p>
-								<p class="card-text text-muted">NT$ 199</p>
-							</div>
-						</div>
-					</a>
-				</div>
-			</div>
-		</section>
-		<hr>
-		<!-- 熱門書籍 -->
-		<section class="mb-2 mt-3">
-			<div class="d-flex justify-content-between align-items-center">
-				<h2>熱門書籍</h2>
-				<button class="btn btn-outline-secondary btn-sm">More</button>
-			</div>
-			<div class="row">
-				<!-- 商品卡片 -->
-				<div class="col-6 col-md-3 col-lg-2">
-					<!-- 包在 <a> 裡，使整張卡片可被點擊 -->
-					<a href="your-target-page.html" class="text-decoration-none text-reset">
-						<div class="card">
-							<img src="~/image/張忠謀自傳全集（上下冊）.jpg" class="card-img-top" alt="Product">
-							<div class="card-body">
-								<p class="card-title text-truncate">書名</p>
-								<p class="card-text text-muted">NT$ 199</p>
-							</div>
-						</div>
-					</a>
-				</div>
-			</div>
-		</section>
-		<hr>
-		<!-- 本月排行 -->
-		<section class="mb-2 mt-3">
-			<div class="d-flex justify-content-between align-items-center">
-				<h2>本月排行</h2>
-				<button class="btn btn-outline-secondary btn-sm">More</button>
-			</div>
-			<div class="row">
-				<!-- 商品卡片 -->
-				<div class="col-6 col-md-3 col-lg-2">
-					<!-- 包在 <a> 裡，使整張卡片可被點擊 -->
-					<a href="your-target-page.html" class="text-decoration-none text-reset">
-						<div class="card">
-							<img src="~/image/少年來了.jpg" class="card-img-top" alt="Product">
-							<div class="card-body">
-								<p class="card-title text-truncate">書名</p>
-								<p class="card-text text-muted">NT$ 199</p>
-							</div>
-						</div>
-					</a>
-				</div>
-			</div>
-		</section>
-	</div>
+<div class="container">
+    <!-- 限時優惠 -->
+    <section class="mb-2 mt-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>限時優惠-3件85折專區</h2>
+            <button class="btn btn-outline-secondary btn-sm">More</button>
+        </div>
+        <div class="row">
+            @{
+                Html.RenderAction("_PromotePartial");
+            }
+
+        </div>
+    </section>
+    <hr>
+    <!-- 最新上架 -->
+    <section class="mb-2 mt-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>最新上架</h2>
+            <button class="btn btn-outline-secondary btn-sm">More</button>
+        </div>
+        <div class="row">
+            <!-- 商品卡片 -->
+            @{
+                Html.RenderAction("_NewBooksPartial");
+            }
+        </div>
+    </section>
+    <hr>
+    <!-- 科技與生活 -->
+    <section class="mb-2 mt-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>科技與生活</h2>
+            <button class="btn btn-outline-secondary btn-sm">More</button>
+        </div>
+        <div class="row">
+            <!-- 商品卡片 -->
+            @{
+                Html.RenderAction("_TechBooksPartial");
+            }
+        </div>
+    </section>
+    <hr>
+    <!-- 療癒專區 -->
+    <section class="mb-2 mt-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>療癒專區</h2>
+            <button class="btn btn-outline-secondary btn-sm">More</button>
+        </div>
+        <div class="row">
+            <!-- 商品卡片 -->
+            @{
+                Html.RenderAction("_ComfortBooksPartial");
+            }
+        </div>
+    </section>
+</div>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
