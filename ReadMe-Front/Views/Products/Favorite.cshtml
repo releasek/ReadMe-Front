@@ -4,6 +4,7 @@
     ViewBag.Title = "Favorite";
     Layout = "~/Views/Shared/_Layout2.cshtml"; // 指定 Layout
 }
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -165,32 +166,90 @@
             <div class="">售價</div>
         </div>
         <!-- 商品列表區 -->
-        <section class="cart-section">
-            <div class="cart-item">
-                <div class="item-info">
-                    <input type="checkbox">
-                    <img src="https://via.placeholder.com/100x150" alt="商品封面">
-                    <div>
-                        <h3>各種悲傷</h3>
-                        <p>作者：瑪麗安娜・萊恩</p>
-                        <p>贈品：首贈書給朋友</p>
+        <div>
+            <section class="cart-section">
+                <!-- 如果有商品 -->
+                <div v-if="favorites.length > 0">
+                    <div class="cart-item" v-for="item in favorites" :key="item.id">
+                        <div class="item-info">
+                            <img :src="item.imageURL" alt="商品封面" style="width: 100px;">
+                            <div>
+                                <h3>{{ item.title }}</h3>
+                                <p>作者：{{ item.author }}</p>
+                                <p>贈品：{{ item.gift }}</p>
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <span>NT$ {{ item.price }}</span>
+                            <button class="btn btn-secondary btn-sm" v-on:click="addToCart(item.id)">加入購物車</button>
+                            <button class="btn btn-danger btn-sm" v-on:click="removeFavorite(item.id)">移除</button>
+                        </div>
                     </div>
                 </div>
-                <div class="item-actions">
-                    <span>NT$ 231</span>
-                    <button type="button" class="btn-remove btn btn-secondary btn-sm ms-2">加入購物車</button>
-                    <button type="button" class="btn-remove btn btn-secondary btn-sm ms-2">移除</button>
+                <!-- 如果沒有商品 -->
+                <div v-else>
+                    <p>{{ emptyMessage }}</p>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
+
         <!-- 結算區 end-->
         <div class="d-flex justify-content-between">
             <a href="#" class="btn btn-light btn-lg rounded-pill px-5">&larr; 繼續逛逛</a>
-            <a href="/OrderDetails.html" class="btn btn-light btn-lg rounded-pill px-5">加入購物車 &rarr;</a>
+            <a href="/OrderDetails.html" class="btn btn-light btn-lg rounded-pill px-5">付款 &rarr;</a>
         </div>
     </div>
 
+    <script src="~/Js/vue.global.js"></script>
+    <script src="~/Js/Repeat.js"></script>
+    <script>
+        const { createApp } = Vue;
+
+        const config = {
+            setup() {
+                const favorites = Vue.ref([]);
+                const emptyMessage = Vue.ref("");
+
+                // 獲取收藏清單
+                const fetchFavorites = async (userid) => {
+                    try {
+                        const response = await fetch(`/api/productapi/favorites?userid=${userid}`);
+                        const data = await response.json();
+
+                        if (data.hasItems) {
+                            favorites.value = data.items;
+                        } else {
+                            emptyMessage.value = data.message;
+                        }
+                    } catch (error) {
+                        console.error("Error fetching favorites:", error);
+                        emptyMessage.value = "無法獲取收藏清單";
+                    }
+                };
+
+                // 加入購物車
+                const addToCart = async (id) => {
+                    alert(`商品 ${id} 已加入購物車！`);
+                };
+
+                // 移除收藏
+                const removeFavorite = async (id) => {
+                    favorites.value = favorites.value.filter((item) => item.id !== id);
+                };
+
+
+                return {
+                    favorites,
+                    emptyMessage,
+                    addToCart,
+                    removeFavorite,
+                };
+            },
+        };
+
+        const app = createApp(config)
+        app.mount("#app")
+    </script>
 </body>
 
 </html>
-

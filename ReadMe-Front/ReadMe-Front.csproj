@@ -175,6 +175,7 @@
     <Compile Include="Models\Services\CategoryService.cs" />
     <Compile Include="Models\Services\ProductService.cs" />
     <Compile Include="Models\ViewModels\CategoryVm.cs" />
+    <Compile Include="Controllers\ProductApiController.cs" />
     <Compile Include="Models\ViewModels\ProductDetailVm.cs" />
     <Compile Include="Models\ViewModels\LoginVm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

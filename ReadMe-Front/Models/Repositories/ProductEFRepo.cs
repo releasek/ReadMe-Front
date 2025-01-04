@@ -76,6 +76,30 @@ namespace ReadMe_Front.Models.Repositories
                 return result;
             }
         }
+        /// <summary>
+        /// 取得收藏清單
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<ProductDetailVm> GetFavorite(int userid)
+        {
+            using (var db = new AppDbContext())
+            {
+                var result = (from product in db.Products
+                              join wishlists in db.Wishlists
+                              on product.Id equals wishlists.ProductId
+                              where wishlists.UserId == userid
+                              select new ProductDetailVm
+                              {
+                                  Id = product.Id,
+                                  Title = product.Title,
+                                  Author = product.Author,
+                                  Price = product.Price,
+                                  ImageURL = product.ImageURL
+                              }).ToList();
+                return result;
+            }
+        }
 
         /// <summary>
         /// 新增商品

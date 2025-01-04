@@ -1,4 +1,5 @@
 ﻿using ReadMe_Front.Models.Services;
+using ReadMe_Front.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,10 +60,19 @@ namespace ReadMe_Front.Controllers
         /// 收藏清單
         /// </summary>
         /// <returns></returns>
-        public ActionResult Favorite()
-        {
-            return View();
-        }
+        //public ActionResult Favorite(int userid)
+        //{
+        //    var favoriteProducts = _productService.GetFavoriteProducts(userid);
+        //    var viewModel = new ProductFavoriteVm
+        //    {
+        //        HasItems = favoriteProducts.Any(),
+        //        FavoriteItem = favoriteProducts,
+        //        Message = favoriteProducts.Any() ? "" : "目前沒有收藏商品"
+        //    };
+
+        //    return View(viewModel); // 將 ViewModel 傳遞給視圖
+        //}
+
 
     }
 }
