@@ -63,18 +63,18 @@ namespace ReadMe_Front.Models.Services
 			_productRepo = new ProductEFRepo();
 		}
 		// 根據商品 Id 取得商品資訊（包含照片、書名、價錢）
-		public Product GetProductById(int id)
-		{
-			// 呼叫資料存取層的對應方法
-			var product = _productRepo.GetProductById(id);
+		//public Product GetProductById(int id)
+		//{
+		//	// 呼叫資料存取層的對應方法
+		//	var product = _productRepo.GetProductById(id);
 
-			if (product == null)
-			{
-				throw new Exception($"找不到 Id 為 {id} 的商品");
-			}
+		//	if (product == null)
+		//	{
+		//		throw new Exception($"找不到 Id 為 {id} 的商品");
+		//	}
 
-			return product;
-		}
+		//	return product;
+		//}
 
 	}
 

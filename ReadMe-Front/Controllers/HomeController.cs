@@ -22,10 +22,26 @@ namespace ReadMe_Front.Controllers
 			return View(data);
 		}
 
+        public ActionResult _NewBooksPartial()
+        {
+            var data = new ProductEFRepo().GetBooksByPublishdate();
 
+            return View(data);
+        }
+        public ActionResult _TechBooksPartial()
+        {
+            var data = new ProductEFRepo().GetBooksByParentCategoryId();
+            return View(data);
+        }
 
+        public ActionResult _ComfortBooksPartial()
+        {
+            var data = new ProductEFRepo().GetBooksByCategoryId();
 
-		public ActionResult Login()
+            return View(data);
+        }
+      
+        public ActionResult Login()
         {
             ViewBag.Message = "Your application description page.";
 
