@@ -123,7 +123,10 @@ namespace ReadMe_Front.Models.Repositories
                 db.SaveChanges();
             }
         }
-
+        /// <summary>
+        /// 首頁取得促銷書籍
+        /// </summary>
+        /// <returns></returns>
 		public List<Product> GetBooks()
 		{
 			using (var db = new AppDbContext())
@@ -132,7 +135,34 @@ namespace ReadMe_Front.Models.Repositories
 			}
 		}
         /// <summary>
-        /// 根據出版日期取得書籍
+        /// 首頁取得促銷書籍
+        /// </summary>
+        /// <returns></returns>
+        public List<Product> GetPromoteBooks()
+        {
+            using (var db = new AppDbContext())
+            {
+                return db.Products.Where(p => p.PromotionId == 1).Take(6).ToList();
+            }
+        }
+        /// <summary>
+        /// 3件85折專區取得書籍
+        /// </summary>
+        /// <param name="promotionId"></param>
+        /// <returns></returns>
+        public List<Product> PromoteBooks(int promotionId)
+        {
+            using (var db = new AppDbContext())
+            {
+                // 查詢符合 PromotionId 的產品
+                var promoteProducts = db.Products
+                                        .Where(p => p.PromotionId == promotionId)
+                                        .ToList();
+                return promoteProducts;
+            }
+        }
+        /// <summary>
+        /// 首頁根據出版日期取得書籍
         /// </summary>
         /// <returns></returns>
         public List <Product> GetBooksByPublishdate()
@@ -143,10 +173,21 @@ namespace ReadMe_Front.Models.Repositories
             }
         }
         /// <summary>
-        ///療癒專區取得書籍
+        /// 最新上架30本書
         /// </summary>
         /// <returns></returns>
-        public List<Product> GetBooksByCategoryId()
+        public List<Product> NewBooks()
+        {
+            using (var db = new AppDbContext())
+            {
+                return db.Products.OrderBy(x => x.PublishDate).Take(30).ToList();
+            }
+        }
+        /// <summary>
+        ///首頁療癒專區取得書籍
+        /// </summary>
+        /// <returns></returns>
+        public List<Product> GetComfortBooks()
         {
             using (var db = new AppDbContext())
             {
@@ -157,20 +198,32 @@ namespace ReadMe_Front.Models.Repositories
                          .ToList();
             }
         }
-
+        /// <summary>
+        ///療癒專區30本書
+        /// </summary>
+        /// <returns></returns>
+        public List<Product> ComfortBooks()
+        {
+            using (var db = new AppDbContext())
+            {
+                return db.Products.Where(x => x.CategoryId == 11 || x.CategoryId == 12).Take(30).ToList();
+            }
+        }
+        /// <summary>
+        /// 首頁取得科技與生活書籍
+        /// </summary>
+        /// <returns></returns>
         public List<Product> GetBooksByParentCategoryId()
         {
             using (var db = new AppDbContext())
             {
-                // 篩選 ParentCategoryId 是 1 的產品，並限制為最多 6 筆
+                // 篩選 ParentCategoryId 是 3 的產品，並限制為最多 6 筆
                 return db.Products
                          .Where(p => p.Category.ParentCategoryId == 3)
                          .Take(6)
                          .ToList();
             }
         }
-
-
 
 
     }

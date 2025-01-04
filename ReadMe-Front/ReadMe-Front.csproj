@@ -245,6 +245,7 @@
     <Content Include="image\banner\banner2.jpg" />
     <Content Include="image\banner\banner3.jpg" />
     <Content Include="image\banner\banner4.jpg" />
+    <Content Include="image\banner\Promotebanner.jpg" />
     <Content Include="image\C# 最強入門邁向頂尖高手之路王者歸來.jpg" />
     <Content Include="image\ChatGPT × Excel 自動化工作聖經.jpeg" />
     <Content Include="image\ChatGPT 全方位攻略：技巧與示例 .jpeg" />
@@ -357,6 +358,9 @@
     <Content Include="Views\Home\_NewBooksPartial.cshtml" />
     <Content Include="Views\Home\_TechBooksPartial.cshtml" />
     <Content Include="Views\Home\_ComfortBooksPartial.cshtml" />
+    <Content Include="Views\Home\Promote.cshtml" />
+    <Content Include="Views\Home\New.cshtml" />
+    <Content Include="Views\Home\Comfort.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
