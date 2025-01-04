@@ -355,7 +355,9 @@
     <Content Include="Views\Products\ProductDetail.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Shared\_Layout2.cshtml" />
+    <Content Include="Views\Products\Favorite_api_test.cshtml" />
     <Content Include="Views\Products\Favorite.cshtml" />
+    <Content Include="Views\Products\NoFavorite.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

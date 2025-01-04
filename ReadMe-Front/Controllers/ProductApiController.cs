@@ -14,18 +14,18 @@ namespace ReadMe_Front.Controllers.Api
         }
 
         // GET api/productapi/favorites
-        [HttpGet]
-        [Route("api/productapi/favorites")]
-        public IHttpActionResult Favorites( int userid)
-        {
-            var favorites = _productService.GetFavoriteProducts(userid);
+        //[HttpGet]
+        //[Route("api/productapi/favorite")]
+        //public IHttpActionResult Favorites(int userid)
+        //{
+        //    var favorites = _productService.GetFavoriteProducts(userid);
 
-            if (favorites == null || !favorites.Any())
-            {
-                return Ok(new { hasItems = false, message = "目前沒有收藏商品" });
-            }
+        //    if (favorites == null || !favorites.Any())
+        //    {
+        //        return Ok(new { hasItems = false, message = "目前沒有收藏商品" });
+        //    }
 
-            return Ok(new { hasItems = true, items = favorites });
-        }
+        //    return Ok(new { hasItems = true, items = favorites });
+        //}
     }
 }

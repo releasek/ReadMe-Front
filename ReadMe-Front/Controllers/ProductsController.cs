@@ -60,18 +60,23 @@ namespace ReadMe_Front.Controllers
         /// 收藏清單
         /// </summary>
         /// <returns></returns>
-        //public ActionResult Favorite(int userid)
-        //{
-        //    var favoriteProducts = _productService.GetFavoriteProducts(userid);
-        //    var viewModel = new ProductFavoriteVm
-        //    {
-        //        HasItems = favoriteProducts.Any(),
-        //        FavoriteItem = favoriteProducts,
-        //        Message = favoriteProducts.Any() ? "" : "目前沒有收藏商品"
-        //    };
+        public ActionResult Favorite(int userid)
+        {
+            var favoriteProducts = _productService.GetFavoriteProducts(userid);
+            if (!favoriteProducts.Any() || favoriteProducts==null)
+            {
+                return View("NoFavorite");
+            }
+            else
+            {
+                return View("Favorite",favoriteProducts);
+            }
+        }
+        public ActionResult NoFavorite()
+        {
+            return View();
+        }
 
-        //    return View(viewModel); // 將 ViewModel 傳遞給視圖
-        //}
 
 
     }
