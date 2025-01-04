@@ -72,10 +72,31 @@ namespace ReadMe_Front.Controllers
                 return View("Favorite",favoriteProducts);
             }
         }
+        /// <summary>
+        /// 無收藏清單的page
+        /// </summary>
+        /// <returns></returns>
         public ActionResult NoFavorite()
         {
             return View();
         }
+        /// <summary>
+        /// 購物車
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Cart()
+        {
+            return View();
+        }
+        public ActionResult NoCart()
+        {
+            return View();
+        }
+        public ActionResult CartOrderDetails()
+        {
+            return View();
+        }
+
 
 
 
