@@ -21,7 +21,7 @@ namespace ReadMe_Front.Models.Repositories
             string sql = @"Select p.Id, p.Title, p.Author, p.Price, p.ImageURL, c.CategoryName, pc.ParentCategoriesName From Products p
 Inner Join Categories c on p.CategoryId = c.Id
 Inner Join ParentCategories pc on c.ParentCategoryId = pc.Id
-Order by pc.ParentCategoriesName";
+Order by pc.ParentCategoriesName, p.Id";
 
             using (var conn = new SqlConnection(_connString))
             {
