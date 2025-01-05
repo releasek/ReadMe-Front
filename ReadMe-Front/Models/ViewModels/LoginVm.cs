@@ -15,6 +15,7 @@ namespace ReadMe_Front.Models.ViewModels
 
 		[Display(Name = "密碼")]
 		[Required(ErrorMessage = DAHealper.Require)]
-		public string Password { get; set; }
+        [DataType(DataType.Password)]//不顯示密碼
+        public string Password { get; set; }
 	}
 }

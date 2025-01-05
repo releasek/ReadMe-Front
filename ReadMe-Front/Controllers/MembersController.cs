@@ -41,7 +41,7 @@ namespace ReadMe_Front.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", ex.Message);
+                ModelState.AddModelError("此帳號已註冊過請重新登入", ex.Message);
                 return View(model);
             }
 
@@ -58,8 +58,7 @@ namespace ReadMe_Front.Controllers
                 Account = model.Account,
                 Email = model.Email,
                 Password = model.Password,
-           
-
+   
             };
             new MemberService().Register(dto);
         }
@@ -69,6 +68,28 @@ namespace ReadMe_Front.Controllers
 
             return View();
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(LoginVm model)
+        {
+            if (!ModelState.IsValid) return View(model);
+            try
+            {
+                ProcessLogin(model);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("登入失敗", ex.Message);
+                return View(model);
+            }
+        }
+
+        private void ProcessLogin(LoginVm model)
+        {
+            throw new NotImplementedException();
+        }
+
         public ActionResult Logout()
         {
             ViewBag.Message = "Your contact page.";
