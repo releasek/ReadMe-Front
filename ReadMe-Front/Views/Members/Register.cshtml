@@ -1,0 +1,116 @@
+﻿@model ReadMe_Front.Models.ViewModels.RegisterVm
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml"; // 指定 Layout
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .Register {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 30px;
+        width: 300px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 250px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    h2 {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-size: 14px;
+        color: #555555;
+    }
+
+    input[type="text"], input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #007bff;
+            outline: none;
+     }
+
+    .form-actions {
+        text-align: center;
+    }
+
+    .btn-register {
+        display: block;
+        margin-top: 10px;
+        font-size: 14px;
+        text-align: center;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .btn-register:hover {
+            text-decoration: underline;
+     }
+</style>
+<h2>會員註冊</h2>
+
+<div class="Register">
+    <h2 class="fw-bolder">會員註冊</h2>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Account)
+            @Html.EditorFor(model => model.Account, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入帳號" } })
+            @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password)
+            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入密碼" } })
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfirmPassword)
+            @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入密碼" } })
+            @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email)
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入信箱" } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">註冊</button>
+            <a href="@Url.Action("Register", "Account")" class="btn-register">已有帳號？註冊</a>
+        </div>
+    }
+
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -65,18 +65,6 @@ namespace ReadMe_Front.Controllers
             return View(data);
         }
 
-        public ActionResult Login()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Logout()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
+      
     }
 }
