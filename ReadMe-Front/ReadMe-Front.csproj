@@ -175,6 +175,7 @@
     <Compile Include="Models\Repositories\ProductEFRepo.cs" />
     <Compile Include="Models\Services\CategoryService.cs" />
     <Compile Include="Models\Services\ProductService.cs" />
+    <Compile Include="Models\ViewModels\CartItemVm.cs" />
     <Compile Include="Models\ViewModels\CartVm.cs" />
     <Compile Include="Models\ViewModels\CategoryVm.cs" />
     <Compile Include="Controllers\ProductApiController.cs" />

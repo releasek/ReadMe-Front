@@ -26,15 +26,43 @@ namespace ReadMe_Front.Models.Repositories
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
-        //public CartVm GetCartInfo(string account)
-        //{
-        //    HttpResponseSubstitutionCallback==
-        //}
-        /// <summary>
-        /// 新增購物車
-        /// </summary>
-        /// <param name="cartItem"></param>
-        public void AddCartItem(int cartId, int productId, int Price)
+        public CartVm GetCartInfo(string account)
+        {
+            using (var db = new AppDbContext())
+            {
+                var cart = db.Carts.FirstOrDefault(c => c.MemberAccount == account);
+                if (cart == null)
+                {
+                    cart = new Cart { MemberAccount = account };
+                    db.Carts.Add(cart);
+                    db.SaveChanges();
+                }
+                var cartItems = db.CartItems.Where(ci => ci.CartId == cart.Id)
+                    .Select(ci => new CartItemVm
+                    {
+                        Id = ci.Id,
+                        Cartid = ci.CartId,
+                        ProductId = ci.ProductId,
+                        Price = ci.Price,
+                        Title = ci.Product.Title,
+                        Author = ci.Product.Author,
+                        Publisher = ci.Product.Publisher,
+                        ImageURL = ci.Product.ImageURL
+                    }).ToList();
+                var cartVm = new CartVm
+                {
+                    Id = cart.Id,
+                    MemberAccount = cart.MemberAccount,
+                    CartItems = cartItems,
+                };
+                return cartVm;
+            }
+        }
+            /// <summary>
+            /// 新增購物車
+            /// </summary>
+            /// <param name="cartItem"></param>
+            public void AddCartItem(int cartId, int productId, int Price)
         {
             using(var db = new AppDbContext())
             {
@@ -51,35 +79,6 @@ namespace ReadMe_Front.Models.Repositories
                 db.SaveChanges();
             }
         }
-        /// <summary>
-        /// 取得會員購物車內商品
-        /// </summary>
-        /// <param name="account"></param>
-        /// <returns></returns>
-        public List<CartVm> GetCartByMemberProduct(string account)
-        {
-            using (var db = new AppDbContext())
-            {
-                var result = (from cart in db.Carts
-                             join cartItem in db.CartItems
-                             on cart.Id equals cartItem.CartId
-                             join product in db.Products
-                             on cartItem.ProductId equals product.Id
-                             where cart.MemberAccount == account
-                             select new CartVm
-                             {
-                                 Id = cart.Id,
-                                 MemberAccount = cart.MemberAccount,
-                                 ProductId = cartItem.ProductId,
-                                 Price = cartItem.Price,
-                                 Title = product.Title,
-                                 Author = product.Author,
-                                 Publisher = product.Publisher,
-                                 ImageURL = product.ImageURL
-                             }).ToList();
-                return result;
 
-            }
-        }
     }
 }
