@@ -125,7 +125,7 @@ namespace ReadMe_Front.Controllers
                                         Price = product.Price,
                                         ImageURL = product.ImageURL
                                     }).ToList()
-                                }).ToList();
+                                }).OrderBy(x => x.Id).ToList();
 
             var vm = new CategoryVm
             {
