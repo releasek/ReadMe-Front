@@ -261,6 +261,7 @@
     <Content Include="image\Notion與Notion AI全能實戰手冊：生活、學習與職場的智慧策略.jpg" />
     <Content Include="image\React 思維進化：一次打破常見的觀念誤解，躍升專業前端開發者（iThome鐵人賽系列書）.jpg" />
     <Content Include="image\readme-high-resolution-logo-transparent.png" />
+    <Content Include="image\samplebook.jpg" />
     <Content Include="image\SQL × Power Automate × Python 自動化 Excel 與 Pandas 資料分析.jpg" />
     <Content Include="image\【暢銷紀念版】學校沒有教的戀愛心理學：調整好自我認知，有些苦根本不必吃.jpg" />
     <Content Include="image\三體.jpg" />
@@ -361,6 +362,7 @@
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Shared\_Layout2.cshtml" />
     <Content Include="Views\Categories\ParentCategory.cshtml" />
+    <Content Include="Views\Categories\SubCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

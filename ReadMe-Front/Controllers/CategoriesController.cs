@@ -65,7 +65,7 @@ namespace ReadMe_Front.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var parent = _efRepo.GetCategoryBooks(parentCategoryName);
+            var parent = _efRepo.GetParent(parentCategoryName);
             var groupProduct = parent.GroupBy(p => p.CategoryName) // 按 CategoryName 分組
                                 .Select(group => new GroupCategoryVm
                                 {
@@ -101,6 +101,38 @@ namespace ReadMe_Front.Controllers
             }).ToList();
 
             ViewBag.CurrentId = parentCategoryName;
+
+            return View(vm);
+        }
+
+        public ActionResult SubCategory(string subCategoryName)
+        {
+            if (subCategoryName == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var sub = _efRepo.GetSub(subCategoryName);
+            var groupProduct = sub.GroupBy(p => p.ParentCategoriesName) // 按 ParentCategoryName 分組
+                                .Select(group => new GroupCategoryVm
+                                {
+                                    CategoryName = subCategoryName,
+                                    ParentCategoryName = group.Key,
+                                    Products = group.Select(product => new GroupCategoryVm
+                                    {
+                                        Id = product.Id,
+                                        Title = product.Title,
+                                        Author = product.Author,
+                                        Price = product.Price,
+                                        ImageURL = product.ImageURL
+                                    }).ToList()
+                                }).ToList();
+
+            var vm = new CategoryVm
+            {
+                GroupProduct = groupProduct
+            };
+
+            ViewBag.CurrentId = subCategoryName;
 
             return View(vm);
         }

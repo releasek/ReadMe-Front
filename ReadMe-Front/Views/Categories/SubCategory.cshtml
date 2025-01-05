@@ -2,8 +2,9 @@
 @model CategoryVm
 
 @{
-    ViewBag.Title = "ParentCategory";
+    ViewBag.Title = "SubCategory";
 }
+
 <style>
     .maincat a {
         font-size: 18px;
@@ -45,50 +46,33 @@
     }
 </style>
 
-@*/Categories/ParentCategory?parentCategoryName=文學小說*@
-
 <!-- Context Start -->
 <div class="container" style="margin-top:110px;">
-    <!-- 麵包屑--start -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="/Home">首頁</a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="/Categories/Index">全站分類</a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">@ViewBag.CurrentId</li>
-        </ol>
-    </nav>
-    <!-- 麵包屑--end -->
-    <h4 itemprop="name">全站分類</h4>
-    <div class="row">
-        <div class="list-group list-group-flush col-2 category-sidebar">
-            @foreach (var categoryGroup in Model.GroupCategory)
-            {
-                <ul>
-                    <li class="list-group-item list-group-item-action maincat">
-                    <a href="/Categories/ParentCategory?parentCategoryName=@categoryGroup.ParentCategoryName">@categoryGroup.ParentCategoryName</a>
-                    </li>
-                    <!-- 顯示子類別，分割CategoryName並逐一顯示 -->
-                    @foreach (var subCategory in categoryGroup.CategoryName.Split(','))
-                    {
-                        <li class="list-group-item list-group-item-action subcat">
-                            <a href="/Categories/SubCategory?subCategoryName=@subCategory.Trim()">@subCategory.Trim()</a> <!-- Trim() 去除多餘的空白 -->
-                        </li>
-                    }
-                </ul>
-            }
-        </div>
+    @foreach (var group in Model.GroupProduct)
+    {
+        <!-- 麵包屑--start -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/Home">首頁</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/Categories/Index">全站分類</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/Categories/ParentCategory?parentCategoryName=@group.ParentCategoryName">@group.ParentCategoryName</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">@ViewBag.CurrentId</li>
+            </ol>
+        </nav>
+        <!-- 麵包屑--end -->
 
-        <!-- Cart start -->
-        <div class="cart col-10">
-            <div class=" row justify-content-start">
-                <h4 class="col-11">@ViewBag.CurrentId</h4>
-                @foreach (var itemGroup in Model.GroupProduct)
-                {
-                    foreach (var item in itemGroup.Products)
+        <div class="row">            
+            <!-- Cart start -->
+            <div class="cart col-12">
+                <div class=" row justify-content-start">
+                    <h4 class="col-11">@group.ParentCategoryName > @ViewBag.CurrentId</h4>
+                    @foreach (var item in group.Products)
                     {
                         <div class="card border-0 col-auto m-1" style="width: 12rem;">
                             <div class="card-img">
@@ -104,10 +88,10 @@
                             </div>
                         </div>
                     }
-                }
-        <!-- Cart end -->
+                </div>
             </div>
+            <!-- Cart end -->
         </div>
-    </div>
+    }
 </div>
 <!-- Context End -->
