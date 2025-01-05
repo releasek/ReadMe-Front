@@ -24,5 +24,13 @@ namespace ReadMe_Front.Models.Services
         {
             _cartEFRepo.AddCartItem(cartId,productId,price);
         }
+        public void DeleteCartItem(int cartItemId)
+        {
+            _cartEFRepo.DeleteCartItem(cartItemId);
+        }
+        public void DeleteCart(int cartId)
+        {
+            _cartEFRepo.DeleteCart(cartId);
+        }
     }
 }

@@ -79,6 +79,38 @@ namespace ReadMe_Front.Models.Repositories
                 db.SaveChanges();
             }
         }
+        /// <summary>
+        /// 刪除購物車項目
+        /// </summary>
+        /// <param name="cartItemId"></param>
+        public void DeleteCartItem(int cartItemId)
+        {
+            using (var db = new AppDbContext())
+            {
+                var cartItem = db.CartItems.FirstOrDefault(ci => ci.Id == cartItemId);
+                if (cartItem != null)
+                {
+                    db.CartItems.Remove(cartItem);
+                    db.SaveChanges();
+                }
+            }
+        }
+        /// <summary>
+        /// 刪除購物車
+        /// </summary>
+        /// <param name="cartId"></param>
+        public void DeleteCart(int cartId)
+        {
+            using (var db = new AppDbContext())
+            {
+                var cart = db.Carts.FirstOrDefault(c => c.Id == cartId);
+                if (cart != null)
+                {
+                    db.Carts.Remove(cart);
+                    db.SaveChanges();
+                }
+            }
+        }
 
     }
 }
