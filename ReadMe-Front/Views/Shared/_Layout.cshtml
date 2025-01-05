@@ -17,6 +17,15 @@
 			color: #7AB8B8; /* 替換成 Logo 的顏色 */
 		}
 
+        .navbar {
+            border-bottom: 1px solid #ddd; /*分隔線*/
+        }
+
+        .category-bar {
+            background-color: white; /* 背景色 */
+            padding: 10px 0;
+        }
+
 		/* 登入按鈕樣式 */
 		.btn-outline-danger.newline,
 		.btn-outline-primary.newline {
@@ -51,25 +60,9 @@
 
 
 <body>
-    <!--<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+    <nav nav class="navbar fixed-top bg-white">
         <div class="container">
-            @*@Html.ActionLink("應用程式名稱", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
-            <!--<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="切換導覽" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("首頁", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("關於", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("連絡人", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                </ul>
-            </div>
-        </div>
-    </nav>-->
-    <nav nav class="navbar navbar-expand-sm fixed-top bg-white">
-        <div class="container d-flex" style="height: 70px;">
-            <a class="navbar-brand" href="~/Home/Index"><img src="~/image/readme-high-resolution-logo-transparent.png" alt="" class="img-fluid" style="height: 70px; object-fit: contain;"></a>
+            <a class="navbar-brand" href="~/Home/Index"><img src="~/image/readme-high-resolution-logo-transparent.png" alt="" class="img-fluid" style="height: 50px; object-fit: contain;"></a>
 
             <div class="d-flex ms-2 flex-grow-1">
                 <form class="d-flex row w-100" role="search">
@@ -86,11 +79,18 @@
                 <a href="@Url.Action("Register", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-danger newline">註冊</a>
                 <a href="@Url.Action("MemberCenter", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-secondary newline"><i class="fa-solid fa-user"></i></a>
             </form>
-
-
-
-
         </div>
+		<div class="category-bar container">
+			<div class="container d-flex justify-content-between align-items-center">
+				<div class="d-flex">
+					<a href="~/Categories/Index" class="mx-2 text-dark text-decoration-none fw-bolder">全站分類</a>
+					<a href="~/Home/Promote" class="mx-2 text-dark text-decoration-none fw-bolder">限時優惠</a>
+					<a href="~/Home/New" class="mx-2 text-dark text-decoration-none fw-bolder">最新上架</a>
+					<a href="~/Home/Tech" class="mx-2 text-dark text-decoration-none fw-bolder">科技與生活</a>
+					<a href="~/Home/Comfort" class="mx-2 text-dark text-decoration-none fw-bolder">療癒專區</a>
+				</div>
+			</div>
+		</div>
     </nav>
     <div class="container body-content" style="display: flex; flex-direction: column; min-height: 100vh;">
         @RenderBody()
