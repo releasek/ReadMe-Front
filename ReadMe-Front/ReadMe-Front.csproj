@@ -147,6 +147,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -168,18 +169,22 @@
     <Compile Include="Models\EFModels\User.cs" />
     <Compile Include="Models\EFModels\Wishlist.cs" />
     <Compile Include="Models\Infra\DAHealper.cs" />
+    <Compile Include="Models\Infra\HashUtility.cs" />
     <Compile Include="Models\Interfaces\ICategoryRepo.cs" />
     <Compile Include="Models\Repositories\CartEFRepo.cs" />
     <Compile Include="Models\Repositories\CategoryDapperRepo.cs" />
     <Compile Include="Models\Repositories\CategoryEFRepo.cs" />
+    <Compile Include="Models\Repositories\MemberEFRepo.cs" />
     <Compile Include="Models\Repositories\ProductEFRepo.cs" />
     <Compile Include="Models\Services\CategoryService.cs" />
+    <Compile Include="Models\Services\MemberService.cs" />
     <Compile Include="Models\Services\ProductService.cs" />
     <Compile Include="Models\ViewModels\CartVm.cs" />
     <Compile Include="Models\ViewModels\CategoryVm.cs" />
     <Compile Include="Controllers\ProductApiController.cs" />
     <Compile Include="Models\ViewModels\ProductDetailVm.cs" />
     <Compile Include="Models\ViewModels\LoginVm.cs" />
+    <Compile Include="Models\ViewModels\RegisterVm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -358,13 +363,14 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Categories\Index.cshtml" />
     <Content Include="Views\Products\ProductDetail.cshtml" />
-    <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Members\Login.cshtml" />
     <Content Include="Views\Shared\_Layout2.cshtml" />
     <Content Include="Views\Categories\ParentCategory.cshtml" />
+    <Content Include="Views\Members\Register.cshtml" />
+    <Content Include="Views\Shared\_LayoutMember.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Members\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

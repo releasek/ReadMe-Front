@@ -2,6 +2,7 @@
 
 @{
 	ViewBag.Title = "登入";
+	Layout = "~/Views/Shared/_LayoutMember.cshtml"; // 指定 Layout
 }
 <style>
 	body {
@@ -13,21 +14,7 @@
 		flex-direction: column;
 		justify-content: center;
 	}
-	.navbar {
-		background-color: #ffffff;
-		padding: 10px 0;
-	}
-	.navbar-brand img {
-		height: 60px;
-		object-fit: contain;
-	}
-
-	.navbar-brand {
-		display: flex;
-		justify-content: left;
-		align-items: center;
-		width: 100%;
-	}
+	
 	.login {
 		background-color: #ffffff;
 		border-radius: 8px;

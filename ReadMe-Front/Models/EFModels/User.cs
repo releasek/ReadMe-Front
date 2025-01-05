@@ -23,6 +23,7 @@ namespace ReadMe_Front.Models.EFModels
         [Required]
         [StringLength(255)]
         public string Email { get; set; }
+       
 
         [Required]
         [StringLength(255)]
@@ -30,7 +31,13 @@ namespace ReadMe_Front.Models.EFModels
 
         public bool IsBanned { get; set; }
 
+       
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
+
+       
+
+
     }
 }
