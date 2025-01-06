@@ -152,6 +152,7 @@
     <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\OrderdetailsDto.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -193,6 +194,7 @@
     <Compile Include="Models\ViewModels\ProductDetailVm.cs" />
     <Compile Include="Models\ViewModels\LoginVm.cs" />
     <Compile Include="Models\ViewModels\RegisterVm.cs" />
+    <Compile Include="Models\ViewModels\SearchVm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -376,22 +378,6 @@
     <Content Include="Views\Members\Login.cshtml" />
     <Content Include="Views\Shared\_Layout2.cshtml" />
     <Content Include="Views\Categories\ParentCategory.cshtml" />
-    <Content Include="Views\Home\Comfort.cshtml" />
-    <Content Include="Views\Home\_ComfortBooksPartial.cshtml" />
-    <Content Include="Views\Home\_NewBooksPartial.cshtml" />
-    <Content Include="Views\Home\_PromotePartial.cshtml" />
-    <Content Include="Views\Home\_TechBooksPartial.cshtml" />
-    <Content Include="Views\Home\New.cshtml" />
-    <Content Include="Views\Home\Promote.cshtml" />
-    <Content Include="Views\Home\Tech.cshtml" />
-    <Content Include="Views\Members\Register.cshtml" />
-    <Content Include="Views\Members\RegisterConfirm.cshtml" />
-    <Content Include="Views\Members\Index.cshtml" />
-    <Content Include="Views\Products\Favorite.cshtml" />
-    <Content Include="Views\Products\NoFavorite.cshtml" />
-    <Content Include="Views\Products\ProductAuthor.cshtml" />
-    <Content Include="Views\Shared\_LayoutMember.cshtml" />
-    <Content Include="Views\Members\EditProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

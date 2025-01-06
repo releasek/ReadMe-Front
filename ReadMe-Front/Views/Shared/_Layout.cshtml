@@ -66,8 +66,8 @@
 
             <div class="d-flex ms-2 flex-grow-1">
                 <form class="d-flex row w-100" role="search">
-                    <input class="form-control col" type="search" placeholder="Search" aria-label="Search" style="width: 400px;">
-                    <button type="button" class="btn col-auto">
+                    <input class="form-control col" type="search" placeholder="Search" id="searchInput" aria-label="Search" style="width: 400px;">
+                    <button type="button" class="btn col-auto" id="searchBtn">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </form>
@@ -80,35 +80,50 @@
                 <a href="@Url.Action("MemberCenter", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-secondary newline"><i class="fa-solid fa-user"></i></a>
             </form>
         </div>
-		<div class="category-bar container">
-			<div class="container d-flex justify-content-between align-items-center">
-				<div class="d-flex">
-					<a href="~/Categories/Index" class="mx-2 text-dark text-decoration-none fw-bolder">全站分類</a>
-					<a href="~/Home/Promote" class="mx-2 text-dark text-decoration-none fw-bolder">限時優惠</a>
-					<a href="~/Home/New" class="mx-2 text-dark text-decoration-none fw-bolder">最新上架</a>
-					<a href="~/Home/Tech" class="mx-2 text-dark text-decoration-none fw-bolder">科技與生活</a>
-					<a href="~/Home/Comfort" class="mx-2 text-dark text-decoration-none fw-bolder">療癒專區</a>
-				</div>
-			</div>
-		</div>
+        <div class="category-bar container">
+            <div class="container d-flex justify-content-between align-items-center">
+                <div class="d-flex">
+                    <a href="~/Categories/Index" class="mx-2 text-dark text-decoration-none fw-bolder">全站分類</a>
+                    <a href="~/Home/Promote" class="mx-2 text-dark text-decoration-none fw-bolder">限時優惠</a>
+                    <a href="~/Home/New" class="mx-2 text-dark text-decoration-none fw-bolder">最新上架</a>
+                    <a href="~/Home/Tech" class="mx-2 text-dark text-decoration-none fw-bolder">科技與生活</a>
+                    <a href="~/Home/Comfort" class="mx-2 text-dark text-decoration-none fw-bolder">療癒專區</a>
+                </div>
+            </div>
+        </div>
     </nav>
     <div class="container body-content" style="display: flex; flex-direction: column; min-height: 100vh;">
         @RenderBody()
     </div>
-		<footer class="footer">
-			<div class="container d-flex justify-content-between align-items-center py-3">
-				<div class="d-flex align-items-center">
-					<span class="text-white">&copy; 2025 Readme. All rights reserved.</span>
-				</div>
-				<div class="d-flex">
-					<a href="#" class="text-decoration-none text-white mx-2">隱私政策</a>
-					<a href="#" class="text-decoration-none text-white mx-2">服務條款</a>
-				</div>
-			</div>
-		</footer>
+    <footer class="footer">
+        <div class="container d-flex justify-content-between align-items-center py-3">
+            <div class="d-flex align-items-center">
+                <span class="text-white">&copy; 2025 Readme. All rights reserved.</span>
+            </div>
+            <div class="d-flex">
+                <a href="#" class="text-decoration-none text-white mx-2">隱私政策</a>
+                <a href="#" class="text-decoration-none text-white mx-2">服務條款</a>
+            </div>
+        </div>
+    </footer>
+    
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
-</body>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+    
+    <script>
+        $(document).ready(function () {                
+
+            $('#searchBtn').on('click', function () {
+                var input = $('#searchInput').val();
+                if (input.trim() === "") {                    
+                    return;
+                }
+                window.location.href = '/Search/Result?input=' + input;
+                console.log("url", '/Search/Result?input=' + input);
+            });               
+        });
+    </script>
+    </body>
 </html>
