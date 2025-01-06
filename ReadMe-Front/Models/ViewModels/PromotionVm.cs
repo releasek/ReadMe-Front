@@ -14,9 +14,9 @@ namespace ReadMe_Front.Models.ViewModels
 
         public string PromotionName { get; set; }
 
-        public decimal? DiscountValue { get; set; }
+        public int DiscountValue { get; set; }
 
-        public int? MinPurchase { get; set; }
+        public int MinPurchase { get; set; }
 
         public DateTime ValidFrom { get; set; }
 

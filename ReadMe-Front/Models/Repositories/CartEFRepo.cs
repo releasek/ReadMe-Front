@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace ReadMe_Front.Models.Repositories
 {
@@ -69,6 +70,7 @@ namespace ReadMe_Front.Models.Repositories
                     Id = cart.Id,
                     MemberAccount = cart.MemberAccount,
                     CartItems = cartItems,
+                    TotalPrice = cartItems.Sum(item => item.Price)
                 };
                 return cartVm;
             }

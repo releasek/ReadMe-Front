@@ -13,6 +13,7 @@ namespace ReadMe_Front.Models.EFModels
         public Cart()
         {
             CartItems = new HashSet<CartItem>();
+            CartItems1 = new HashSet<CartItem>();
         }
 
         public int Id { get; set; }
@@ -23,5 +24,8 @@ namespace ReadMe_Front.Models.EFModels
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CartItem> CartItems { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CartItem> CartItems1 { get; set; }
     }
 }

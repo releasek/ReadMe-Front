@@ -366,8 +366,8 @@
             <h3>全館優惠折扣</h3>
             <ul class="discount-list">
                 <li v-for="(item, index) in discounts" :key="index">
-                    <span>{{ item.description }}</span>
-                    <span class="warning">({{ item.warning }})</span>
+                    <span>{{ item.PromotionName }}</span>
+                    @*<span class="warning">({{ item.warning }})</span>*@
                 </li>
             </ul>
         </div>
@@ -381,7 +381,7 @@
                 <div class="summary-details">
                     <div>
                         <span>訂單小計：</span>
-                        <span>NT$ 252</span>
+                        <span>{{cart.TotalPrice}}</span>
                     </div>
                     <div>
                         <span>促銷折抵：</span>
@@ -389,7 +389,7 @@
                     </div>
                     <div class="total">
                         <span>訂單總計：</span>
-                        <span>NT$ 252</span>
+                        <span>{{cart.finalPrice}}</span>
                     </div>
                 </div>
             </div>
@@ -412,36 +412,27 @@
         // Vue 應用設定
         const config = {
             setup() {
-                // 定義狀態
-                const isModalOpen = ref(false); // 控制彈出視窗顯示
-                const coupons = ref([
-                    {
-                        code: 'WLCM-H2GGFWWQB',
-                        description: '新會員歡迎禮 - 註冊送電子書單筆滿250元現折50元',
-                        expiry: '2025/1/19 到期',
-                    },
-                ]);
+                
 
                 const cart = ref([]); // 購物車資料
+                const discounts = ref([]); // 折扣資訊
 
                 const fetchCartItems = async () => {
                     try {
                         const data = await Api.fetchCart(); // 調用 API 方法
                         cart.value = data;
-                        console.log("從 API 獲取的購物車資料：", cart.value);
+                        console.error("資料：", cart.value );
                     } catch (error) {
                         console.error("無法獲取購物車資料：", error.message);
                         alert("獲取購物車資料時發生錯誤！");
                     }
                 };
 
-
-
-               
-                const discounts = ref([
-                    { description: "1/31前，飯田出版社會員專屬展，三本79折", warning: "尚缺2件" },
-                    { description: "1/11前，村上書籍書展，三本以上85折", warning: "尚缺2件" },
-                ]);
+                const fetchPromotionsItems = async () => {
+                    
+                        const data = await Api.fetchPromotions(); // 調用 API 方法
+                        discounts.value = data;               
+                };
 
                 // 定義方法
                 const addToWishlist = (item) => {
@@ -452,21 +443,9 @@
                     cart.value = cart.value.filter((_, i) => i !== index);
                 };
 
-                const openModal = () => {
-                    isModalOpen.value = true;
-                };
-
-                const closeModal = () => {
-                    isModalOpen.value = false;
-                };
-
-                const useCoupon = (code) => {
-                    alert(`使用優惠碼: ${code}`);
-                    closeModal();
-                };
-
                 onMounted(() => {
                     fetchCartItems();
+                    fetchPromotionsItems();
                 
                 });
 
@@ -474,12 +453,7 @@
                     cart,
                     addToWishlist,
                     removeItem,
-                    isModalOpen,
-                    coupons,
                     discounts,
-                    openModal,
-                    closeModal,
-                    useCoupon,
                 };
             },
         };

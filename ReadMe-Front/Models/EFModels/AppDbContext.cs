@@ -1,4 +1,7 @@
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Linq;
 
 namespace ReadMe_Front.Models.EFModels
 {
@@ -27,7 +30,13 @@ namespace ReadMe_Front.Models.EFModels
             modelBuilder.Entity<Cart>()
                 .HasMany(e => e.CartItems)
                 .WithRequired(e => e.Cart)
+                .HasForeignKey(e => e.CartId)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Cart>()
+                .HasMany(e => e.CartItems1)
+                .WithRequired(e => e.Cart1)
+                .HasForeignKey(e => e.CartId);
 
             modelBuilder.Entity<Category>()
                 .HasMany(e => e.Products)
@@ -57,10 +66,6 @@ namespace ReadMe_Front.Models.EFModels
                 .HasMany(e => e.OrderDetails)
                 .WithRequired(e => e.Product)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Promotion>()
-                .Property(e => e.DiscountValue)
-                .HasPrecision(10, 2);
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Orders)
