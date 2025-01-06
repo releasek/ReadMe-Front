@@ -2,6 +2,7 @@
 using ReadMe_Front.Models.EFModels;
 using ReadMe_Front.Models.Infra;
 using ReadMe_Front.Models.Repositories;
+using ReadMe_Front.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -107,6 +108,51 @@ namespace ReadMe_Front.Models.Services
 			var returnUrl = FormsAuthentication.GetRedirectUrl(account, true);
 
 			return (returnUrl, cookie);
+		}
+
+		/// <summary>
+		/// 取得會員個人資料
+		/// </summary>
+		/// <param name="account">會員帳號</param>
+		/// <returns>ProfileVm</returns>
+		public ProfileVm GetProfile(string account)
+		{
+			// 從資料庫取得會員資料
+			var member = _repo.GetMemberByAccount(account);
+
+			if (member == null)
+			{
+				throw new Exception("會員不存在");
+			}
+
+			// 將資料轉換為 ViewModel
+			return new ProfileVm
+			{
+				Account = member.Account,
+				Email = member.Email
+			};
+		}
+
+		/// <summary>
+		/// 更新會員個人資料
+		/// </summary>
+		/// <param name="account">會員帳號</param>
+		/// <param name="model">ProfileVm</param>
+		public void UpdateProfile(string account, ProfileVm model)
+		{
+			// 從資料庫取得會員資料
+			var memberInDb = _repo.GetMemberByAccount(account);
+
+			if (memberInDb == null)
+			{
+				throw new Exception("會員不存在");
+			}
+
+			// 更新資料
+			memberInDb.Email = model.Email;
+
+			// 儲存變更
+			_repo.UpdateMember(memberInDb);
 		}
 	}
 }

@@ -55,44 +55,31 @@
         .footer a:hover {
                     text-decoration: underline; /* 鼠標停留時有下滑線 */
          }
+
     </style>
 
 </head>
 
-
 <body>
-    <!--<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-        <div class="container">
-            @*@Html.ActionLink("應用程式名稱", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
-            <!--<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="切換導覽" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("首頁", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("關於", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("連絡人", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                </ul>
-            </div>
-        </div>
-    </nav>-->
     <nav nav class="navbar navbar-expand-sm fixed-top bg-white">
         <div class="container d-flex" style="height: 70px;">
             <a class="navbar-brand" href="~/Home/Index"><img src="~/image/readme-high-resolution-logo-transparent.png" alt="" class="img-fluid" style="height: 70px; object-fit: contain;"></a>
+			<div class="d-flex ms-auto">
+				@if (User.Identity.IsAuthenticated)
+				{
+					<a href="@Url.Action("購物車", "Members", new { area = "" ,userid=1})" class="ms-3"><i class="fa-solid fa-cart-plus picture" style="vertical-align: middle;"></i></a>
+					<a href="https://localhost:44395/Products/Favorite?userid=1" class="ms-3"><i class="fa-solid fa-heart picture" style="vertical-align: middle;"></i></a>
+					<a href="@Url.Action("Logout", "Members", new { area = "" })" class="ms-3 btn btn-sm btn-outline-primary newline">登出</a>
+					<a href="@Url.Action("MemberCenter", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-secondary newline"><i class="fa-solid fa-user"></i></a>
+				}
+				else
+				{
+					<a href="@Url.Action("Login", "Members", new { area = "" })" class="ms-3 btn btn-sm btn-outline-primary newline">登入</a>
+					<a href="@Url.Action("Register", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-danger newline">註冊</a>
+					<a href="@Url.Action("MemberCenter", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-secondary newline"><i class="fa-solid fa-user"></i></a>
+				}
 
-         
-            <form class="d-flex ms-auto">
-                <a href="@Url.Action("購物車", "Members", new { area = "" ,userid=1})" class="ms-3"><i class="fa-solid fa-cart-plus picture" style="vertical-align: middle;"></i></a>
-                <a href="https://localhost:44395/Products/Favorite?userid=1" class="ms-3"><i class="fa-solid fa-heart picture" style="vertical-align: middle;"></i></a>
-                <a href="@Url.Action("Login", "Members", new { area = "" })" class="ms-3 btn btn-sm btn-outline-primary newline">登入</a>
-                <a href="@Url.Action("Register", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-danger newline">註冊</a>
-                <a href="@Url.Action("MemberCenter", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-secondary newline"><i class="fa-solid fa-user"></i></a>
-            </form>
-
-
-
-
+			</div>
         </div>
     </nav>
     <div class="container body-content" style="display: flex; flex-direction: column; min-height: 100vh;">
