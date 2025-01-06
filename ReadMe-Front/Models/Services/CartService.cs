@@ -45,7 +45,7 @@ namespace ReadMe_Front.Models.Services
             int finalPrice = totalPrice - discountAmount;
 
             // 设置购物车的折扣信息
-            var cartVm = new CartVm
+            var cartItem = new CartVm
             {
                 Id = cart.Id,
                 MemberAccount = cart.MemberAccount,
@@ -55,7 +55,7 @@ namespace ReadMe_Front.Models.Services
                 TotalPrice = totalPrice
             };
 
-            return cart;
+            return cartItem;
 
 
         }
