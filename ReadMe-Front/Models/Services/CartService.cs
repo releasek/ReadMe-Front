@@ -16,6 +16,10 @@ namespace ReadMe_Front.Models.Services
         {
             _cartEFRepo = new CartEFRepo();
         }
+        public List<PromotionVm> GetPromotionsVmItem()
+        {
+            return _cartEFRepo.GetPromotionsVmItem();
+        }
         public CartVm GetCartInfo(string account)
         {
             return _cartEFRepo.GetCartInfo(account);

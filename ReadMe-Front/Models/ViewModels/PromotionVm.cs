@@ -8,7 +8,7 @@ using System.Web;
 
 namespace ReadMe_Front.Models.ViewModels
 {
-    public class Promotion
+    public class PromotionVm
     {
         public int Id { get; set; }
 
@@ -18,13 +18,10 @@ namespace ReadMe_Front.Models.ViewModels
 
         public int? MinPurchase { get; set; }
 
-        [Column(TypeName = "date")]
         public DateTime ValidFrom { get; set; }
 
-        [Column(TypeName = "date")]
         public DateTime ValidTo { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Product> Products { get; set; }
+   
     }
 }

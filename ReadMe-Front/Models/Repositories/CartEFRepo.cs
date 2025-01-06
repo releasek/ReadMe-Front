@@ -9,7 +9,21 @@ namespace ReadMe_Front.Models.Repositories
 {
     public class CartEFRepo
     {
-
+        public List<PromotionVm> GetPromotionsVmItem()
+        {
+            using (var db = new AppDbContext())
+            {
+                return db.Promotions.Select(p => new PromotionVm
+                {
+                    Id = p.Id,
+                    PromotionName = p.PromotionName,
+                    DiscountValue = p.DiscountValue,
+                    MinPurchase = p.MinPurchase,
+                    ValidFrom = p.ValidFrom,
+                    ValidTo = p.ValidTo
+                }).ToList();
+            }
+        }
         /// <summary>
         /// 取得會員帳號
         /// </summary>

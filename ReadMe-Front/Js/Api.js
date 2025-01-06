@@ -4,7 +4,7 @@ window.Api = {
     // 取得購物車資料
     async fetchCart() {
         try {
-            const response = await fetch(`${baseUrl}`, {
+            const response = await fetch(`${baseUrl}/getAllCartItems`, {
                 method: "GET",
             });
 
@@ -23,6 +23,14 @@ window.Api = {
             console.error("Failed to fetch cart data:", error);
             throw error; // 向外層拋出錯誤
         }
+    },
+
+    // 取得折價券資料
+    async fetchPromotions() {
+        const response = await fetch(`${baseUrl}/getPromotions`, {
+            method: "GET",
+        });
+        return await response.json(); // 返回折價券資料
     },
 
     // 刪除購物車項目

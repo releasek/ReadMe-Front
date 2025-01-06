@@ -79,10 +79,11 @@ namespace ReadMe_Front.Models.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<ProductDetailVm> GetFavorite(int userid)
+        public List<ProductDetailVm> GetFavorite(string account)
         {
             using (var db = new AppDbContext())
             {
+                var userid = db.Users.Where(a => a.Account == account).Select(u => u.Id).FirstOrDefault();
                 var result = (from product in db.Products
                               join wishlists in db.Wishlists
                               on product.Id equals wishlists.ProductId
