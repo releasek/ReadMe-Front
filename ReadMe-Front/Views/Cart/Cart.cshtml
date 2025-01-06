@@ -281,43 +281,46 @@
         }
         /* 折價區 */
         .discount-container {
-            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
             padding: 20px;
-            background-color: #fff;
-            margin: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
             .discount-container h3 {
-                font-size: 16px;
+                text-align: center;
                 color: #333;
-                margin-bottom: 10px;
+                font-size: 1.5em;
+                margin-bottom: 20px;
             }
 
         .discount-list {
-            list-style-type: none;
+            list-style: none;
             padding: 0;
             margin: 0;
         }
 
             .discount-list li {
-                font-size: 14px;
-                margin-bottom: 8px;
-                color: #000;
                 display: flex;
                 justify-content: space-between;
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+                font-size: 1.1em;
             }
 
-            .discount-list .warning {
-                color: red;
-                font-weight: bold;
-            }
+                .discount-list li:last-child {
+                    border-bottom: none;
+                }
 
-        .discount {
-            margin-top: 5px; /* 與上一行間距 */
-            display: block; /* 強制換行 */
-            color: red; /* 可選：設定折扣顏色 */
+        .warning {
+            color: #d9534f; /* 紅色警示 */
+        }
+
+        .success {
+            color: #5cb85c; /* 綠色成功 */
         }
     </style>
 </head>
@@ -367,7 +370,7 @@
             <ul class="discount-list">
                 <li v-for="(item, index) in discounts" :key="index">
                     <span>{{ item.PromotionName }}</span>
-                    @*<span class="warning">({{ item.warning }})</span>*@
+                    <span :class="getWarningClass(item.TotalPrice)">{{ calculateWarning(item.TotalPrice) }}</span>
                 </li>
             </ul>
         </div>
@@ -381,15 +384,15 @@
                 <div class="summary-details">
                     <div>
                         <span>訂單小計：</span>
-                        <span>{{cart.TotalPrice}}</span>
+                        <span>NT${{cart.TotalPrice}}</span>
                     </div>
                     <div>
                         <span>促銷折抵：</span>
-                        <span>-NT$ 0</span>
+                        <span>-NT${{cart.DiscountValue}}</span>
                     </div>
                     <div class="total">
                         <span>訂單總計：</span>
-                        <span>{{cart.finalPrice}}</span>
+                        <span>NT${{cart.DiscountedPrice}}</span>
                     </div>
                 </div>
             </div>
@@ -433,6 +436,7 @@
                         const data = await Api.fetchPromotions(); // 調用 API 方法
                         discounts.value = data;               
                 };
+
 
                 // 定義方法
                 const addToWishlist = (item) => {
