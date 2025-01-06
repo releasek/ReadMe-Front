@@ -14,7 +14,11 @@ namespace ReadMe_Front.Models.ViewModels
         public int ProductId { get; set; }
         public IEnumerable<CartItemVm> CartItems { get; set; }
 
+        public int DiscountedPrice { get; set; }
 
+        public string PromotionName { get; set; }
+
+        public int TotalPrice { get; set; }
         public bool AllowCheckout => CartItems.Any(); //至少有一項商品才能結帳
     }
 }

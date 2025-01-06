@@ -15,6 +15,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="~/Css/Repeat.css">
     <style>
+        .cart-item h3 {
+            font-size: 16px; /* 調整字體大小 */
+            margin: 0; /* 可選：去除默認的 margin */
+        }
         /* === 全局樣式設定 === */
         body {
             font-family: Arial, sans-serif;
@@ -248,135 +252,6 @@
             padding: 10px;
         }
 
-        /* === 優惠碼區 === */
-        .coupon-and-summary {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            padding: 20px;
-            background-color: #f9f9f9;
-            /* border: 1px solid #ddd; */
-            border-radius: 5px;
-        }
-
-        .coupon-section {
-            width: 60%;
-        }
-
-            .coupon-section h3 {
-                margin-bottom: 10px;
-                font-size: 18px;
-                color: #333;
-            }
-
-        .coupon-link {
-            display: block;
-            margin-bottom: 15px;
-            color: #007bff;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-            .coupon-link:hover {
-                text-decoration: underline;
-            }
-
-        .coupon-input {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-            .coupon-input input {
-                flex: 1;
-                padding: 8px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                font-size: 14px;
-            }
-
-                .coupon-input input:focus {
-                    border-color: #007bff;
-                    outline: none;
-                }
-
-            .coupon-input button {
-                padding: 8px 16px;
-                background-color: #333;
-                color: #fff;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 14px;
-                transition: background-color 0.3s;
-            }
-
-                .coupon-input button:hover {
-                    background-color: #555;
-                }
-
-        .coupon-section p {
-            font-size: 12px;
-            color: #666;
-        }
-
-        /* 彈出視窗 */
-        .modal {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-        }
-
-        .modal-content {
-            background-color: #fff;
-            padding: 20px;
-            width: 50%;
-            border-radius: 8px;
-            position: relative;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .coupon-list {
-            list-style: none;
-            padding: 0;
-        }
-
-            .coupon-list li {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                border-bottom: 1px solid #ddd;
-                padding: 10px 0;
-            }
-
-        .btn-use {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-
-            .btn-use:hover {
-                background-color: #0056b3;
-            }
 
         /* 訂單摘要區 */
         .summary-section {
@@ -460,34 +335,25 @@
         <div id="app" class="container">
             <section class="cart-section">
                 <!-- 使用 Vue 的 v-for 渲染多個商品 -->
-                <div v-for="(item, index) in cartItems" :key="index">
+                <div v-for="(item, index) in cart.CartItems" :key="index" class="cart-item">
                     <!-- 商品項目 -->
-                    <div class="cart-item">
-                        <div class="item-info">
-                            <input type="checkbox" v-model="item.checked">
-                            <img :src="item.image" :alt="item.name">
-                            <div>
-                                <h3>{{ item.name }}</h3>
-                                <p>{{ item.publisher }}</p>
-                                <p>{{ item.author }}</p>
-
-                            </div>
-                        </div>
-                        <div class="item-actions">
-                            <span>價格：NT$ {{ item.price }}</span>
-                            <span class="discount">折扣價格：-NT$ {{ item.discount }}</span>
-                            <button type="button" class="btn btn-secondary btn-sm ms-2" v-on:click="addToWishlist(item)">
-                                加入待購清單
-                            </button>
-                            <button type="button" class="btn-remove btn btn-secondary btn-sm ms-2" v-on:click="removeItem(index)">
-                                移除
-                            </button>
+                    <div class="item-info">
+                        <input type="checkbox" v-model="item.checked">
+                        <img :src="item.ImageURL" :alt="item.Title">
+                        <div>
+                            <h3>{{ item.Title }}</h3>
+                            <p>出版社：{{ item.Publisher }}</p>
+                            <p>作者：{{ item.Author }}</p>
                         </div>
                     </div>
-
-                    <!-- 額外資訊欄 -->
-                    <div class="cart-info">
-                        <span>✔ {{ item.info }}</span>
+                    <div class="item-actions">
+                        <span>價格：NT$ {{ item.Price }}</span>
+                        <button type="button" class="btn btn-secondary btn-sm ms-2" v-on:click="addToWishlist(item)">
+                            加入待購清單
+                        </button>
+                        <button type="button" class="btn-remove btn btn-secondary btn-sm ms-2" v-on:click="removeItem(index)">
+                            移除
+                        </button>
                     </div>
                 </div>
             </section>
@@ -497,49 +363,25 @@
         <!-- 商品列表區  end-->
 
         <div class="discount-container">
-            <h3>① 未符合優惠商品</h3>
+            <h3>全館優惠折扣</h3>
             <ul class="discount-list">
                 <li v-for="(item, index) in discounts" :key="index">
-                    <span>{{ item.description }}</span>
-                    <span class="warning">({{ item.warning }})</span>
+                    <span>{{ item.PromotionName }}</span>
+                    @*<span class="warning">({{ item.warning }})</span>*@
                 </li>
             </ul>
         </div>
 
         <!-- 結算區 start-->
-        <div class="coupon-and-summary">
-            <!-- 優惠碼區 -->
-            <div class="coupon-section container">
-                <h3>使用優惠碼</h3>
-                <a href="#" class="coupon-link" v-on:click.prevent="openModal">選擇您可使用的優惠碼（共 {{ coupons.length }} 組）</a>
-                <div class="d-flex">
-                    <input placeholder="請輸入或選擇您可使用的優惠碼" type="text" class="form-control" value="">
-                    <button type="button" class="btn-square btn btn-others text-nowrap btn-dark">使用</button>
-                </div>
-                <!-- 彈出視窗 -->
-                <div class="modal" v-if="isModalOpen">
-                    <div class="modal-content">
-                        <span class="close" v-on:click="closeModal">&times;</span>
-                        <h3>選擇優惠碼</h3>
-                        <ul class="coupon-list">
-                            <li v-for="(coupon, index) in coupons" :key="index">
-                                <div>{{ coupon.code }}</div>
-                                <div>{{ coupon.description }}</div>
-                                <div>{{ coupon.expiry }}</div>
-                                <button class="btn-use" v-on:click="useCoupon(coupon.code)">使用</button>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+        <div class="coupon-and-summary ">
 
             <!-- 結算區 -->
-            <div class="summary-section">
+            <div class="summary-section mx-auto">
                 <h3>共選取 <span>1</span> 件商品</h3>
                 <div class="summary-details">
                     <div>
                         <span>訂單小計：</span>
-                        <span>NT$ 252</span>
+                        <span>{{cart.TotalPrice}}</span>
                     </div>
                     <div>
                         <span>促銷折抵：</span>
@@ -547,7 +389,7 @@
                     </div>
                     <div class="total">
                         <span>訂單總計：</span>
-                        <span>NT$ 252</span>
+                        <span>{{cart.finalPrice}}</span>
                     </div>
                 </div>
             </div>
@@ -562,54 +404,35 @@
     </div>
     <script src="~/Js/vue.global.js"></script>
     <script src="~/Js/Repeat.js"></script>
+    <script src="~/Js/Api.js"></script>
     <script>
 
-        const { createApp, ref } = Vue;
+        const { createApp, ref, onMounted } = Vue;
 
         // Vue 應用設定
         const config = {
             setup() {
-                // 定義狀態
-                const isModalOpen = ref(false); // 控制彈出視窗顯示
-                const coupons = ref([
-                    {
-                        code: 'WLCM-H2GGFWWQB',
-                        description: '新會員歡迎禮 - 註冊送電子書單筆滿250元現折50元',
-                        expiry: '2025/1/19 到期',
-                    },
-                ]);
+                
 
-                const cartItems = ref([
-                    {
-                        name: '先知之家',
-                        publisher: '時報出版',
-                        author: '保羅・林肯',
-                        gift: '閱讀給朋友',
-                        image: 'https://via.placeholder.com/100x150',
-                        quantity: 1,
-                        price: 284,
-                        discount: 31,
-                        info: '1/9前，《先知之家》重返首頁，新增9折',
-                        checked: true
-                    },
-                    {
-                        name: '料理美味的科學',
-                        publisher: '方善文化',
-                        author: '李小明',
-                        gift: '閱讀給朋友',
-                        image: 'https://via.placeholder.com/100x150',
-                        quantity: 1,
-                        price: 252,
-                        discount: 20,
-                        info: '《料理美味的科學》購買滿 200 元享免運',
-                        checked: false
+                const cart = ref([]); // 購物車資料
+                const discounts = ref([]); // 折扣資訊
+
+                const fetchCartItems = async () => {
+                    try {
+                        const data = await Api.fetchCart(); // 調用 API 方法
+                        cart.value = data;
+                        console.error("資料：", cart.value );
+                    } catch (error) {
+                        console.error("無法獲取購物車資料：", error.message);
+                        alert("獲取購物車資料時發生錯誤！");
                     }
-                ]);
+                };
 
-                const discounts = ref([
-                    { description: "1/31前，飯田出版社會員專屬展，三本79折", warning: "尚缺2件" },
-                    { description: "1/11前，村上書籍書展，三本以上85折", warning: "尚缺2件" },
-                ]);
+                const fetchPromotionsItems = async () => {
+                    
+                        const data = await Api.fetchPromotions(); // 調用 API 方法
+                        discounts.value = data;               
+                };
 
                 // 定義方法
                 const addToWishlist = (item) => {
@@ -617,32 +440,20 @@
                 };
 
                 const removeItem = (index) => {
-                    cartItems.value = cartItems.value.filter((_, i) => i !== index);
+                    cart.value = cart.value.filter((_, i) => i !== index);
                 };
 
-                const openModal = () => {
-                    isModalOpen.value = true;
-                };
-
-                const closeModal = () => {
-                    isModalOpen.value = false;
-                };
-
-                const useCoupon = (code) => {
-                    alert(`使用優惠碼: ${code}`);
-                    closeModal();
-                };
+                onMounted(() => {
+                    fetchCartItems();
+                    fetchPromotionsItems();
+                
+                });
 
                 return {
-                    cartItems,
+                    cart,
                     addToWishlist,
                     removeItem,
-                    isModalOpen,
-                    coupons,
                     discounts,
-                    openModal,
-                    closeModal,
-                    useCoupon,
                 };
             },
         };

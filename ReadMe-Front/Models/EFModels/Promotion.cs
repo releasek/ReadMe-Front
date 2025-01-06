@@ -20,9 +20,9 @@ namespace ReadMe_Front.Models.EFModels
         [StringLength(255)]
         public string PromotionName { get; set; }
 
-        public decimal? DiscountValue { get; set; }
+        public int DiscountValue { get; set; }
 
-        public int? MinPurchase { get; set; }
+        public int MinPurchase { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime ValidFrom { get; set; }
