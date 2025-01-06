@@ -147,6 +147,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CartApiController.cs" />
     <Compile Include="Controllers\CartController.cs" />
+    <Compile Include="Controllers\CartDeleteApiController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MembersController.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="Models\ViewModels\CategoryVm.cs" />
     <Compile Include="Models\ViewModels\ProductDetailVm.cs" />
     <Compile Include="Models\ViewModels\LoginVm.cs" />
+    <Compile Include="Models\ViewModels\Promotion.cs" />
     <Compile Include="Models\ViewModels\RegisterVm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -332,6 +334,7 @@
     <Content Include="image\骸骨花園.jpg" />
     <Content Include="image\高效偷懶.jpg" />
     <Content Include="image\鹽寮撿石頭.jpg" />
+    <Content Include="Js\Api.js" />
     <Content Include="Js\Repeat.js" />
     <Content Include="Js\vue.global.js" />
     <Content Include="Readme.txt" />

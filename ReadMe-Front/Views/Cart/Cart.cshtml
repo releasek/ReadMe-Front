@@ -460,34 +460,25 @@
         <div id="app" class="container">
             <section class="cart-section">
                 <!-- 使用 Vue 的 v-for 渲染多個商品 -->
-                <div v-for="(item, index) in cartItems" :key="index">
+                <div v-for="(item, index) in cartItems" :key="index" class="cart-item">
                     <!-- 商品項目 -->
-                    <div class="cart-item">
-                        <div class="item-info">
-                            <input type="checkbox" v-model="item.checked">
-                            <img :src="item.image" :alt="item.name">
-                            <div>
-                                <h3>{{ item.name }}</h3>
-                                <p>{{ item.publisher }}</p>
-                                <p>{{ item.author }}</p>
-
-                            </div>
-                        </div>
-                        <div class="item-actions">
-                            <span>價格：NT$ {{ item.price }}</span>
-                            <span class="discount">折扣價格：-NT$ {{ item.discount }}</span>
-                            <button type="button" class="btn btn-secondary btn-sm ms-2" v-on:click="addToWishlist(item)">
-                                加入待購清單
-                            </button>
-                            <button type="button" class="btn-remove btn btn-secondary btn-sm ms-2" v-on:click="removeItem(index)">
-                                移除
-                            </button>
+                    <div class="item-info">
+                        <input type="checkbox" v-model="item.checked">
+                        <img :src="item.image" :alt="item.Title">
+                        <div>
+                            <h3>{{ item.Title }}</h3>
+                            <p>出版社：{{ item.Publisher }}</p>
+                            <p>作者：{{ item.Author }}</p>
                         </div>
                     </div>
-
-                    <!-- 額外資訊欄 -->
-                    <div class="cart-info">
-                        <span>✔ {{ item.info }}</span>
+                    <div class="item-actions">
+                        <span>價格：NT$ {{ item.Price }}</span>
+                        <button type="button" class="btn btn-secondary btn-sm ms-2" v-on:click="addToWishlist(item)">
+                            加入待購清單
+                        </button>
+                        <button type="button" class="btn-remove btn btn-secondary btn-sm ms-2" v-on:click="removeItem(index)">
+                            移除
+                        </button>
                     </div>
                 </div>
             </section>
@@ -497,7 +488,7 @@
         <!-- 商品列表區  end-->
 
         <div class="discount-container">
-            <h3>① 未符合優惠商品</h3>
+            <h3>全館優惠折扣</h3>
             <ul class="discount-list">
                 <li v-for="(item, index) in discounts" :key="index">
                     <span>{{ item.description }}</span>
@@ -562,9 +553,10 @@
     </div>
     <script src="~/Js/vue.global.js"></script>
     <script src="~/Js/Repeat.js"></script>
+    <script src="~/Js/Api.js"></script>
     <script>
 
-        const { createApp, ref } = Vue;
+        const { createApp, ref, onMounted } = Vue;
 
         // Vue 應用設定
         const config = {
@@ -579,33 +571,36 @@
                     },
                 ]);
 
-                const cartItems = ref([
-                    {
-                        name: '先知之家',
-                        publisher: '時報出版',
-                        author: '保羅・林肯',
-                        gift: '閱讀給朋友',
-                        image: 'https://via.placeholder.com/100x150',
-                        quantity: 1,
-                        price: 284,
-                        discount: 31,
-                        info: '1/9前，《先知之家》重返首頁，新增9折',
-                        checked: true
-                    },
-                    {
-                        name: '料理美味的科學',
-                        publisher: '方善文化',
-                        author: '李小明',
-                        gift: '閱讀給朋友',
-                        image: 'https://via.placeholder.com/100x150',
-                        quantity: 1,
-                        price: 252,
-                        discount: 20,
-                        info: '《料理美味的科學》購買滿 200 元享免運',
-                        checked: false
+                const cartItems = ref([]); // 購物車資料
+                // 獲取購物車資料
+                //const fetchCartItems = async () => {
+                //    try {
+                //        const data = await Api.fetchCart(); // 調用全域 API 方法
+                //        cartItems.value = data;
+                //    } catch (error) {
+                //        if (error.message.includes("帳號為空")) {
+                //            alert("請輸入有效帳號！");
+                //        } else if (error.message.includes("找不到購物車資料")) {
+                //            alert("目前購物車內沒有任何商品！");
+                //        } else {
+                //            alert("無法取得購物車資料，請稍後再試！");
+                //        }
+                //    }
+                //};
+                const fetchCartItems = async () => {
+                    try {
+                        const data = await Api.fetchCart(); // 調用 API 方法
+                        cartItems.value = data;
+                        console.log("從 API 獲取的購物車資料：", cartItems.value);
+                    } catch (error) {
+                        console.error("無法獲取購物車資料：", error.message);
+                        alert("獲取購物車資料時發生錯誤！");
                     }
-                ]);
+                };
 
+
+
+               
                 const discounts = ref([
                     { description: "1/31前，飯田出版社會員專屬展，三本79折", warning: "尚缺2件" },
                     { description: "1/11前，村上書籍書展，三本以上85折", warning: "尚缺2件" },
@@ -632,6 +627,11 @@
                     alert(`使用優惠碼: ${code}`);
                     closeModal();
                 };
+
+                onMounted(() => {
+                    fetchCartItems();
+                
+                });
 
                 return {
                     cartItems,

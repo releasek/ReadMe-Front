@@ -16,10 +16,11 @@ namespace ReadMe_Front.Controllers
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
-        [HttpDelete]
-        [Route("{account}")]
-        public IHttpActionResult GetCartInfo(string account)
+        [HttpGet]
+        public IHttpActionResult GetCartInfo()
         {
+            var account = "user01";
+
             if (string.IsNullOrEmpty(account))
             {
                 return BadRequest("帳號為空");
@@ -32,8 +33,8 @@ namespace ReadMe_Front.Controllers
             }
             return Ok(cart);
         }
+        //https://localhost:44395/api/cartapi?cartItemId=3
         [HttpDelete]
-        [Route("remove-item")]
         public IHttpActionResult DeleteCartItem(int cartItemId)
         {
             if (cartItemId <= 0)
@@ -42,17 +43,6 @@ namespace ReadMe_Front.Controllers
             }
             _service.DeleteCartItem(cartItemId);
             return Ok($"成功刪除購物車項目{cartItemId}");
-        }
-        [HttpDelete]
-        [Route("remove-cart")]
-        public IHttpActionResult DeleteCart(int cartId)
-        {
-            if (cartId <= 0)
-            {
-                return BadRequest("購物車編號錯誤");
-            }
-            _service.DeleteCart(cartId);
-            return Ok($"成功刪除購物車{cartId}");
         }
 
     }
