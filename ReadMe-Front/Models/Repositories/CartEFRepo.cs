@@ -4,11 +4,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace ReadMe_Front.Models.Repositories
 {
     public class CartEFRepo
     {
+        public List<PromotionVm> GetPromotionsVmItem()
+        {
+            using (var db = new AppDbContext())
+            {
+                return db.Promotions.Select(p => new PromotionVm
+                {
+                    Id = p.Id,
+                    PromotionName = p.PromotionName,
+                    DiscountValue = p.DiscountValue,
+                    MinPurchase = p.MinPurchase,
+                    ValidFrom = p.ValidFrom,
+                    ValidTo = p.ValidTo
+                }).ToList();
+            }
+        }
         /// <summary>
         /// 取得會員帳號
         /// </summary>
@@ -54,6 +70,7 @@ namespace ReadMe_Front.Models.Repositories
                     Id = cart.Id,
                     MemberAccount = cart.MemberAccount,
                     CartItems = cartItems,
+                    TotalPrice = cartItems.Sum(item => item.Price)
                 };
                 return cartVm;
             }

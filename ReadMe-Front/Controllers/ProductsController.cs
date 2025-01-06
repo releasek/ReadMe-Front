@@ -60,9 +60,11 @@ namespace ReadMe_Front.Controllers
         /// 收藏清單
         /// </summary>
         /// <returns></returns>
-        public ActionResult Favorite(int userid)
+        [Authorize]
+        public ActionResult Favorite()
         {
-            var favoriteProducts = _productService.GetFavoriteProducts(userid);
+            string account = User.Identity.Name;
+            var favoriteProducts = _productService.GetFavoriteProducts(account);
             if (!favoriteProducts.Any() || favoriteProducts==null)
             {
                 return View("NoFavorite");
@@ -84,22 +86,7 @@ namespace ReadMe_Front.Controllers
         /// 購物車
         /// </summary>
         /// <returns></returns>
-        public ActionResult Cart()
-        {
-            return View();
-        }
-        public ActionResult NoCart()
-        {
-            return View();
-        }
-        public ActionResult CartOrderDetails()
-        {
-            return View();
-        }
-        public ActionResult CartOrderFinish()
-        {
-            return View();
-        }
+       
 
 
 

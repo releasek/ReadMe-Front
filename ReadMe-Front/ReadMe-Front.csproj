@@ -156,6 +156,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DTOs\CategoryDto.cs" />
+    <Compile Include="Models\DTOs\LoginDto.cs" />
     <Compile Include="Models\DTOs\ProductDto.cs" />
     <Compile Include="Models\DTOs\RegisterDto.cs" />
     <Compile Include="Models\EFModels\AdminPermission.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Models\ViewModels\CategoryVm.cs" />
     <Compile Include="Models\ViewModels\ProductDetailVm.cs" />
     <Compile Include="Models\ViewModels\LoginVm.cs" />
+    <Compile Include="Models\ViewModels\PromotionVm.cs" />
     <Compile Include="Models\ViewModels\RegisterVm.cs" />
     <Compile Include="Models\ViewModels\SearchVm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -334,6 +336,7 @@
     <Content Include="image\骸骨花園.jpg" />
     <Content Include="image\高效偷懶.jpg" />
     <Content Include="image\鹽寮撿石頭.jpg" />
+    <Content Include="Js\Api.js" />
     <Content Include="Js\Repeat.js" />
     <Content Include="Js\vue.global.js" />
     <Content Include="Readme.txt" />

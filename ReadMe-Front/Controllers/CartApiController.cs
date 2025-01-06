@@ -16,10 +16,12 @@ namespace ReadMe_Front.Controllers
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
-        [HttpDelete]
-        [Route("{account}")]
-        public IHttpActionResult GetCartInfo(string account)
+        [HttpGet]
+        [Route("api/cartapi/getAllCartItems")]
+        public IHttpActionResult GetCartInfo()
         {
+            string account = User.Identity.Name;
+
             if (string.IsNullOrEmpty(account))
             {
                 return BadRequest("帳號為空");
@@ -32,8 +34,18 @@ namespace ReadMe_Front.Controllers
             }
             return Ok(cart);
         }
+
+        [HttpGet]
+        [Route("api/cartapi/getPromotions")]
+        public IHttpActionResult GetPromotions()
+        {
+            var promotions = _service.GetPromotionsVmItem();
+            return Ok(promotions);
+        }
+
+        //https://localhost:44395/api/cartapi?cartItemId=3
         [HttpDelete]
-        [Route("remove-item")]
+        [Route("api/cartapi/deleteCartIrem")]
         public IHttpActionResult DeleteCartItem(int cartItemId)
         {
             if (cartItemId <= 0)
@@ -43,17 +55,21 @@ namespace ReadMe_Front.Controllers
             _service.DeleteCartItem(cartItemId);
             return Ok($"成功刪除購物車項目{cartItemId}");
         }
-        [HttpDelete]
-        [Route("remove-cart")]
-        public IHttpActionResult DeleteCart(int cartId)
-        {
-            if (cartId <= 0)
-            {
-                return BadRequest("購物車編號錯誤");
-            }
-            _service.DeleteCart(cartId);
-            return Ok($"成功刪除購物車{cartId}");
-        }
+
+        //[HttpDelete]
+        //[Route("api/cartapi/clearCart")]
+        //public IHttpActionResult ClearCart()
+        //{
+        //    string account = User.Identity.Name;
+
+        //    if (string.IsNullOrEmpty(account))
+        //    {
+        //        return BadRequest("帳號為空");
+        //    }
+
+        //    _service.ClearCart(account);
+        //    return Ok("購物車已清空");
+        //}
 
     }
 }
