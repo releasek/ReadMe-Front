@@ -151,6 +151,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -188,6 +189,7 @@
     <Compile Include="Models\ViewModels\ProductDetailVm.cs" />
     <Compile Include="Models\ViewModels\LoginVm.cs" />
     <Compile Include="Models\ViewModels\RegisterVm.cs" />
+    <Compile Include="Models\ViewModels\SearchVm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -370,6 +372,8 @@
     <Content Include="Views\Members\Login.cshtml" />
     <Content Include="Views\Shared\_Layout2.cshtml" />
     <Content Include="Views\Categories\ParentCategory.cshtml" />
+    <Content Include="Views\Search\Result.cshtml" />
+    <Content Include="Views\Search\_PagedResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
