@@ -88,7 +88,8 @@
 				else
 				{
 					<a href="@Url.Action("Login", "Members", new { area = "" })" class="ms-3 btn btn-sm btn-outline-primary newline">登入</a>
-					<a href="@Url.Action("Register", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-danger newline">註冊</a>
+					<a href="@Url.Action("Register", "Members" +
+                            "", new { area = "" })" class="ms-2 btn btn-sm btn-outline-danger newline">註冊</a>
 					<a href="@Url.Action("Login", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-secondary newline" title="會員中心"><i class="fa-solid fa-user"></i></a>
 				}
 

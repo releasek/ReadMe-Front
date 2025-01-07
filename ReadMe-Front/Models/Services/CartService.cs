@@ -60,6 +60,15 @@ namespace ReadMe_Front.Models.Services
 
 
         }
+        public int GetUserId(string account)
+        {
+            var userid = _cartEFRepo.GetUserid(account);
+            return userid;
+        }
+        public void AddFavorite(int userid, int productId)
+        {
+            _cartEFRepo.AddFavorite(userid, productId);
+        }
         public void AddCartItem(int cartId, int productId, int price)
         {
             _cartEFRepo.AddCartItem(cartId,productId,price);

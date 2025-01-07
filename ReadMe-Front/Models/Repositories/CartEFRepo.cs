@@ -1,10 +1,15 @@
-﻿using ReadMe_Front.Models.EFModels;
+﻿using Microsoft.VisualBasic.ApplicationServices;
+using ReadMe_Front.Models.DAOs;
+using ReadMe_Front.Models.EFModels;
 using ReadMe_Front.Models.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 
 namespace ReadMe_Front.Models.Repositories
 {
@@ -125,6 +130,39 @@ namespace ReadMe_Front.Models.Repositories
                 {
                     db.Carts.Remove(cart);
                     db.SaveChanges();
+                }
+            }
+        }
+        /// <summary>
+        /// 加入收藏
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="productid"></param>
+        public void AddFavorite(int userid, int productid)
+        {
+            using (var db = new AppDbContext())
+            {
+                var favorite = db.Wishlists.FirstOrDefault(u=>u.UserId==userid && u.ProductId==productid);
+                if (favorite != null)
+                {
+                   var newfavorite = new Wishlist { UserId = userid, ProductId = productid };
+                    db.Wishlists.Add(newfavorite);
+                }
+                db.SaveChanges();
+            }
+        }
+        public int GetUserid(string name)
+        {
+            using (var db = new AppDbContext())
+            {
+                var user = db.Users.FirstOrDefault(u => u.Name == name);
+                if (user != null)
+                {
+                    return user.Id; // 回傳使用者 ID
+                }
+                else
+                {
+                    throw new Exception($"找不到名稱為 {name} 的使用者。"); // 找不到則拋出例外
                 }
             }
         }

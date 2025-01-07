@@ -33,6 +33,23 @@ window.Api = {
         return await response.json(); // 返回折價券資料
     },
 
+    // 新增商品到收藏清單
+    async addFavoriteItem( productid) {
+        const response = await fetch(`${baseUrl}/cartapi/addToFavorite`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ productid }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`加入收藏清單失敗：${await response.text()}`);
+        }
+
+        return await response.json(); // 返回結果
+    },
+
+
+
     // 刪除購物車項目
     async deleteCartItem(cartItemId) {
         try {
