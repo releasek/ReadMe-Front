@@ -21,7 +21,7 @@ namespace ReadMe_Front.Controllers
             return View(vm);
         }
 
-        public ActionResult _PagedResult(string input, int pageNumber = 1, int pageSize = 10)
+        public ActionResult _PagedResult(string input, int pageNumber = 1, int pageSize = 12)
         {
             var pagedResults = new CategoryEFRepo().Search(input, pageNumber, pageSize);
             return PartialView("_PagedResult", pagedResults);
