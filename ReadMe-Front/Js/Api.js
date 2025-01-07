@@ -36,7 +36,7 @@ window.Api = {
     // 刪除購物車項目
     async deleteCartItem(cartItemId) {
         try {
-            const response = await fetch(`${baseUrl}?cartItemId=${cartItemId}`, {
+            const response = await fetch(`${baseUrl}/deleteCartIrem?cartItemId=${cartItemId}`, {
                 method: "DELETE",
             });
 
