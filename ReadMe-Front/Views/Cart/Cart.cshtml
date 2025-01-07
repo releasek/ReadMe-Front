@@ -341,7 +341,7 @@
                     <div v-for="(item, index) in cart.CartItems" :key="item.Id" class="cart-item border-bottom py-3">
                         <!-- 商品項目 -->
                         <div class="item-info d-flex align-items-center">
-                            <input type="checkbox" v-model="item.checked" class="form-check-input me-3">
+                            @*<input type="checkbox" v-model="item.checked" class="form-check-input me-3">*@
                             <img :src="item.ImageURL" :alt="`商品圖片 - ${item.Title}`" class="item-image me-3">
                             <div>
                                 <h3 class="item-title mb-1">{{ item.Title }}</h3>
@@ -391,7 +391,7 @@
 
             <!-- 結算區 -->
             <div class="summary-section mx-auto">
-                <h3>共選取 <span>1</span> 件商品</h3>
+                <h3 v-if="cart.CartItems">共選取 <span>{{ cart.CartItems.length }}</span> 件商品</h3>
                 <div class="summary-details">
                     <div>
                         <span>訂單小計：</span>
@@ -430,6 +430,7 @@
             const discounts = ref([]); // 折扣資訊
             const totalPrice = ref(0); // 購物車總金額
             const discountsWithWarnings = ref([]); // 包含警告訊息的折扣資訊
+           
 
             // 計算警告訊息
             const calculateWarning = (minPurchase) => {
@@ -484,10 +485,16 @@
                     // 調用後端刪除 API，傳遞正確的 cartItemId
                     await Api.deleteCartItem(cartItemId);
 
+                    // 再次調用 API 獲取最新的購物車資料
+                    const updatedCartData = await Api.fetchCart(); // 調用後端 API 獲取最新資料
+                    cart.value = updatedCartData; // 更新購物車資料
+
                     // 從購物車中移除該項目（更新前端資料）
                     cart.value.CartItems = cart.value.CartItems.filter((item) => item.Id !== cartItemId);
 
-                    alert("項目已從購物車移除！");
+                    // 手動更新總金額，這將觸發 watch
+                    totalPrice.value = cart.value.CartItems.reduce((sum, item) => sum + item.Price, 0);
+                
                 } catch (error) {
                     console.error("移除購物車項目失敗：", error.message);
                     alert("移除購物車項目時發生錯誤！");
