@@ -21,7 +21,7 @@
     }
 
     .container {
-        max-width: 1000px;
+        max-width: 1140px;
     }
 
     header {
@@ -314,7 +314,7 @@
 
 </style>
 <body>
-    <div class="container " id="app" style="margin-top:80px;">
+    <div class="container " id="app" style="margin-top:40px;">
         <!-- 導覽 strat -->
         <progress-component :current-page="1"></progress-component>
         <!-- 導覽 end -->
@@ -344,7 +344,7 @@
                             <span class="item-price me-3">價格：NT$ {{ item.Price }}</span>
                             <button type="button"
                                     class="btn btn-secondary btn-sm ms-2"
-                                    v-on:click="addToWishlist(item)">
+                                    v-on:click="addToWishlist(item.Id)">
                                 加入待購清單
                             </button>
                             <button type="button"
@@ -488,6 +488,18 @@
                     alert("移除購物車項目時發生錯誤！");
                 }
             };
+            const addToWishlist = async (itemId) => {
+                try {
+                    // 調用 API 新增到待購清單
+                    await Api.addToWishlist(itemId);
+                    console.log("新增至待購清單的項目 ID:", itemId);
+                    alert("成功新增至待購清單！");
+                } catch (error) {
+                    console.error("加入待購清單失敗：", error.message);
+                    alert("加入待購清單時發生錯誤！");
+                }
+            };
+
 
             
 
@@ -502,6 +514,7 @@
                 cart,
                 discounts,
                 removeItem,
+                addToWishlist,
             };
         },
     };

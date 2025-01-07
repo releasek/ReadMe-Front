@@ -1,4 +1,5 @@
 ﻿using ReadMe_Front.Models.Services;
+using System;
 using System.Web.Http;
 
 namespace ReadMe_Front.Controllers
@@ -54,6 +55,23 @@ namespace ReadMe_Front.Controllers
             }
             _service.DeleteCartItem(cartItemId);
             return Ok($"成功刪除購物車項目{cartItemId}");
+        }
+        [HttpPost]
+        [Route("api/cartapi/addToFavorite")]
+        public IHttpActionResult AddFavoriteItem( int productid)
+        {
+            string account = User.Identity.Name;
+            //string account = "user06";
+            var userid = _service.GetUserId(account);
+            try
+            {
+                _service.AddFavorite(userid, productid);
+                return Ok(new { Message = "商品已成功加入收藏清單" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"加入收藏清單失敗：{ex.Message}");
+            }
         }
 
         //[HttpDelete]

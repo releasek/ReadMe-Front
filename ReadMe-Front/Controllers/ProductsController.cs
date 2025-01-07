@@ -63,21 +63,23 @@ namespace ReadMe_Front.Controllers
         [Authorize]
         public ActionResult Favorite()
         {
-            string account = User.Identity.Name;
-            var favoriteProducts = _productService.GetFavoriteProducts(account);
-            if (!favoriteProducts.Any() || favoriteProducts==null)
-            {
-                return View("NoFavorite");
-            }
-            else
-            {
-                return View("Favorite",favoriteProducts);
-            }
+            //string account = User.Identity.Name;
+            //var favoriteProducts = _productService.GetFavoriteProducts(account);
+            //if (!favoriteProducts.Any() || favoriteProducts==null)
+            //{
+            //    return View("NoFavorite");
+            //}
+            //else
+            //{
+            //    return View("Favorite",favoriteProducts);
+            //}
+            return View();
         }
         /// <summary>
         /// 無收藏清單的page
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         public ActionResult NoFavorite()
         {
             return View();
