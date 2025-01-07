@@ -69,9 +69,9 @@ namespace ReadMe_Front.Models.Services
         {
             _cartEFRepo.AddFavorite(userid, productId);
         }
-        public void AddCartItem(int cartId, int productId, int price)
+        public void AddCartItem(string account, int productId, int price)
         {
-            _cartEFRepo.AddCartItem(cartId,productId,price);
+            _cartEFRepo.AddCartItem(account,productId,price);
         }
         public void DeleteCartItem(int cartItemId)
         {

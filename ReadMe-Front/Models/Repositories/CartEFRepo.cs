@@ -80,27 +80,48 @@ namespace ReadMe_Front.Models.Repositories
                 return cartVm;
             }
         }
-            /// <summary>
-            /// 新增購物車
-            /// </summary>
-            /// <param name="cartItem"></param>
-            public void AddCartItem(int cartId, int productId, int Price)
+        /// <summary>
+        /// 新增購物車
+        /// </summary>
+        /// <param name="cartItem"></param>
+        public void AddCartItem(string account, int productId, int price)
         {
-            using(var db = new AppDbContext())
+            using (var db = new AppDbContext())
             {
-                var cartItem = db.CartItems.FirstOrDefault(ci => ci.CartId == cartId && ci.ProductId == productId);
+                // 取得或建立購物車
+                var cart = db.Carts.FirstOrDefault(u => u.MemberAccount == account);
+                if (cart == null)
+                {
+                    cart = new Cart { MemberAccount = account };
+                    db.Carts.Add(cart);
+                    db.SaveChanges(); // 保存以取得新建的 Cart.Id
+                }
+
+                // 嘗試取得購物車項目
+                var cartItem = db.CartItems.FirstOrDefault(ci => ci.CartId == cart.Id && ci.ProductId == productId);
+
                 if (cartItem != null)
                 {
-                    cartItem.Price = Price;
+                    // 更新價格
+                    cartItem.Price = price;
                 }
                 else
                 {
-                    var newItem = new CartItem { CartId = cartId, ProductId = productId, Price = Price };
-                    db.CartItems.Add(newItem);
+                    // 新增購物車項目
+                    var newCartItem = new CartItem
+                    {
+                        CartId = cart.Id,
+                        ProductId = productId,
+                        Price = price
+                    };
+                    db.CartItems.Add(newCartItem);
                 }
+
+                // 保存更改
                 db.SaveChanges();
             }
         }
+
         /// <summary>
         /// 刪除購物車項目
         /// </summary>

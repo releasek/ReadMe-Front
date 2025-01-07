@@ -1,5 +1,7 @@
 ﻿using ReadMe_Front.Models.Services;
+using ReadMe_Front.Models.ViewModels;
 using System;
+using System.Net;
 using System.Web.Http;
 
 namespace ReadMe_Front.Controllers
@@ -61,7 +63,6 @@ namespace ReadMe_Front.Controllers
         public IHttpActionResult AddFavoriteItem( int productid)
         {
             string account = User.Identity.Name;
-            //string account = "user06";
             var userid = _service.GetUserId(account);
             try
             {
@@ -71,6 +72,30 @@ namespace ReadMe_Front.Controllers
             catch (Exception ex)
             {
                 return BadRequest($"加入收藏清單失敗：{ex.Message}");
+            }
+        }
+        [HttpPost]
+        [Route("api/cartapi/addCart")]
+        public IHttpActionResult AddCartItem([FromBody] AddCartVm dto)
+        {
+            if (dto == null || dto.ProductId <= 0 || dto.Price <= 0)
+            {
+                return BadRequest("請提供有效的商品資訊！");
+            }
+
+            string account = "user06";
+
+
+            try
+            {
+                // 呼叫服務層新增購物車項目
+                _service.AddCartItem(account, dto.ProductId, dto.Price);
+                return Ok(new { message = "成功加入購物車" });
+            }
+            catch (Exception ex)
+            {
+                // 返回錯誤訊息
+                return Content(HttpStatusCode.InternalServerError, new { message = $"加入購物車失敗：{ex.Message}" });
             }
         }
 
@@ -89,5 +114,10 @@ namespace ReadMe_Front.Controllers
         //    return Ok("購物車已清空");
         //}
 
+    }
+    public class AddCartVm
+    {
+        public int ProductId { get; set; }
+        public int Price { get; set; }
     }
 }

@@ -75,6 +75,21 @@ window.Api = {
         return await response.json(); // 返回結果
     },
 
+    // 新增商品到購物車
+    async addCart(productId, price) {
+        const response = await fetch(`${baseUrl}/addCart`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ productId, price }),
+        });
+
+        if (!response.ok) {
+            throw new Error((await response.json()).message || "加入購物車失敗");
+        }
+
+        return await response.json();
+    },
+
 
 
     // 刪除購物車項目
