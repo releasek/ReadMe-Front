@@ -53,7 +53,7 @@ namespace ReadMe_Front.Models.Services
                 DiscountedPrice = finalPrice,
                 PromotionName = discountDescription,
                 TotalPrice = totalPrice,
-                DiscountValue = applicablePromotion.DiscountValue
+                DiscountValue = applicablePromotion?.DiscountValue ?? 0 // 如果 applicablePromotion 為 null，則設為 0
             };
 
             return cartItem;

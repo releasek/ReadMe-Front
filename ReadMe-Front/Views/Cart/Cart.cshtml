@@ -6,324 +6,315 @@
 }
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    .cart-item h3 {
+        font-size: 16px; /* 調整字體大小 */
+        margin: 0; /* 可選：去除默認的 margin */
+    }
+    /* === 全局樣式設定 === */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+        color: #333;
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="~/Content/bootstrap.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="stylesheet" href="~/Css/Repeat.css">
-    <style>
-        .cart-item h3 {
-            font-size: 16px; /* 調整字體大小 */
-            margin: 0; /* 可選：去除默認的 margin */
-        }
-        /* === 全局樣式設定 === */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-            color: #333;
-        }
+    .container {
+        max-width: 1000px;
+    }
 
-        .container {
-            max-width: 1000px;
-        }
+    header {
+        text-align: center;
+        padding: 20px;
+        border-bottom: 1px solid #ddd;
+    }
 
-        header {
-            text-align: center;
-            padding: 20px;
-            border-bottom: 1px solid #ddd;
-        }
+    /* === 步驟進度區 === */
+    .progress-section {
+        padding: 20px;
+        text-align: center;
+    }
 
-        /* === 步驟進度區 === */
-        .progress-section {
-            padding: 20px;
-            text-align: center;
-        }
+    .steps {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
 
-        .steps {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
+    .step {
+        padding: 10px 20px;
+        border-bottom: 2px solid transparent;
+    }
 
-        .step {
-            padding: 10px 20px;
-            border-bottom: 2px solid transparent;
+        .step.active {
+            color: #007bff;
         }
 
-            .step.active {
-                color: #007bff;
-            }
+    /* === 購物車區 === */
+    .cart-section {
+        padding: 20px;
+        background-color: #fff;
+        margin: 8px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-        /* === 購物車區 === */
-        .cart-section {
-            padding: 20px;
-            background-color: #fff;
-            margin: 8px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    .cart-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+    }
+
+    .item-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .item-info img {
+            width: 100px;
+            height: auto;
         }
 
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #ddd;
-            padding: 10px 0;
-        }
+    .item-actions {
+        text-align: right;
+    }
 
-        .item-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-            .item-info img {
-                width: 100px;
-                height: auto;
-            }
-
-        .item-actions {
-            text-align: right;
-        }
-
-            .item-actions button {
-                background-color: orangered;
-                color: #fff;
-                border: none;
-                padding: 5px 10px;
-                cursor: pointer;
-            }
-
-                .item-actions button:hover {
-                    background-color: #d32f2f;
-                }
-
-
-        /* === 結算區 === */
-        .summary-section {
-            width: 35%;
-            background-color: #fff;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-            .summary-section h3 {
-                font-size: 16px;
-                color: #333;
-                margin-bottom: 10px;
-            }
-
-        .summary-details {
-            font-size: 14px;
-            color: #333;
-        }
-
-            .summary-details div {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 10px;
-            }
-
-            .summary-details .total {
-                font-size: 16px;
-                font-weight: bold;
-                color: #e60012;
-            }
-
-        /* 額外資訊欄 */
-        .cart-info {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #f9f9f9;
-            font-size: 14px;
-            color: #333;
-            border-radius: 5px;
-        }
-
-        /* === 按鈕樣式 === */
-        .actions {
-            display: flex;
-            justify-content: space-between;
-            padding-top: 20px;
-        }
-
-        .btn-secondary {
-            background-color: #ccc;
-            color: #333;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .btn-primary {
-            background-color: #f53d2d;
+        .item-actions button {
+            background-color: orangered;
             color: #fff;
             border: none;
-            padding: 10px 20px;
+            padding: 5px 10px;
             cursor: pointer;
-            border-radius: 5px;
         }
 
-            .btn-primary:hover {
+            .item-actions button:hover {
                 background-color: #d32f2f;
             }
 
-        /* 進度條 */
-        .progress-section {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 20px;
-            position: relative;
+
+    /* === 結算區 === */
+    .summary-section {
+        width: 35%;
+        background-color: #fff;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .summary-section h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
         }
 
-        .progress-bar {
-            width: 100%;
-            height: 2px;
-            background-color: #e0e0e0;
-            position: absolute;
-            top: 15px;
-            z-index: 1;
-        }
+    .summary-details {
+        font-size: 14px;
+        color: #333;
+    }
 
-        .progress-fill {
-            height: 100%;
-            background-color: #40B3E9;
-            transition: width 0.3s ease;
-        }
-
-        .steps {
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-            z-index: 2;
-            gap: 100px;
-        }
-
-        .step {
-            text-align: center;
-            color: #999;
-            transition: all 0.3s ease;
-        }
-
-        .step-circle {
-            width: 28px;
-            height: 28px;
-            background-color: #ccc;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            font-size: 14px;
-            color: white;
-        }
-
-        .step.active .step-circle {
-            background-color: #40B3E9;
-        }
-
-        .step-label {
-            margin-top: 0.5rem;
-            font-size: 14px;
-        }
-
-        .step.active .step-label {
-            color: #40B3E9;
-        }
-
-        .check {
-            background-color: #40B3E9;
-        }
-
-        /* 標籤列 */
-
-        .cart-header {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 10px;
-        }
-
-
-        /* 訂單摘要區 */
-        .summary-section {
-            width: 35%;
-            text-align: right;
-        }
-
-            .summary-section p {
-                font-size: 14px;
-                margin-bottom: 10px;
-            }
-
-        .summary div {
+        .summary-details div {
             display: flex;
             justify-content: space-between;
             margin-bottom: 10px;
         }
 
-        .red {
-            color: red;
-        }
-
-        .total {
+        .summary-details .total {
             font-size: 16px;
             font-weight: bold;
-            color: #f56c6c;
-        }
-        /* 折價區 */
-        .discount-container {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            background-color: #fff;
-            margin: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: #e60012;
         }
 
-            .discount-container h3 {
-                font-size: 16px;
-                color: #333;
-                margin-bottom: 10px;
-            }
+    /* 額外資訊欄 */
+    .cart-info {
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        font-size: 14px;
+        color: #333;
+        border-radius: 5px;
+    }
 
-        .discount-list {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
+    /* === 按鈕樣式 === */
+    .actions {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 20px;
+    }
+
+    .btn-secondary {
+        background-color: #ccc;
+        color: #333;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .btn-primary {
+        background-color: #f53d2d;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+        .btn-primary:hover {
+            background-color: #d32f2f;
         }
 
-            .discount-list li {
-                font-size: 14px;
-                margin-bottom: 8px;
-                color: #000;
-                display: flex;
-                justify-content: space-between;
-            }
+    /* 進度條 */
+    .progress-section {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 20px;
+        position: relative;
+    }
 
-            .discount-list .warning {
-                color: red;
-                font-weight: bold;
-            }
+    .progress-bar {
+        width: 100%;
+        height: 2px;
+        background-color: #e0e0e0;
+        position: absolute;
+        top: 15px;
+        z-index: 1;
+    }
 
-        .discount {
-            margin-top: 5px; /* 與上一行間距 */
-            display: block; /* 強制換行 */
-            color: red; /* 可選：設定折扣顏色 */
+    .progress-fill {
+        height: 100%;
+        background-color: #40B3E9;
+        transition: width 0.3s ease;
+    }
+
+    .steps {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        z-index: 2;
+        gap: 100px;
+    }
+
+    .step {
+        text-align: center;
+        color: #999;
+        transition: all 0.3s ease;
+    }
+
+    .step-circle {
+        width: 28px;
+        height: 28px;
+        background-color: #ccc;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        font-size: 14px;
+        color: white;
+    }
+
+    .step.active .step-circle {
+        background-color: #40B3E9;
+    }
+
+    .step-label {
+        margin-top: 0.5rem;
+        font-size: 14px;
+    }
+
+    .step.active .step-label {
+        color: #40B3E9;
+    }
+
+    .check {
+        background-color: #40B3E9;
+    }
+
+    /* 標籤列 */
+
+    .cart-header {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 10px;
+    }
+
+
+    /* 訂單摘要區 */
+    .summary-section {
+        width: 35%;
+        text-align: right;
+    }
+
+        .summary-section p {
+            font-size: 14px;
+            margin-bottom: 10px;
         }
 
-    </style>
-</head>
+    .summary div {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .red {
+        color: red;
+    }
+
+    .total {
+        font-size: 16px;
+        font-weight: bold;
+        color: #f56c6c;
+    }
+    /* 折價區 */
+    .discount-container {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background-color: #fff;
+        margin: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .discount-container h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+    .discount-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .discount-list li {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #000;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .discount-list .warning {
+            color: red;
+            font-weight: bold;
+        }
+
+    .discount {
+        margin-top: 5px; /* 與上一行間距 */
+        display: block; /* 強制換行 */
+        color: red; /* 可選：設定折扣顏色 */
+    }
+
+</style>
 <body>
-    <div class="container " id="app">
+    <div class="container " id="app" style="margin-top:80px;">
         <!-- 導覽 strat -->
         <progress-component :current-page="1"></progress-component>
         <!-- 導覽 end -->
@@ -341,7 +332,7 @@
                     <div v-for="(item, index) in cart.CartItems" :key="item.Id" class="cart-item border-bottom py-3">
                         <!-- 商品項目 -->
                         <div class="item-info d-flex align-items-center">
-                            <input type="checkbox" v-model="item.checked" class="form-check-input me-3">
+                            @*<input type="checkbox" v-model="item.checked" class="form-check-input me-3">*@
                             <img :src="item.ImageURL" :alt="`商品圖片 - ${item.Title}`" class="item-image me-3">
                             <div>
                                 <h3 class="item-title mb-1">{{ item.Title }}</h3>
@@ -391,7 +382,7 @@
 
             <!-- 結算區 -->
             <div class="summary-section mx-auto">
-                <h3>共選取 <span>1</span> 件商品</h3>
+                <h3 v-if="cart.CartItems">共選取 <span>{{ cart.CartItems.length }}</span> 件商品</h3>
                 <div class="summary-details">
                     <div>
                         <span>訂單小計：</span>
@@ -414,9 +405,6 @@
             <a href="/OrderDetails.html" class="btn btn-light btn-lg rounded-pill px-5">付款 &rarr;</a>
         </div>
     </div>
-
-
-    </div>
     <script src="~/Js/vue.global.js"></script>
     <script src="~/Js/Repeat.js"></script>
     <script src="~/Js/Api.js"></script>
@@ -430,6 +418,7 @@
             const discounts = ref([]); // 折扣資訊
             const totalPrice = ref(0); // 購物車總金額
             const discountsWithWarnings = ref([]); // 包含警告訊息的折扣資訊
+           
 
             // 計算警告訊息
             const calculateWarning = (minPurchase) => {
@@ -484,10 +473,16 @@
                     // 調用後端刪除 API，傳遞正確的 cartItemId
                     await Api.deleteCartItem(cartItemId);
 
+                    // 再次調用 API 獲取最新的購物車資料
+                    const updatedCartData = await Api.fetchCart(); // 調用後端 API 獲取最新資料
+                    cart.value = updatedCartData; // 更新購物車資料
+
                     // 從購物車中移除該項目（更新前端資料）
                     cart.value.CartItems = cart.value.CartItems.filter((item) => item.Id !== cartItemId);
 
-                    alert("項目已從購物車移除！");
+                    // 手動更新總金額，這將觸發 watch
+                    totalPrice.value = cart.value.CartItems.reduce((sum, item) => sum + item.Price, 0);
+                
                 } catch (error) {
                     console.error("移除購物車項目失敗：", error.message);
                     alert("移除購物車項目時發生錯誤！");

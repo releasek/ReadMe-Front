@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace ReadMe_Front.Controllers
 {
- 
+
     public class CartController : Controller
     {
         [Authorize]
@@ -15,5 +15,9 @@ namespace ReadMe_Front.Controllers
         {
             return View();
         }
+        //[Authorize]
+        //public ActionResult 
+        //{
+        //}
     }
 }
