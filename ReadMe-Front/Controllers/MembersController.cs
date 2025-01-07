@@ -10,6 +10,7 @@ using ReadMe_Front.Models.ViewModels;
 using System.Web.Security;
 using ReadMe_Front.Models.Infra;
 using System.Web.UI.WebControls;
+using ReadMe_Front.Models.EFModels;
 
 namespace ReadMe_Front.Controllers
 {
@@ -19,7 +20,10 @@ namespace ReadMe_Front.Controllers
 
 		public MembersController()
 		{
-			_memberService = new MemberService();
+			// 初始化資料庫上下文和儲存庫，並傳入 MemberService
+			var dbContext = new AppDbContext();
+			var memberRepo = new MemberEFRepo(dbContext);
+			_memberService = new MemberService(memberRepo);
 		}
 
 		[Authorize]
@@ -67,7 +71,7 @@ namespace ReadMe_Front.Controllers
 				Password = model.Password,
 
 			};
-			new MemberService().Register(dto);
+			_memberService.Register(dto);
 		}
 		/// <summary>
 		/// 啟用帳號
@@ -145,5 +149,46 @@ namespace ReadMe_Front.Controllers
 			TempData["Message"] = "個人資料已更新";
 			return RedirectToAction("Index");
 		}
+
+		[Authorize]
+		public ActionResult ChangePassword()
+		{
+			return View();
+		}
+		[Authorize]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult ChangePassword(ChangePasswordVm model)
+		{
+			if (!ModelState.IsValid)
+			{
+				return View(model);
+			}
+
+			try
+			{
+				string account = User.Identity.Name;
+
+				var dto = new ChangePasswordDto
+				{
+					OrginalPassword = model.OrginalPassword,
+					NewPassword = model.NewPassword,
+					ConfirmPassword = model.ConfirmPassword
+				};
+
+				_memberService.ChangePassword(dto, account);
+
+				TempData["SuccessMessage"] = "密碼修改成功！";
+				return RedirectToAction("Index", "Home");
+			}
+			catch (Exception ex)
+			{
+				ModelState.AddModelError(string.Empty, ex.Message);
+				return View(model);
+			}
+
+
+		}
+
 	}
 }

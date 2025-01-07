@@ -4,6 +4,7 @@ using ReadMe_Front.Models.EFModels;
 using ReadMe_Front.Models.Infra;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -11,21 +12,27 @@ namespace ReadMe_Front.Models.Repositories
 {
     public class MemberEFRepo
     {
-            public void Create(RegisterDto dto)
+		private readonly AppDbContext _context;
+		public MemberEFRepo(AppDbContext context)
+		{
+			_context = context;
+		}
+
+		public void Create(RegisterDto dto)
             {
                 using (var db = new AppDbContext())
                 {
                     if (db.Users.Any(m => m.Account == dto.Account))
                         throw new Exception("帳號已存在");
 
-                    var member = new User
+                    var user = new User
                     {
                         Account = dto.Account,
                         Email = dto.Email,
                         PasswordHash = dto.PasswordHash, // 確保對應資料表的欄位名稱
                         IsBanned = false // 初始化必填欄位
                     };
-                    db.Users.Add(member);
+                    db.Users.Add(user);
                     db.SaveChanges();
                 }
             }
@@ -83,14 +90,24 @@ namespace ReadMe_Front.Models.Repositories
 		/// 更新會員資料
 		/// </summary>
 		/// <param name="member">會員資料</param>
-		public void UpdateMember(User member)
+		public void UpdateMember(User user)
 		{
 			using (var db = new AppDbContext())
 			{
-				db.Users.Attach(member);
-				db.Entry(member).State = System.Data.Entity.EntityState.Modified;
+				db.Users.Attach(user);
+				db.Entry(user).State = System.Data.Entity.EntityState.Modified;
 				db.SaveChanges();
 			}
+		}
+
+		/// <summary>
+		/// 更新使用者密碼
+		/// </summary>
+		/// <param name="user">使用者實體</param>
+		public void UpdateMemberPassword(User user)
+		{
+			_context.Entry(user).State = EntityState.Modified;
+			_context.SaveChanges();
 		}
 
 	}
