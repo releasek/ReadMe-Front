@@ -142,20 +142,24 @@ namespace ReadMe_Front.Models.Repositories
         {
             using (var db = new AppDbContext())
             {
-                var favorite = db.Wishlists.FirstOrDefault(u=>u.UserId==userid && u.ProductId==productid);
-                if (favorite != null)
+                // 檢查是否已存在
+                var favorite = db.Wishlists.FirstOrDefault(u => u.UserId == userid && u.ProductId == productid);
+
+                // 當不存在時新增
+                if (favorite == null)
                 {
-                   var newfavorite = new Wishlist { UserId = userid, ProductId = productid };
+                    var newfavorite = new Wishlist { UserId = userid, ProductId = productid };
                     db.Wishlists.Add(newfavorite);
+                    db.SaveChanges(); // 儲存變更
                 }
-                db.SaveChanges();
             }
         }
+
         public int GetUserid(string name)
         {
             using (var db = new AppDbContext())
             {
-                var user = db.Users.FirstOrDefault(u => u.Name == name);
+                var user = db.Users.FirstOrDefault(u => u.Account == name);
                 if (user != null)
                 {
                     return user.Id; // 回傳使用者 ID

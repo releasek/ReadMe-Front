@@ -344,7 +344,7 @@
                             <span class="item-price me-3">價格：NT$ {{ item.Price }}</span>
                             <button type="button"
                                     class="btn btn-secondary btn-sm ms-2"
-                                    v-on:click="addToWishlist(item)">
+                                    v-on:click="addToWishlist(item.Id)">
                                 加入待購清單
                             </button>
                             <button type="button"
@@ -488,26 +488,18 @@
                     alert("移除購物車項目時發生錯誤！");
                 }
             };
-            const addToWishlist = async (item) => {
+            const addToWishlist = async (itemId) => {
                 try {
-
-                    await Api.addToWishlist(item.Id);
-
-                    // 再次調用 API 獲取最新的購物車資料
-                    const updatedCartData = await Api.fetchCart(); // 調用後端 API 獲取最新資料
-                    cart.value = updatedCartData; // 更新購物車資料
-
-                    // 從購物車中移除該項目（更新前端資料）
-                    cart.value.CartItems = cart.value.CartItems.filter((item) => item.Id !== item.Id);
-
-                    // 手動更新總金額，這將觸發 watch
-                    totalPrice.value = cart.value.CartItems.reduce((sum, item) => sum + item.Price, 0);
-                
+                    // 調用 API 新增到待購清單
+                    await Api.addToWishlist(itemId);
+                    console.log("新增至待購清單的項目 ID:", itemId);
+                    alert("成功新增至待購清單！");
                 } catch (error) {
                     console.error("加入待購清單失敗：", error.message);
                     alert("加入待購清單時發生錯誤！");
                 }
             };
+
 
             
 
@@ -522,7 +514,7 @@
                 cart,
                 discounts,
                 removeItem,
-                //addToWishlist,
+                addToWishlist,
             };
         },
     };

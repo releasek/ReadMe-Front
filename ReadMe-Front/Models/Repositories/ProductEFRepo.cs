@@ -99,6 +99,15 @@ namespace ReadMe_Front.Models.Repositories
                 return result;
             }
         }
+        public void DeleteFavorite(int id)
+        {
+            using (var db = new AppDbContext())
+            {
+                var wishlist = db.Wishlists.FirstOrDefault(w => w.ProductId == id );
+                db.Wishlists.Remove(wishlist);
+                db.SaveChanges();
+            }
+        }
         /// <summary>
         /// 新增商品
         /// </summary>

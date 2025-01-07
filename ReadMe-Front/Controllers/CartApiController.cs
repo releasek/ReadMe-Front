@@ -61,6 +61,7 @@ namespace ReadMe_Front.Controllers
         public IHttpActionResult AddFavoriteItem( int productid)
         {
             string account = User.Identity.Name;
+            //string account = "user06";
             var userid = _service.GetUserId(account);
             try
             {
