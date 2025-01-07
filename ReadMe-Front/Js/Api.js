@@ -45,7 +45,7 @@ window.Api = {
     // 刪除收藏清單
     async deleteFavorite(favoriteItemId) {
         try {
-            const response = await fetch(`${baseUrl}/deleteFavoriteItem?Id=${favoriteItemId}`, {
+            const response = await fetch(`${favoriteUrl}/${favoriteItemId}`, {
                 method: "DELETE",
             });
 

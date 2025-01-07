@@ -192,27 +192,47 @@
         </div>
 
         <!-- 商品列表區 -->
-        <section id="app" class="cart-section">
-            <div v-for="item in favorites" :key="item.id" class="cart-item">
-                <div class="item-info">
-                    <input type="checkbox">
-                    <img :src="item.ImageURL" alt="商品封面" style="width: 100px; height: auto;">
-                    <div>
-                        <h3>{{ item.Title }}</h3>
-                        <p>作者：{{ item.Author }}</p>
+        <div class="container">
+            <section class="favorites-section">
+                <!-- 檢查收藏清單是否存在 -->
+                <div v-if="favorites && favorites.length > 0">
+                    <!-- 使用 Vue 的 v-for 渲染多個商品 -->
+                    <div v-for="(item, index) in favorites" :key="item.Id" class="cart-item border-bottom py-3">
+                        <div class="item-info d-flex align-items-center">
+                            <img :src="item.ImageURL" alt="商品封面" class="item-image me-3" style="width: 100px; height: auto;">
+                            <div>
+                                <h3 class="item-title mb-2">{{ item.Title }}</h3>
+                                <p class="item-author mb-1">作者：{{ item.Author  }}</p>
+                                <p class="item-publisher mb-1">出版社：{{ item.Publisher  }}</p>
+                            </div>
+                        </div>
+                        <div class="item-actions mt-2 d-flex align-items-center">
+                            <span class="item-price me-3">NT$ {{ item.Price }}</span>
+                            <button type="button"
+                                    class="btn btn-outline-primary btn-sm me-2"
+                                    v-on:click="addToCart(item.Id)">
+                                加入購物車
+                            </button>
+                            <button type="button"
+                                    class="btn btn-outline-danger btn-sm"
+                                    v-on:click="removeItem(item.Id)">
+                                移除
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="item-actions">
-                    <span>NT$ {{ item.Price }}</span>
-                    <button type="button" class="btn btn-secondary btn-sm" v-on:click="addToCart(item)">加入購物車</button>
-                    <button type="button" class="btn btn-danger btn-sm" v-on:click="removeItem(item.Id)">移除</button>
+                <!-- 當收藏清單為空時顯示訊息 -->
+                <div v-else class="text-center py-5">
+                    <p class="fs-4">收藏清單是空的，快去添加商品吧！</p>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
+
+
 
         <!-- 結算區 -->
         <div class="d-flex justify-content-between">
-            <a href="#" class="btn btn-light btn-lg rounded-pill px-5">&larr; 繼續逛逛</a>
+            <a href="~/Home/Index" class="btn btn-light btn-lg rounded-pill px-5">&larr; 繼續逛逛</a>
             <a href="/OrderDetails.html" class="btn btn-light btn-lg rounded-pill px-5">付款 &rarr;</a>
         </div>
     </div>
@@ -239,27 +259,27 @@ const config = {
                 alert("獲取收藏清單資料時發生錯誤！");
             }
         };
-        // API 調用 - 刪除收藏清單資料
         const removeItem = async (id) => {
             try {
                 await Api.deleteFavorite(id); // 調用 API
-                console.log("id:",id)
-                fetchFavoriteItems(); // 重新獲取購物車資料
+                favorites.value = favorites.value.filter((item) => item.id !== id); // 本地移除項目
                 alert("商品已移除收藏清單！");
+                fetchFavoriteItems();
             } catch (error) {
                 console.error("無法刪除收藏清單資料：", error.message);
                 alert("刪除收藏清單資料時發生錯誤！");
             }
         };
 
+
         // 在元件載入時執行 API 調用
         onMounted(() => {
             fetchFavoriteItems();
-            removeItem();
         });
 
         return {
-            favorites
+            favorites,
+            removeItem,
         };
     },
 };
