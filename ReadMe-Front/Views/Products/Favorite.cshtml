@@ -199,7 +199,9 @@
                     <!-- 使用 Vue 的 v-for 渲染多個商品 -->
                     <div v-for="(item, index) in favorites" :key="item.Id" class="cart-item border-bottom py-3">
                         <div class="item-info d-flex align-items-center">
-                            <img :src="item.ImageURL" alt="商品封面" class="item-image me-3" style="width: 100px; height: auto;">
+                            <a :href="`/Products/ProductDetail/${item.Id}`">
+                                <img :src="item.ImageURL" alt="商品封面" class="item-image me-3" style="width: 100px; height: auto;">
+                            </a>
                             <div>
                                 <h3 class="item-title mb-2">{{ item.Title }}</h3>
                                 <p class="item-author mb-1">作者：{{ item.Author  }}</p>

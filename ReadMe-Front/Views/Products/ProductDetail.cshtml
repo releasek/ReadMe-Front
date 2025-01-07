@@ -45,9 +45,24 @@
                     <p>電子書售價：<span class="price">@Model.Price</span></p>
                     <p class="promotion">@Model.PromotionName</p>
                     <!-- 右側操作 -->
-                    <aside class="book-actions">
-                        <button>購買</button>
-                        <button>加入收藏列表</button>
+                    <!-- 操作按鈕 -->
+                    <aside class="book-actions d-flex flex-column">
+                        <!-- 購買 -->
+                        <form method="post" action="/Cart/AddToCart" class="mb-2">
+                            @* 防止 CSRF 攻擊 *@
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="ProductId" value="@Model.Id" />
+                            <input type="hidden" name="Price" value="@Model.Price" />
+                            <button type="submit" class="btn btn-primary w-100">立即購買</button>
+                        </form>
+
+                        <!-- 加入收藏 -->
+                        <form method="post" action="/Wishlist/AddToWishlist">
+                            @* 防止 CSRF 攻擊 *@
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="ProductId" value="@Model.Id" />
+                            <button type="submit" class="btn btn-secondary w-100">加入收藏列表</button>
+                        </form>
                     </aside>
                 </div>
             </div>            
@@ -62,8 +77,9 @@
         </section>                 
 
         <div class="related-books">
-            @Html.Action("ProductAuthor", "Products", new { author = Model.Author })
+            @Html.Action("ProductAuthor", "Products", new { Author = Model.Author })
         </div>
             
     </div>
 </body>
+

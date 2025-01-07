@@ -21,7 +21,7 @@
                             <p class="text-muted mb-1">NT$ @book.Price</p>
                         </div>
                         <div class="card-footer bg-white border-0 d-flex justify-content-between p-2">
-                            <button class="btn btn-sm btn-outline-danger">購買</button>
+                            <button v-on:click="addToCart({ id: @Model.Id, price: @Model.Price })">購買</button>
                         </div>
                     </div>
                 </div>

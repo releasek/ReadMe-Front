@@ -333,7 +333,9 @@
                         <!-- 商品項目 -->
                         <div class="item-info d-flex align-items-center">
                             @*<input type="checkbox" v-model="item.checked" class="form-check-input me-3">*@
-                            <img :src="item.ImageURL" :alt="`商品圖片 - ${item.Title}`" class="item-image me-3">
+                            <a :href="`/Products/ProductDetail/${item.Id}`">
+                                <img :src="item.ImageURL" :alt="`商品圖片 - ${item.Title}`" class="item-image me-3">
+                            </a>
                             <div>
                                 <h3 class="item-title mb-1">{{ item.Title }}</h3>
                                 <p class="item-publisher mb-1">出版社：{{ item.Publisher }}</p>
