@@ -19,7 +19,7 @@ namespace ReadMe_Front.Models.Repositories
 		}
 
 		public void Create(RegisterDto dto)
-            {
+         {
                 using (var db = new AppDbContext())
                 {
                     if (db.Users.Any(m => m.Account == dto.Account))
@@ -29,13 +29,14 @@ namespace ReadMe_Front.Models.Repositories
                     {
                         Account = dto.Account,
                         Email = dto.Email,
+						Name = dto.Name,
                         PasswordHash = dto.PasswordHash, // 確保對應資料表的欄位名稱
                         IsBanned = false // 初始化必填欄位
                     };
                     db.Users.Add(user);
                     db.SaveChanges();
                 }
-            }
+         }
             public bool IsExists(string account)
             {
                 using (var db = new AppDbContext())

@@ -69,6 +69,7 @@ namespace ReadMe_Front.Controllers
 				Account = model.Account,
 				Email = model.Email,
 				Password = model.Password,
+				Name = model.Name,
 
 			};
 			_memberService.Register(dto);
@@ -85,7 +86,14 @@ namespace ReadMe_Front.Controllers
 			_memberService.ActivateMember(memberAccount, isbanned);
 			return View();
 		}
+		public ActionResult Login()
+		{
+			return View();
+		}
 
+		// 處理登入請求 (POST)
+		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public ActionResult Login(LoginVm model)
 		{
 			if (!ModelState.IsValid) return View(model);
@@ -141,10 +149,10 @@ namespace ReadMe_Front.Controllers
 			}
 
 			// 取得目前登入會員的帳號
-			string account = User.Identity.Name;
+			string name = User.Identity.Name;
 
 			// 更新會員資料
-			_memberService.UpdateProfile(account, model);
+			_memberService.UpdateProfile(name, model);
 
 			TempData["Message"] = "個人資料已更新";
 			return RedirectToAction("Index");
