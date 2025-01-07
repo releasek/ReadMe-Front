@@ -385,6 +385,22 @@
     <Content Include="Views\Search\Result.cshtml" />
     <Content Include="Views\Search\_PagedResult.cshtml" />
     <Content Include="Views\Shared\_LayoutMember.cshtml" />
+    <Content Include="Views\Categories\SubCategory.cshtml" />
+    <Content Include="Views\Home\Comfort.cshtml" />
+    <Content Include="Views\Home\_ComfortBooksPartial.cshtml" />
+    <Content Include="Views\Home\_NewBooksPartial.cshtml" />
+    <Content Include="Views\Home\_PromotePartial.cshtml" />
+    <Content Include="Views\Home\_TechBooksPartial.cshtml" />
+    <Content Include="Views\Home\New.cshtml" />
+    <Content Include="Views\Home\Promote.cshtml" />
+    <Content Include="Views\Home\Tech.cshtml" />
+    <Content Include="Views\Members\EditProfile.cshtml" />
+    <Content Include="Views\Members\Index.cshtml" />
+    <Content Include="Views\Members\Register.cshtml" />
+    <Content Include="Views\Members\RegisterConfirm.cshtml" />
+    <Content Include="Views\Products\Favorite.cshtml" />
+    <Content Include="Views\Products\NoFavorite.cshtml" />
+    <Content Include="Views\Products\ProductAuthor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
