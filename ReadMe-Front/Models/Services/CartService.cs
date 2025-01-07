@@ -52,7 +52,8 @@ namespace ReadMe_Front.Models.Services
                 CartItems = cart.CartItems,
                 DiscountedPrice = finalPrice,
                 PromotionName = discountDescription,
-                TotalPrice = totalPrice
+                TotalPrice = totalPrice,
+                DiscountValue = applicablePromotion.DiscountValue
             };
 
             return cartItem;

@@ -66,5 +66,32 @@ namespace ReadMe_Front.Models.Repositories
 				}
 			}
 
+		/// <summary>
+		/// 根據帳號取得會員資料
+		/// </summary>
+		/// <param name="account">會員帳號</param>
+		/// <returns>User</returns>
+		public User GetMemberByAccount(string account)
+		{
+			using (var db = new AppDbContext())
+			{
+				return db.Users.FirstOrDefault(m => m.Account == account);
+			}
+		}
+
+		/// <summary>
+		/// 更新會員資料
+		/// </summary>
+		/// <param name="member">會員資料</param>
+		public void UpdateMember(User member)
+		{
+			using (var db = new AppDbContext())
+			{
+				db.Users.Attach(member);
+				db.Entry(member).State = System.Data.Entity.EntityState.Modified;
+				db.SaveChanges();
+			}
+		}
+
 	}
 }

@@ -18,6 +18,7 @@ namespace ReadMe_Front.Models.ViewModels
 
         public string PromotionName { get; set; }
 
+        public int DiscountValue { get; set; }
         public int TotalPrice { get; set; }
         public bool AllowCheckout => CartItems.Any(); //至少有一項商品才能結帳
     }

@@ -13,8 +13,8 @@ using System.Web.UI.WebControls;
 
 namespace ReadMe_Front.Controllers
 {
-    public class MembersController : Controller
-    {
+	public class MembersController : Controller
+	{
 		private readonly MemberService _memberService;
 
 		public MembersController()
@@ -23,53 +23,52 @@ namespace ReadMe_Front.Controllers
 		}
 
 		[Authorize]
-        // Get: Index 會員中心頁
-        public ActionResult Index()
-        {
-            return View();
-        }
-        // GET: Members 會員註冊頁
-        public ActionResult Register()
-        {
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterVm model)
-        {
-            //todo
-            if (!ModelState.IsValid) return View(model);
-            try
-            {
-                ProcessRegister(model);
+		// Get: Index 會員中心頁
+		public ActionResult Index()
+		{
+			return View();
+		}
+		// GET: Members 會員註冊頁
+		public ActionResult Register()
+		{
+			return View();
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Register(RegisterVm model)
+		{
+			//todo
+			if (!ModelState.IsValid) return View(model);
+			try
+			{
+				ProcessRegister(model);
 
-                //建檔成功導向確證頁
-                return View("RegisterConfirm");
-                //return RedirectToAction("Registerfirm")
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("此帳號已註冊過請重新登入", ex.Message);
-                return View(model);
-            }
+				//建檔成功導向確證頁
+				return View("RegisterConfirm");
+			}
+			catch (Exception ex)
+			{
+				ModelState.AddModelError("", ex.Message);
+				return View(model);
+			}
 
-        }
-        /// <summary>
-        /// 在此直接叫用EF
-        /// </summary>
-        /// <param name="model"></param>
-        /// <exception cref="Exception"></exception>
-        private void ProcessRegister(RegisterVm model)
-        {
-            RegisterDto dto = new RegisterDto
-            {
-                Account = model.Account,
-                Email = model.Email,
-                Password = model.Password,
-   
-            };
-            new MemberService().Register(dto);
-        }
+		}
+		/// <summary>
+		/// 在此直接叫用EF
+		/// </summary>
+		/// <param name="model"></param>
+		/// <exception cref="Exception"></exception>
+		private void ProcessRegister(RegisterVm model)
+		{
+			RegisterDto dto = new RegisterDto
+			{
+				Account = model.Account,
+				Email = model.Email,
+				Password = model.Password,
+
+			};
+			new MemberService().Register(dto);
+		}
 		/// <summary>
 		/// 啟用帳號
 		/// /Members/ActiveRegister?memberId=4&confirmCode=6a9024f67d314ed49464ff20a71da072
@@ -108,13 +107,43 @@ namespace ReadMe_Front.Controllers
 			}
 		}
 
-
 		public ActionResult Logout()
-        {
-            ViewBag.Message = "Your contact page.";
+		{
+			FormsAuthentication.SignOut();
+			return RedirectToAction("Index", "Home");
+		}
 
-            return View();
-        }
+		[Authorize]
 
-    }
+		public ActionResult EditProfile()
+		{
+			// 取得目前登入會員的帳號
+			string account = User.Identity.Name;
+
+			// 從 Service 層取得會員資料
+			var model = _memberService.GetProfile(account);
+
+			return View(model);
+		}
+
+		[Authorize]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult EditProfile(ProfileVm model)
+		{
+			if (!ModelState.IsValid)
+			{
+				return View(model); // 若驗證失敗，返回 View 顯示錯誤
+			}
+
+			// 取得目前登入會員的帳號
+			string account = User.Identity.Name;
+
+			// 更新會員資料
+			_memberService.UpdateProfile(account, model);
+
+			TempData["Message"] = "個人資料已更新";
+			return RedirectToAction("Index");
+		}
+	}
 }
