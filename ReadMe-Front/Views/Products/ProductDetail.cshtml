@@ -2,80 +2,68 @@
 @model ProductDetailVm
 
 @{
-    ViewBag.Title = "ProductDetail";
+    ViewBag.Title = "商品詳細頁 - "+ @Model.Title;
     Layout = "~/Views/Shared/_Layout2.cshtml"; // 指定 Layout
 }
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Readmoo 讀墨電子書</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="~/Content/bootstrap.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="stylesheet" href="~/Css/styles.css">
-    <style>
-        .newline {
-            white-space: nowrap;
-        }
+<style>
+    .newline {
+        white-space: nowrap;
+    }
 
-        .picture {
-            font-size: 20px
-        }
-    </style>
-</head>
+    .picture {
+        font-size: 20px
+    }
+    a {
+        text-decoration: none;
+        color: black;
+    }
+</style>
 <body>
-
-    <div class="container" id="app" style="margin-top : 70px;">
+    <div class="container" id="app" style="margin-top : 130px;">
         <!-- 麵包start -->
         <nav aria-label="breadcrumb" >
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">首頁</a></li>
-                <li class="breadcrumb-item"><a href="#">@Model.ParentCategoryName</a></li>
-                <li class="breadcrumb-item"><a href="#">@Model.CategoryName</a></li>
+                <li class="breadcrumb-item"><a href="/Home/Index">首頁</a></li>
+                <li class="breadcrumb-item"><a href="/Categories/ParentCategory?parentCategoryName=@Model.ParentCategoryName">@Model.ParentCategoryName</a></li>
+                <li class="breadcrumb-item"><a href="/Categories/SubCategory?subCategoryName=@Model.CategoryName">@Model.CategoryName</a></li>
                 <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
             </ol>
         </nav>
         <!--麵包end -->
         <!-- 書籍內容區 -->
-        <main class="book-content" style="margin-top : 70px">
+        <main class="book-content">
             <!-- 書籍資訊 -->
-            <div class="book-info">
-                <img src="@Model.ImageURL" alt="書籍封面">
-                <div class="details">
-                    <h1>@Model.Title</h1>
+            <div class="book-info row">
+                <div class="col-4">
+                    <img src="@Model.ImageURL" alt="書籍封面">
+                </div>
+                <div class="details col-8">
+                    <h2>@Model.Title</h2>
                     <p>作者：@Model.Author</p>
                     <p>出版社：@Model.Publisher</p>
                     <p>出版日期：@Model.PublishDate</p>
                     <p>電子書售價：<span class="price">@Model.Price</span></p>
                     <p class="promotion">@Model.PromotionName</p>
+                    <!-- 右側操作 -->
+                    <aside class="book-actions">
+                        <button>購買</button>
+                        <button>加入收藏列表</button>
+                    </aside>
                 </div>
-            </div>
-
-            <!-- 右側操作 -->
-            <aside class="book-actions">
-                <button>購買</button>
-                <button>加入代購清單</button>
-
-            </aside>
+            </div>            
         </main>
 
         <!-- 書籍描述 -->
-        <section class="book-description">
-            <h2>書籍介紹</h2>
+        <section class="book-description mt-4">
+            <h3>書籍介紹</h3>
             <p>
                 @Model.Description
             </p>
-        </section>
-                  
-        <div class="container my-1">
+        </section>                 
 
-            <div class="related-books">
-                @Html.Action("ProductAuthor", "Products", new { author = Model.Author })
-            </div>
+        <div class="related-books">
+            @Html.Action("ProductAuthor", "Products", new { author = Model.Author })
         </div>
             
     </div>
 </body>
-</html>
