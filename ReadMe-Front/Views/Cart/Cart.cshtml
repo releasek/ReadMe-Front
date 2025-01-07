@@ -281,47 +281,45 @@
         }
         /* 折價區 */
         .discount-container {
-            max-width: 600px;
-            margin: 20px auto;
+            font-family: Arial, sans-serif;
             padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background-color: #f9f9f9;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            margin: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
             .discount-container h3 {
-                text-align: center;
+                font-size: 16px;
                 color: #333;
-                font-size: 1.5em;
-                margin-bottom: 20px;
+                margin-bottom: 10px;
             }
 
         .discount-list {
-            list-style: none;
+            list-style-type: none;
             padding: 0;
             margin: 0;
         }
 
             .discount-list li {
+                font-size: 14px;
+                margin-bottom: 8px;
+                color: #000;
                 display: flex;
                 justify-content: space-between;
-                padding: 10px;
-                border-bottom: 1px solid #ddd;
-                font-size: 1.1em;
             }
 
-                .discount-list li:last-child {
-                    border-bottom: none;
-                }
+            .discount-list .warning {
+                color: red;
+                font-weight: bold;
+            }
 
-        .warning {
-            color: #d9534f; /* 紅色警示 */
+        .discount {
+            margin-top: 5px; /* 與上一行間距 */
+            display: block; /* 強制換行 */
+            color: red; /* 可選：設定折扣顏色 */
         }
 
-        .success {
-            color: #5cb85c; /* 綠色成功 */
-        }
     </style>
 </head>
 <body>
@@ -337,27 +335,38 @@
         <!-- 商品列表區  start-->
         <div id="app" class="container">
             <section class="cart-section">
-                <!-- 使用 Vue 的 v-for 渲染多個商品 -->
-                <div v-for="(item, index) in cart.CartItems" :key="index" class="cart-item">
-                    <!-- 商品項目 -->
-                    <div class="item-info">
-                        <input type="checkbox" v-model="item.checked">
-                        <img :src="item.ImageURL" :alt="item.Title">
-                        <div>
-                            <h3>{{ item.Title }}</h3>
-                            <p>出版社：{{ item.Publisher }}</p>
-                            <p>作者：{{ item.Author }}</p>
+                <!-- 檢查購物車資料是否存在 -->
+                <div v-if="cart.CartItems && cart.CartItems.length > 0">
+                    <!-- 使用 Vue 的 v-for 渲染多個商品 -->
+                    <div v-for="(item, index) in cart.CartItems" :key="item.Id" class="cart-item border-bottom py-3">
+                        <!-- 商品項目 -->
+                        <div class="item-info d-flex align-items-center">
+                            <input type="checkbox" v-model="item.checked" class="form-check-input me-3">
+                            <img :src="item.ImageURL" :alt="`商品圖片 - ${item.Title}`" class="item-image me-3">
+                            <div>
+                                <h3 class="item-title mb-1">{{ item.Title }}</h3>
+                                <p class="item-publisher mb-1">出版社：{{ item.Publisher }}</p>
+                                <p class="item-author mb-1">作者：{{ item.Author }}</p>
+                            </div>
+                        </div>
+                        <div class="item-actions mt-2 d-flex align-items-center">
+                            <span class="item-price me-3">價格：NT$ {{ item.Price }}</span>
+                            <button type="button"
+                                    class="btn btn-secondary btn-sm ms-2"
+                                    v-on:click="addToWishlist(item)">
+                                加入待購清單
+                            </button>
+                            <button type="button"
+                                    class="btn-remove btn btn-secondary btn-sm ms-2"
+                                    v-on:click="removeItem(item.Id)">
+                                移除
+                            </button>
                         </div>
                     </div>
-                    <div class="item-actions">
-                        <span>價格：NT$ {{ item.Price }}</span>
-                        <button type="button" class="btn btn-secondary btn-sm ms-2" v-on:click="addToWishlist(item)">
-                            加入待購清單
-                        </button>
-                        <button type="button" class="btn-remove btn btn-secondary btn-sm ms-2" v-on:click="removeItem(index)">
-                            移除
-                        </button>
-                    </div>
+                </div>
+                <!-- 當購物車為空時顯示訊息 -->
+                <div v-else class="empty-cart text-center py-5">
+                    <p class="fs-4">購物車是空的，快去選購商品吧！</p>
                 </div>
             </section>
         </div>
@@ -365,14 +374,16 @@
 
         <!-- 商品列表區  end-->
 
-        <div class="discount-container">
-            <h3>全館優惠折扣</h3>
-            <ul class="discount-list">
-                <li v-for="(item, index) in discounts" :key="index">
-                    <span>{{ item.PromotionName }}</span>
-                    <span :class="getWarningClass(item.TotalPrice)">{{ calculateWarning(item.TotalPrice) }}</span>
-                </li>
-            </ul>
+        <div id="app">
+            <div class="discount-container">
+                <h3>全館優惠折價卷</h3>
+                <ul class="discount-list">
+                    <li v-for="(item, index) in discountsWithWarnings" :key="index">
+                        <span>{{ item.PromotionName }}</span>
+                        <span class="warning">({{ item.warning }})</span>
+                    </li>
+                </ul>
+            </div>
         </div>
 
         <!-- 結算區 start-->
@@ -402,6 +413,7 @@
             <a href="#" class="btn btn-light btn-lg rounded-pill px-5">&larr; 繼續逛逛</a>
             <a href="/OrderDetails.html" class="btn btn-light btn-lg rounded-pill px-5">付款 &rarr;</a>
         </div>
+    </div>
 
 
     </div>
@@ -409,63 +421,102 @@
     <script src="~/Js/Repeat.js"></script>
     <script src="~/Js/Api.js"></script>
     <script>
+        const { createApp, ref, onMounted,watch } = Vue;
 
-        const { createApp, ref, onMounted } = Vue;
+    const config = {
+        setup() {
+            // 資料
+            const cart = ref([]); // 購物車資料
+            const discounts = ref([]); // 折扣資訊
+            const totalPrice = ref(0); // 購物車總金額
+            const discountsWithWarnings = ref([]); // 包含警告訊息的折扣資訊
 
-        // Vue 應用設定
-        const config = {
-            setup() {
-                
+            // 計算警告訊息
+            const calculateWarning = (minPurchase) => {
+                if (totalPrice.value < minPurchase) {
+                    return `未達成，還差 ${minPurchase - totalPrice.value} 元`;
+                } else {
+                    return "已達成";
+                }
+            };
 
-                const cart = ref([]); // 購物車資料
-                const discounts = ref([]); // 折扣資訊
+            // 監聽折扣資訊和總金額變化，更新 discountsWithWarnings
+            watch([discounts, totalPrice], () => {
+                discountsWithWarnings.value = discounts.value.map((item) => ({
+                    ...item,
+                    warning: calculateWarning(item.MinPurchase),
+                }));
+            });
 
-                const fetchCartItems = async () => {
-                    try {
-                        const data = await Api.fetchCart(); // 調用 API 方法
-                        cart.value = data;
-                        console.error("資料：", cart.value );
-                    } catch (error) {
-                        console.error("無法獲取購物車資料：", error.message);
-                        alert("獲取購物車資料時發生錯誤！");
-                    }
-                };
+            // API 調用 - 獲取購物車資料
+            const fetchCartItems = async () => {
+                try {
+                    const data = await Api.fetchCart(); // 調用 API
+                    cart.value = data; // 賦值購物車資料
+                    totalPrice.value = cart.value.TotalPrice;
+                    console.log("金額:", totalPrice.value)
+                    console.log("購物車資料：", cart.value);
+                } catch (error) {
+                    console.error("無法獲取購物車資料：", error.message);
+                    alert("獲取購物車資料時發生錯誤！");
+                }
+            };
 
-                const fetchPromotionsItems = async () => {
-                    
-                        const data = await Api.fetchPromotions(); // 調用 API 方法
-                        discounts.value = data;               
-                };
+            // API 調用 - 獲取折扣資訊
+            const fetchPromotionsItems = async () => {
+                try {
+                    const data = await Api.fetchPromotions(); // 調用 API
+                    discounts.value = data; // 賦值折扣資料
 
+                    console.log("折扣資訊：", discounts.value);
+                } catch (error) {
+                    console.error("無法獲取折扣資訊：", error.message);
+                    alert("獲取折扣資訊時發生錯誤！");
+                }
+            };
 
-                // 定義方法
-                const addToWishlist = (item) => {
-                    alert(`已將「${item.name}」加入待購清單！`);
-                };
+            // 方法 - 移除購物車項目
+            const removeItem = async (cartItemId) => {
+                try {
+                    // 確保 cartItemId 傳入正確
+                    console.log("要刪除的項目 ID：", cartItemId);
 
-                const removeItem = (index) => {
-                    cart.value = cart.value.filter((_, i) => i !== index);
-                };
+                    // 調用後端刪除 API，傳遞正確的 cartItemId
+                    await Api.deleteCartItem(cartItemId);
 
-                onMounted(() => {
-                    fetchCartItems();
-                    fetchPromotionsItems();
-                
-                });
+                    // 從購物車中移除該項目（更新前端資料）
+                    cart.value.CartItems = cart.value.CartItems.filter((item) => item.Id !== cartItemId);
 
-                return {
-                    cart,
-                    addToWishlist,
-                    removeItem,
-                    discounts,
-                };
-            },
-        };
+                    alert("項目已從購物車移除！");
+                } catch (error) {
+                    console.error("移除購物車項目失敗：", error.message);
+                    alert("移除購物車項目時發生錯誤！");
+                }
+            };
 
-        const app = createApp(config);
-        app.component("progress-component", Progress)
-        app.mount("#app");
+            
+
+            // 在元件載入時執行 API 調用
+            onMounted(() => {
+                fetchCartItems(); // 獲取購物車資料
+                fetchPromotionsItems(); // 獲取折扣資訊
+            });
+
+            return {
+                discountsWithWarnings,
+                cart,
+                discounts,
+                removeItem,
+            };
+        },
+    };
+
+    // 創建 Vue 應用
+    const app = createApp(config);
+    app.component("progress-component", Progress); // 註冊組件
+    app.mount("#app"); // 掛載應用到 DOM
     </script>
+
 
 
 </body>

@@ -56,6 +56,7 @@
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -156,6 +157,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DAOs\Products.cs" />
     <Compile Include="Models\DTOs\CategoryDto.cs" />
     <Compile Include="Models\DTOs\ChangePasswordDto.cs" />
     <Compile Include="Models\DTOs\EditProfileDto.cs" />
@@ -191,6 +193,7 @@
     <Compile Include="Models\ViewModels\CartItemVm.cs" />
     <Compile Include="Models\ViewModels\CartVm.cs" />
     <Compile Include="Models\ViewModels\CategoryVm.cs" />
+    <Compile Include="Models\ViewModels\ChangePasswordVm.cs" />
     <Compile Include="Models\ViewModels\ProductDetailVm.cs" />
     <Compile Include="Models\ViewModels\LoginVm.cs" />
     <Compile Include="Models\ViewModels\ProfileVm.cs" />

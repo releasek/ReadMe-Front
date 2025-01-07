@@ -9,10 +9,15 @@ namespace ReadMe_Front.Models.ViewModels
 {
     public class RegisterVm
     {
-         [Display(Name = "帳號")]
+            [Display(Name = "帳號")]
             [Required(ErrorMessage = "{0}必填")]//制定錯誤訊息,{0}代表dispalyname以利維護errormessage
             [StringLength(30, ErrorMessage = "{0}長度不可超過{1}")]//{1}代表長度
             public string Account { get; set; }
+
+		    [Display(Name = "姓名")]
+		    [Required(ErrorMessage = "{0}必填")]//制定錯誤訊息,{0}代表dispalyname以利維護errormessage
+		    [StringLength(30, ErrorMessage = "{0}長度不可超過{1}")]//{1}代表長度
+		    public string Name { get; set; }
 
             [Display(Name = "密碼")]
             [Required(ErrorMessage = DAHealper.Require)]//Way2 DAHealper
@@ -21,7 +26,7 @@ namespace ReadMe_Front.Models.ViewModels
             public string Password { get; set; }
 
             [Display(Name = "確認密碼")]
-            [Required(ErrorMessage = DAHealper.Require)]
+            [Required(ErrorMessage = "請輸入密碼")]
             [StringLength(15, ErrorMessage = "{0}長度不可超過{1}")]
             [DataType(DataType.Password)]//不顯示密碼
             [Compare("Password")]//驗證密碼
