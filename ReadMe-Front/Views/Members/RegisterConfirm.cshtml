@@ -3,11 +3,37 @@
     ViewBag.Title = "RegisterConfirm";
     Layout = "~/Views/Shared/_LayoutMember.cshtml"; // 指定 Layout
 }
+<style>
+	.form-actions {
+		display: flex;
+		justify-content: center; /* 水平置中 */
+		align-items: center; /* 垂直置中 */
+		height: 100px; /* 設定區塊高度，可以根據需要調整 */
+	}
+
+	.btn-login {
+		padding: 10px 20px; /* 增加按鈕的內邊距 */
+		background-color: #007bff; /* 按鈕背景色 */
+		color: white; /* 按鈕文字顏色 */
+		border: none; /* 移除邊框 */
+		border-radius: 5px; /* 圓角按鈕 */
+		cursor: pointer; /* 鼠標指針樣式 */
+	}
+
+	.btn-login:hover {
+		background-color: #0056b3; /* 按鈕懸停顏色 */
+	}
+
+</style>
+
 
 <h2 class="fw-bolder text-center">註冊成功</h2>
 <div class="container">
     <div class="alert alert-success" role="alert">
         註冊成功!
     </div>
+</div>
+<div class="form-actions">
+	<a href="@Url.Action("Index", "Home" , new { area="" })" class="ms-3 btn btn-sm btn-outline-primary newline">返回主頁</a>
 </div>
     
