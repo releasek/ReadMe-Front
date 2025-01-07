@@ -61,8 +61,8 @@
 
 <body>
     <nav nav class="navbar fixed-top bg-white">
-		<div class="container">
-			<a class="navbar-brand" href="~/Home/Index"><img src="~/image/readme-high-resolution-logo-transparent.png" alt="" class="img-fluid" style="height: 50px; object-fit: contain;"></a>
+        <div class="container">
+            <a class="navbar-brand" href="~/Home/Index" title="首頁"><img src="~/image/readme-high-resolution-logo-transparent.png" alt="" class="img-fluid" style="height: 50px; object-fit: contain;"></a>
 
 			<div class="d-flex ms-2 flex-grow-1">
 				<form class="d-flex row w-100" role="search">
@@ -87,7 +87,7 @@
 					<a href="@Url.Action("Login", "Members", new { area = "" })" class="ms-2 btn btn-sm btn-outline-secondary newline"><i class="fa-solid fa-user"></i></a>
 				}
 
-			</div>
+            </div>
 			@*<form class="d-flex ms-auto">
 			<a href="@Url.Action("購物車", "Members", new { area = "" ,userid=1})" class="ms-3"><i class="fa-solid fa-cart-plus picture" style="vertical-align: middle;"></i></a>
 			<a href="https://localhost:44395/Products/Favorite?userid=1" class="ms-3"><i class="fa-solid fa-heart picture" style="vertical-align: middle;"></i></a>

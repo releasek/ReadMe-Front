@@ -61,6 +61,11 @@
         flex-grow: 1; /* 讓卡片的內容區域自動填滿空間 */
         justify-content: space-between; /* 讓標題與價格分佈在頂部和底部 */
     }
+    .btn {
+        font-size: 14px;
+        border-radius: 5px;
+        height:30px;
+    }
 </style>
 
 <!-- Context Start -->
@@ -101,7 +106,7 @@
                 <div class="row justify-content-center">
                     <div class="row mb-4">
                         <h4 class="col-11">@itemGroup.ParentCategoryName</h4>
-                        <a href="@Url.Action("ParentCategory","Categories",new { parentCategoryName = itemGroup.ParentCategoryName })" class="btn btn-light btn-sm col-auto">More></a>
+                        <a href="@Url.Action("ParentCategory","Categories",new { parentCategoryName = itemGroup.ParentCategoryName })" class="btn btn-outline-secondary btn-sm col-auto d-flex align-items-center justify-content-center">More</a>
                     </div>
 
                     @foreach (var item in itemGroup.Products.Take(5))
