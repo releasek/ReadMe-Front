@@ -1,0 +1,85 @@
+﻿@using ReadMe_Front.Models.ViewModels
+@model ProductDetailVm
+
+@{
+    ViewBag.Title = "商品詳細頁 - "+ @Model.Title;
+    Layout = "~/Views/Shared/_Layout2.cshtml"; // 指定 Layout
+}
+<style>
+    .newline {
+        white-space: nowrap;
+    }
+
+    .picture {
+        font-size: 20px
+    }
+    a {
+        text-decoration: none;
+        color: black;
+    }
+</style>
+<body>
+    <div class="container" id="app" style="margin-top : 130px;">
+        <!-- 麵包start -->
+        <nav aria-label="breadcrumb" >
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/Home/Index">首頁</a></li>
+                <li class="breadcrumb-item"><a href="/Categories/ParentCategory?parentCategoryName=@Model.ParentCategoryName">@Model.ParentCategoryName</a></li>
+                <li class="breadcrumb-item"><a href="/Categories/SubCategory?subCategoryName=@Model.CategoryName">@Model.CategoryName</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+            </ol>
+        </nav>
+        <!--麵包end -->
+        <!-- 書籍內容區 -->
+        <main class="book-content">
+            <!-- 書籍資訊 -->
+            <div class="book-info row">
+                <div class="col-4">
+                    <img src="@Model.ImageURL" alt="書籍封面">
+                </div>
+                <div class="details col-8">
+                    <h2>@Model.Title</h2>
+                    <p>作者：@Model.Author</p>
+                    <p>出版社：@Model.Publisher</p>
+                    <p>出版日期：@Model.PublishDate</p>
+                    <p>電子書售價：<span class="price">@Model.Price</span></p>
+                    <p class="promotion">@Model.PromotionName</p>
+                    <!-- 右側操作 -->
+                    <!-- 操作按鈕 -->
+                    <aside class="book-actions d-flex flex-column">
+                        <!-- 購買 -->
+                        <form method="post" action="/Cart/AddToCart" class="mb-2">
+                            @* 防止 CSRF 攻擊 *@
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="ProductId" value="@Model.Id" />
+                            <input type="hidden" name="Price" value="@Model.Price" />
+                            <button type="submit" class="btn btn-primary w-100">立即購買</button>
+                        </form>
+
+                        <!-- 加入收藏 -->
+                        <form method="post" action="/Wishlist/AddToWishlist">
+                            @* 防止 CSRF 攻擊 *@
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="ProductId" value="@Model.Id" />
+                            <button type="submit" class="btn btn-secondary w-100">加入收藏列表</button>
+                        </form>
+                    </aside>
+                </div>
+            </div>            
+        </main>
+
+        <!-- 書籍描述 -->
+        <section class="book-description mt-4">
+            <h3>書籍介紹</h3>
+            <p>
+                @Model.Description
+            </p>
+        </section>                 
+
+        <div class="related-books">
+            @Html.Action("ProductAuthor", "Products", new { Author = Model.Author })
+        </div>
+            
+    </div>
+</body>
+

@@ -153,6 +153,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\OrderdetailsDto.cs" />
+    <Compile Include="Controllers\ProductApiController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Global.asax.cs">
@@ -381,7 +382,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Categories\Index.cshtml" />
-    <Content Include="Views\Products\ProductDetail.cshtml" />
+    <Content Include="Views\Products\ProductDetail_old.cshtml" />
     <Content Include="Views\Members\Login.cshtml" />
     <Content Include="Views\Shared\_Layout2.cshtml" />
     <Content Include="Views\Categories\ParentCategory.cshtml" />
@@ -402,6 +403,7 @@
     <Content Include="Views\Members\Index.cshtml" />
     <Content Include="Views\Members\Register.cshtml" />
     <Content Include="Views\Members\RegisterConfirm.cshtml" />
+    <Content Include="Views\Products\ProductDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

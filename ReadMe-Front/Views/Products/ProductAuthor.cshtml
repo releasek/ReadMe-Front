@@ -5,30 +5,32 @@
     Layout = null;
 }
 
-    <h3 class="mb-2">相關聯的作者</h3>
+<h3 class="mb-2">相關聯的作者</h3>
 
-    <div class="row">
-        @if (Model != null && Model.Any())
+<div class="row">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var book in Model)
         {
-            foreach (var book in Model)
-            {
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
-                    <div class="card h-100">
-                        <img src="@book.ImageURL" class="card-img-top" alt="書籍封面">
-                        <div class="card-body p-2">
-                            <h5 class="card-title mb-1">@book.Title</h5>
-                            <p class="card-text mb-1">@book.Author</p>
-                            <p class="text-muted mb-1">NT$ @book.Price</p>
-                        </div>
-                        <div class="card-footer bg-white border-0 d-flex justify-content-between p-2">
-                            <button v-on:click="addToCart({ id: @Model.Id, price: @Model.Price })">購買</button>
-                        </div>
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
+                <div class="card h-100">
+                    <img src="@book.ImageURL" class="card-img-top" alt="書籍封面">
+                    <div class="card-body p-2">
+                        <h5 class="card-title mb-1">@book.Title</h5>
+                        <p class="card-text mb-1">@book.Author</p>
+                        <p class="text-muted mb-1">NT$ @book.Price</p>
+                    </div>
+                    <div class="card-footer bg-white border-0 d-flex justify-content-between p-2">
+                        <button>購買</button>
                     </div>
                 </div>
-            }
+            </div>
         }
-        else
-        {
-            <p>@ViewBag.Message</p>
-        }
-    </div>
+    }
+    else
+    {
+        <p>@ViewBag.Message</p>
+    }
+</div>
+
+
