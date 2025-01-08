@@ -275,6 +275,7 @@
     <Content Include="image\banner\療癒專區banner.jpg" />
     <Content Include="image\banner\科技與生活banner.jpg" />
     <Content Include="image\ChatGPT 全方位攻略：技巧與示例.jpg" />
+    <Content Include="image\ckeck.png" />
     <Content Include="image\C最強入門邁向頂尖高手之路王者歸來.jpg" />
     <Content Include="image\ChatGPT × Excel 自動化工作聖經.jpg" />
     <Content Include="image\C語言初學指引【第六版】── 成為高手的奠基之路.jpg" />
@@ -405,6 +406,7 @@
     <Content Include="Views\Members\RegisterConfirm.cshtml" />
     <Content Include="Views\Products\ProductDetail - 複製.cshtml" />
     <Content Include="Views\Cart\OrderDetails.cshtml" />
+    <Content Include="Views\Cart\OrderFinish.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

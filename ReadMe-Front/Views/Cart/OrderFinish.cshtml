@@ -1,0 +1,247 @@
+﻿
+@{
+    ViewBag.Title = "OrderFinish";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <style>
+
+        .container {
+            max-width: 800px;
+        }
+
+        /* 進度條 */
+        .progress-section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .progress-bar {
+            width: 93%;
+            height: 2px;
+            background-color: #e0e0e0;
+            position: absolute;
+            top: 15px;
+            z-index: 1;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #40B3E9;
+            transition: width 0.3s ease;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+            gap: 100px;
+        }
+
+        .step {
+            text-align: center;
+            color: #999;
+            transition: all 0.3s ease;
+        }
+
+        .step-circle {
+            width: 28px;
+            height: 28px;
+            background-color: #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 14px;
+            color: white;
+        }
+
+        .step.active .step-circle {
+            background-color: #40B3E9;
+        }
+
+        .step-label {
+            margin-top: 0.5rem;
+            font-size: 14px;
+        }
+
+        .step.active .step-label {
+            color: #40B3E9;
+        }
+
+        .check {
+            background-color: #40B3E9;
+        }
+
+        /* 訂單資訊 */
+        .order-page {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60vh;
+        }
+
+        .order-completion {
+            background-color: #fff;
+            width: 50%;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .icon-container {
+            margin-bottom: 20px;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+        }
+
+        .order-number {
+            font-size: 18px;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .instruction {
+            color: #f00;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .order-details {
+            margin-top: 20px;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .product-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        .item-info {
+            flex: 1;
+            margin-left: 10px;
+            text-align: left;
+        }
+
+        .product-name {
+            margin: 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .product-price {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .item-total {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .summary {
+            margin-top: 10px;
+            text-align: right;
+        }
+
+            .summary p {
+                margin: 5px 0;
+                font-size: 14px;
+                color: #333;
+            }
+
+            .summary .total {
+                font-size: 18px;
+                font-weight: bold;
+                color: #000;
+            }
+        .div 
+        {
+            padding 10px;
+        }
+    </style>
+<body>
+    <div class="container" id="app" style="margin-top:40px;">
+
+        <!-- 導覽 strat -->
+        <progress-component :current-page="3"></progress-component>
+        <!-- 導覽 end -->
+        <!-- 訂單資訊 -->
+        <div class="order-page">
+            <div class="order-completion">
+                <div class="icon-container">
+                    <img src="~/image/ckeck.png" alt="Success" class="success-icon" />
+                </div>
+                <h2>訂單建立完成</h2>
+                <p class="order-number">訂單編號：<span class="order-id">CB040603474</span></p>
+                <p class="instruction">請拍照，或儲存網址以便日後查詢。</p>
+
+                <div class="order-details">
+                    <div class="item">
+                        @*<img src="product-image.jpg" alt="百香芒果" class="product-image" />*@
+                        @*<div class="item-info">
+                            <h4 class="product-name">百香芒果</h4>
+                            <p class="product-price">NT$ 65 * 1</p>
+                        </div>
+                        <p class="item-total">NT$ 65</p>*@
+                    </div>
+                    <div class="summary">
+                         <p>小計 <span class="summary-value">NT$ 65</span></p>
+                        <p>金流手續費 <span class="summary-value">NT$ 0</span></p>
+                        @*<p>運費 <span class="summary-value">NT$ 60</span></p>*@ 
+                        <p class="total">總計 <span class="total-value">NT$ 125</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 結算區 end-->
+        <div class="d-flex justify-content-between">
+            <a href="/Cart/OrderDetails" class="btn btn-lg rounded-pill px-5">&larr; 返回付款方式</a>
+            <a href="~/Home/index" class="btn btn-lg rounded-pill px-5">回主頁 &rarr;</a>
+        </div>
+    </div>
+
+    </div>
+    <script src="~/Js/vue.global.js"></script>
+    <script src="~/Js/Repeat.js"></script>
+    <script src="~/Js/Progress.js"></script>
+    <script>
+           const{createApp}=Vue
+           const config={
+               setup(){
+                   return{
+
+                   }
+               }
+           }
+           const app=createApp(config)
+           app.component("progress-component",Progress)
+           app.mount("#app")
+    </script>
+</body>
+</html>
