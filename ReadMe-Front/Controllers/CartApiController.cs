@@ -3,6 +3,7 @@ using ReadMe_Front.Models.Services;
 using ReadMe_Front.Models.ViewModels;
 using System;
 using System.Net;
+using System.Net.Sockets;
 using System.Web.Http;
 
 namespace ReadMe_Front.Controllers
@@ -118,7 +119,8 @@ namespace ReadMe_Front.Controllers
         [Route("api/cartapi/clearCart")]
         public IHttpActionResult ClearCart(int cartid)
         {
-            string account = User.Identity.Name;
+            //string account = User.Identity.Name;
+            string account = "user06";
 
             if (string.IsNullOrEmpty(account))
             {
@@ -127,6 +129,13 @@ namespace ReadMe_Front.Controllers
 
             _service.ClearCart(cartid);
             return Ok("購物車已清空");
+        }
+        [HttpGet]
+        [Route("api/cartapi/getOrert")]
+        public IHttpActionResult GetOrder(string orderName)
+        {
+            var order =_service.GetOrderDetail(orderName);
+            return Ok(order);
         }
 
     }

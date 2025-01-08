@@ -16,11 +16,17 @@ namespace ReadMe_Front.Models.Repositories
 {
     public class CartEFRepo
     {
-        public void GetOrderDetail(string orderName)
+        /// <summary>
+        /// 單筆訂單資料
+        /// </summary>
+        /// <param name="orderName"></param>
+        /// <returns></returns>
+        public Order GetOrderDetail(string orderName)
         {
             using (var db = new AppDbContext())
             {
-              
+                return db.Orders.FirstOrDefault(n => n.OrderName == orderName);
+
             }
         }
         /// <summary>
