@@ -333,7 +333,7 @@
                         <!-- 商品項目 -->
                         <div class="item-info d-flex align-items-center">
                             @*<input type="checkbox" v-model="item.checked" class="form-check-input me-3">*@
-                            <a :href="`/Products/ProductDetail/${item.Id}`">
+                            <a :href="`/Products/ProductDetail/${item.ProductId}`">
                                 <img :src="item.ImageURL" :alt="`商品圖片 - ${item.Title}`" class="item-image me-3">
                             </a>
                             <div>
@@ -346,12 +346,12 @@
                             <span class="item-price me-3">價格：NT$ {{ item.Price }}</span>
                             <button type="button"
                                     class="btn btn-secondary btn-sm ms-2"
-                                    v-on:click="addToWishlist(item.Id)">
+                                    v-on:click="addToWishlist(item.ProductId)">
                                 加入待購清單
                             </button>
                             <button type="button"
                                     class="btn-remove btn btn-secondary btn-sm ms-2"
-                                    v-on:click="removeItem(item.Id)">
+                                    v-on:click="removeItem(item.ProductId)">
                                 移除
                             </button>
                         </div>

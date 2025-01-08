@@ -33,7 +33,8 @@ namespace ReadMe_Front.Controllers
             {
                 _service.AddFavorite(userId, productId);
                 TempData["Message"] = "商品已成功加入收藏清單！";
-                return RedirectToAction("Products", "Cart");
+                //return RedirectToAction("Products", "Cart");
+                return RedirectToAction("Favorite", "Products");
             }
             catch (Exception ex)
             {
