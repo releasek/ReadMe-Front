@@ -1,71 +1,10 @@
 ﻿@using ReadMe_Front.Models.ViewModels
 @model SearchVm
 
-@{
-    ViewBag.Title = "Result";
-}
-
-<style>
-    a {
-        text-decoration: none;
-        color: black;
-    }
-    
-    .card-title {
-        line-height: 1.5; /* 行高，設置為字體大小的 1.5 倍 */
-        font-size: 15px; /* 字體大小 */
-        height: calc(1.5em * 2); /* 高度為兩行 */
-        overflow: hidden; /* 隱藏溢出的部分 */
-        text-overflow: ellipsis; /* 顯示省略號 */
-        display: -webkit-box; /* 需要 Webkit 支援 */
-        -webkit-line-clamp: 2; /* 限制顯示兩行 */
-        -webkit-box-orient: vertical; /* 垂直排列子元素 */
-    }
-
-    .card-img-top {
-        width: 100%; /* 設定圖片的寬度與父容器一致 */
-        height: 200px; /* 固定高度 */
-        object-fit: cover; /* 圖片裁切填滿容器，保持比例 */
-    }
-</style>
-
-
-<div class="container" style="margin-top:130px">
-    @if (Model.Data.Count() == 0)
-    {
-        <h3>沒有符合搜尋條件的結果，請重新查詢</h3>
-    }
-    else
-    {
-        <h3>@ViewBag.SearchInput 搜尋結果如下：</h3>
-        <input type="hidden" id="originalSearchInput" value="@ViewBag.SearchInput" />
-        <p>總筆數: @Model.PaginationInfo.RecordCount 當前頁碼: @Model.PaginationInfo.PageNumber / @Model.PaginationInfo.Pages</p>
-
-        <div class="row justify-content-start" id="resultContainer">
-            @foreach (var item in Model.Data)
-                {
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-                        <div class="card border-1 m-1" style="width: 10rem;">
-                            <div class="card-img">
-                                <a href="~/Products/ProductDetail/@item.Id">
-                                    <img src="@item.ImageURL" class="card-img-top img-fluid" alt="...">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <a href="~/Products/ProductDetail/@item.Id">
-                                    <h5 class="card-title text-center">@item.Title</h5>
-                                </a>
-                                <p class="card-text text-center">$ @item.Price</p>
-                            </div>
-                        </div>
-                     </div>                
-            }
-            <div class="mt-4">
-                @Html.Partial("_PagedResult", Model.PaginationInfo)
-            </div>
-        </div>
-    }
+<div class="resultContainer">
+    @Html.Partial("_PagedResult")
 </div>
+
 
 
 <script>
@@ -75,18 +14,83 @@
         $(document).on('click', '.pagination a', function (e) {
             e.preventDefault(); // 防止預設行為
             var pageNumber = $(this).data('page');
+            var url = $(this).attr("href");
+            console.log("url", url);
+
             var input = $('#originalSearchInput').val();
             $.ajax({
-                url: '/Search/_PagedResult',
+                url: url,
                 type: 'GET',
-                data: {
-                    input: input,
-                    pageNumber: pageNumber
-                },
                 success: function (data) {
                     $('#resultContainer').html(data);
+                },
+                error: function (xhr) {
+                    console.error("Error:", xhr.responseText);
+                    alert("伺服器發生錯誤，請稍後再試！");
                 }
             });
         });
+    });
+
+
+    function applyFilter() {
+        const category = document.getElementById("categoryFilter").value;
+        const publisher = document.getElementById("publisherFilter").value;
+        const author = document.getElementById("authorFilter").value;
+        const input = document.getElementById("originalSearchInput").value;
+
+        // 發送篩選條件到後端
+        fetch('/Search/FilterResults', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ input, category, publisher, author })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // 更新篩選結果及分頁
+                console.log(data);
+                updateResultsOnPage(data);
+            });
+    }
+
+    function updateResultsOnPage(data) {
+        const resultContainer = document.getElementById('resultContainer');
+        const paginationContainer = document.getElementById('paginationContainer');
+
+        // 清空現有內容
+        resultContainer.innerHTML = '';
+
+        // 確保 data.data 存在且為數組
+        if (Array.isArray(data.Data)) {
+            // 更新篩選結果
+            data.Data.forEach(item => {
+                resultContainer.innerHTML += `
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                    <div class="card border-1 m-1" style="width: 10rem;">
+                        <div class="card-img">
+                            <a href="~/Products/ProductDetail/${item.Id}">
+                                <img src="${item.ImageURL}" class="card-img-top img-fluid" alt="...">
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <a href="~/Products/ProductDetail/${item.Id}">
+                                <h5 class="card-title text-center">${item.Title}</h5>
+                            </a>
+                            <p class="card-text text-center">$ ${item.Price}</p>
+                        </div>
+                    </div>
+                </div>
+                `;
+            });
+        } else {
+            // 顯示空結果訊息
+            resultContainer.innerHTML = '<p>沒有篩選結果</p>';
+        }
+
+        // 更新分頁資訊
+        if (data.PaginationInfo) {
+            paginationContainer.innerHTML = `總筆數: ${data.PaginationInfo.RecordCount} 當前頁碼: ${data.PaginationInfo.PageNumber} / ${data.PaginationInfo.Pages}`;
+        }
+    }
 </script>
 

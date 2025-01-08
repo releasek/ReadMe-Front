@@ -9,18 +9,21 @@
     <script src="~/Scripts/vue.global.js"></script>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
     <style>
         .container {
             max-width: 1140px; /* 與 Navbar 對齊 */
             margin: 0 auto; /* 水平置中 */
         }
 
-		/* 設置購物車和愛心圖標為 Logo 顏色 */
-		.navbar i.fa-cart-plus,
-		.navbar i.fa-heart {
-			font-size: 20px; /* 調整圖標大小 */
-			color: #7AB8B8; /* 替換成 Logo 的顏色 */
-		}
+        /* 設置購物車和愛心圖標為 Logo 顏色 */
+        .navbar i.fa-cart-plus,
+        .navbar i.fa-heart {
+            font-size: 20px; /* 調整圖標大小 */
+            color: #7AB8B8; /* 替換成 Logo 的顏色 */
+        }
 
         .navbar {
             border-bottom: 1px solid #ddd; /*分隔線*/
@@ -31,36 +34,38 @@
             padding: 10px 0;
         }
 
-		/* 登入按鈕樣式 */
-		.btn-outline-danger.newline,
-		.btn-outline-primary.newline {
-			background-color: white; /* 白底 */
-			color: gray; /* 字體顏色設置為灰色 */
-			border-color: gray; /* 邊框顏色設置為灰色 */
-		}
+        /* 登入按鈕樣式 */
+        .btn-outline-danger.newline,
+        .btn-outline-primary.newline {
+            background-color: white; /* 白底 */
+            color: gray; /* 字體顏色設置為灰色 */
+            border-color: gray; /* 邊框顏色設置為灰色 */
+        }
 
-	   .btn-outline-danger.newline:hover,
-	   .btn-outline-primary.newline:hover {
-			background-color: #f8f9fa; /* Hover時背景變淡灰 */
-			color: black; /* Hover時文字變黑 */
-			border-color: gray; /* 邊框仍保持灰色 */
-	   }
-		/*footer*/
-		.footer {
-			margin-top: 50px;
-			padding: 15px;
-			background-color: #7AB8B8; /* 背景颜色 */
-			color: #ffffff; /* 字体颜色 */
-		}
-		.footer a {
-		    color: #ffffff; /* 颜色 */
-			font-size: 14px; /* 调整字體大小 */
-		}
-		.footer a:hover {
-			text-decoration: underline; /* 鼠標停留時有下滑線 */
-		}
+            .btn-outline-danger.newline:hover,
+            .btn-outline-primary.newline:hover {
+                background-color: #f8f9fa; /* Hover時背景變淡灰 */
+                color: black; /* Hover時文字變黑 */
+                border-color: gray; /* 邊框仍保持灰色 */
+            }
+        /*footer*/
+        .footer {
+            margin-top: 50px;
+            padding: 15px;
+            background-color: #7AB8B8; /* 背景颜色 */
+            color: #ffffff; /* 字体颜色 */
+        }
+
+            .footer a {
+                color: #ffffff; /* 颜色 */
+                font-size: 14px; /* 调整字體大小 */
+            }
+
+                .footer a:hover {
+                    text-decoration: underline; /* 鼠標停留時有下滑線 */
+                }
     </style>
-	
+
 </head>
 
 
@@ -127,12 +132,7 @@
             </div>
         </div>
     </footer>
-    
-
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-        @RenderSection("scripts", required: false)
-    
+        
     <script>
         $(document).ready(function () {                
 

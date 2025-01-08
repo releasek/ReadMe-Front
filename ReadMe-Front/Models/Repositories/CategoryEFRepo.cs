@@ -63,12 +63,9 @@ namespace ReadMe_Front.Models.Repositories
         /// <param name="pageNumber">第幾頁</param>
         /// <param name="pageSize">每頁筆數</param>
         /// <returns></returns>
-        public Paged<CategoryDto> Search(string input, int pageNumber, int pageSize)
+        public List<CategoryDto> Search(string input)
         {
 
-            //precondition check
-            pageNumber = (pageNumber < 1) ? 1 : pageNumber;
-            pageSize = (pageSize < 1) ? 12 : pageSize;
 
             using (var db = new AppDbContext())
             {
@@ -92,13 +89,48 @@ namespace ReadMe_Front.Models.Repositories
                                   ParentCategoriesName = parentCategory.ParentCategoriesName,
                               };
 
-                int recordCount = results.Count();
-
-                List<CategoryDto> pagedData = results.OrderBy(x => x.Id).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-
-                return new Paged<CategoryDto>(pagedData, pageNumber, pageSize, recordCount);
+                return results.ToList();
             }
         }
+
+        //public Paged<CategoryDto> FilterResults(string input, int pageNumber = 1, int pageSize = 12, string categoryName = null, string publisher = null, string author = null)
+        //{
+        //    //precondition check
+        //    pageNumber = (pageNumber < 1) ? 1 : pageNumber;
+        //    pageSize = (pageSize < 1) ? 12 : pageSize;
+
+
+        //    // 再篩選邏輯
+        //    var filteredResults = initialResults.Data.AsQueryable();
+
+        //    // 根據分類篩選
+        //    if (!string.IsNullOrEmpty(categoryName))
+        //    {
+        //        filteredResults = filteredResults.Where(x => x.CategoryName == categoryName);
+        //    }
+
+        //    // 根據出版社篩選
+        //    if (!string.IsNullOrEmpty(publisher))
+        //    {
+        //        filteredResults = filteredResults.Where(x => x.Publisher == publisher);
+        //    }
+        //    // 根據出版社篩選
+        //    if (!string.IsNullOrEmpty(author))
+        //    {
+        //        filteredResults = filteredResults.Where(x => x.Author == author);
+        //    }
+
+        //    var filteredList = filteredResults.ToList();
+        //    int recordCount = filteredList.Count;
+
+        //    int recordCount = results.Count();
+
+        //    List<CategoryDto> pagedData = results.OrderBy(x => x.Id).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+        //    return new Paged<CategoryDto>(pagedData, pageNumber, pageSize, recordCount);
+
+        //    return new Paged<CategoryDto>(filteredList, initialResults.paginationInfo.PageNumber, initialResults.paginationInfo.PageSize, recordCount);
+        //}
 
     }
 
@@ -109,12 +141,12 @@ namespace ReadMe_Front.Models.Repositories
     public class Paged<CategoryDto>
     {
         public List<CategoryDto> Data { get; set; }
-        public PaginationInfo paginationInfo { get; set; }
+        public PaginationInfo PaginationInfo { get; set; }
 
         public Paged(List<CategoryDto> data, int pageNumber, int pageSize, int recordCount)
         {
             this.Data = data;
-            this.paginationInfo = new PaginationInfo(pageNumber, pageSize, recordCount);
+            this.PaginationInfo = new PaginationInfo(pageNumber, pageSize, recordCount);
         }
     }
 
