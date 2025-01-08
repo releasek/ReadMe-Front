@@ -1,14 +1,11 @@
 ﻿using ReadMe_Front.Models.Services;
-using ReadMe_Front.Models.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace ReadMe_Front.Controllers
 {
-   
+
     public class ProductsController : Controller
     {
         private readonly ProductService _productService;
@@ -48,7 +45,7 @@ namespace ReadMe_Front.Controllers
         }
         public ActionResult ProductAuthor(string Author)
         {
-          
+
             var AuthorBook = _productService.GetAuthorBook(Author);
             if (AuthorBook == null)
             {
@@ -63,29 +60,19 @@ namespace ReadMe_Front.Controllers
         [Authorize]
         public ActionResult Favorite()
         {
-            string account = User.Identity.Name;
-            var favoriteProducts = _productService.GetFavoriteProducts(account);
-            if (!favoriteProducts.Any() || favoriteProducts==null)
-            {
-                return View("NoFavorite");
-            }
-            else
-            {
-                return View("Favorite",favoriteProducts);
-            }
+
+            return View();
         }
         /// <summary>
         /// 無收藏清單的page
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         public ActionResult NoFavorite()
         {
             return View();
         }
-        /// <summary>
-        /// 購物車
-        /// </summary>
-        /// <returns></returns>
+
        
 
 

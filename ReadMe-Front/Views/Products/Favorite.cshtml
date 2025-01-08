@@ -13,163 +13,162 @@
     <title>收藏清單</title>
     <link rel="stylesheet" href="~/Content/bootstrap.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-   <style>
+    <style>
 
-    body {
-    background-color: #f9f9f9;
-    font-family: Arial, sans-serif;
-    }
+        body {
+            background-color: #f9f9f9;
+            font-family: Arial, sans-serif;
+        }
 
-    .container {
-    max-width: 1000px;
-    margin: 0 auto;
-    }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
 
-    /* === 購物車區 === */
-    .cart-section {
-    padding: 20px;
-    background-color: #fff;
-    margin: 20px auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
+        /* === 購物車區 === */
+        .cart-section {
+            padding: 20px;
+            background-color: #fff;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
 
-    /* 標籤列 */
-    .tabs {
-    display: flex;
-    justify-content: space-around;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 10px;
-    }
+        /* 標籤列 */
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
 
-    .tabs a {
-    padding: 10px 20px;
-    color: #333;
-    text-decoration: none;
-    font-weight: bold;
-    border-bottom: 3px solid transparent;
-    transition: all 0.3s ease;
-    }
+            .tabs a {
+                padding: 10px 20px;
+                color: #333;
+                text-decoration: none;
+                font-weight: bold;
+                border-bottom: 3px solid transparent;
+                transition: all 0.3s ease;
+            }
 
-    .tabs a.active {
-    color: #007bff;
-    border-bottom: 3px solid #007bff;
-    }
+                .tabs a.active {
+                    color: #007bff;
+                    border-bottom: 3px solid #007bff;
+                }
 
-    /* 篩選器 */
-    .dropdown-filter {
-    margin: 10px 0;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 10px;
-    }
+        /* 篩選器 */
+        .dropdown-filter {
+            margin: 10px 0;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .dropdown-filter select {
-    padding: 5px 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #fff;
-    }
+            .dropdown-filter select {
+                padding: 5px 10px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                background-color: #fff;
+            }
 
-    /* 商品項目 */
-    .cart-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #ddd;
-    padding: 15px 0;
-    gap: 20px;
-    }
+        /* 商品項目 */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+            gap: 20px;
+        }
 
-    .item-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    flex: 1; /* 彈性佔位，讓左右對齊 */
-    }
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1; /* 彈性佔位，讓左右對齊 */
+        }
 
-    .item-info img {
-    width: 100px;
-    height: auto;
-    border-radius: 5px;
-    object-fit: cover;
-    }
+            .item-info img {
+                width: 100px;
+                height: auto;
+                border-radius: 5px;
+                object-fit: cover;
+            }
 
-    .item-actions {
-    text-align: right;
-    min-width: 200px; /* 固定寬度以避免按鈕不對齊 */
-    }
+        .item-actions {
+            text-align: right;
+            min-width: 200px; /* 固定寬度以避免按鈕不對齊 */
+        }
 
-    .item-actions span {
-    font-weight: bold;
-    color: #333;
-    margin-right: 10px;
-    }
+            .item-actions span {
+                font-weight: bold;
+                color: #333;
+                margin-right: 10px;
+            }
 
-    .item-actions button {
-    background-color: orangered;
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-left: 5px;
-    transition: background-color 0.3s ease;
-    }
+            .item-actions button {
+                background-color: orangered;
+                color: #fff;
+                border: none;
+                padding: 8px 12px;
+                cursor: pointer;
+                border-radius: 5px;
+                margin-left: 5px;
+                transition: background-color 0.3s ease;
+            }
 
-    .item-actions button:hover {
-    background-color: #e63946;
-    }
+                .item-actions button:hover {
+                    background-color: #e63946;
+                }
 
-    /* 商品清單容器 */
-    .cart-container {
-    width: 100%;
-    max-width: 800px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    }
+        /* 商品清單容器 */
+        .cart-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
 
-       .cart-header {
-           display: flex;
-           justify-content: space-around;
-           align-items: center;
-           padding: 10px 20px;
-           font-weight: bold;
-           color: #555;
-           background-color: #f8f8f8;
-       }
+        .cart-header {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 20px;
+            font-weight: bold;
+            color: #555;
+            background-color: #f8f8f8;
+        }
 
-    .cart-item:last-child {
-    border-bottom: none;
-    }
+        .cart-item:last-child {
+            border-bottom: none;
+        }
 
-    .cart-item input[type="checkbox"] {
-    margin-right: 10px;
-    }
+        .cart-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
 
-    .cart-item span {
-    display: inline-block;
-    text-align: right;
-    min-width: 100px;
-    }
+        .cart-item span {
+            display: inline-block;
+            text-align: right;
+            min-width: 100px;
+        }
 
-    /* 提示訊息樣式 */
-    .empty-message {
-    text-align: center;
-    color: #999;
-    font-size: 16px;
-    font-weight: bold;
-    margin: 20px 0;
-    }
-
-   </style>
+        /* 提示訊息樣式 */
+        .empty-message {
+            text-align: center;
+            color: #999;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container" id="app"  style="margin-top : 100px; ">
+    <div class="container" id="app" style="margin-top : 100px; ">
 
         <!-- 標籤區 -->
         <div class="tabs">
@@ -193,33 +192,119 @@
         </div>
 
         <!-- 商品列表區 -->
-        <section class="cart-section">
-            @foreach (var item in Model)
-            {
-                <div class="cart-item">
-                    <div class="item-info">
-                        <input type="checkbox">
-                        <img src="@item.ImageURL" alt="商品封面" style="width: 100px; height: auto;">
-                        <div>
-                            <h3>@item.Title</h3>
-                            <p>作者：@item.Author</p>
+        <div class="container">
+            <section class="favorites-section">
+                <!-- 檢查收藏清單是否存在 -->
+                <div v-if="favorites && favorites.length > 0">
+                    <!-- 使用 Vue 的 v-for 渲染多個商品 -->
+                    <div v-for="(item, index) in favorites" :key="item.Id" class="cart-item border-bottom py-3">
+                        <div class="item-info d-flex align-items-center">
+                            <a :href="`/Products/ProductDetail/${item.Id}`">
+                                <img :src="item.ImageURL" alt="商品封面" class="item-image me-3" style="width: 100px; height: auto;">
+                            </a>
+                            <div>
+                                <h3 class="item-title mb-2">{{ item.Title }}</h3>
+                                <p class="item-author mb-1">作者：{{ item.Author  }}</p>
+                                <p class="item-publisher mb-1">出版社：{{ item.Publisher  }}</p>
+                            </div>
+                        </div>
+                        <div class="item-actions mt-2 d-flex align-items-center">
+                            <span class="item-price me-3">NT$ {{ item.Price }}</span>
+                            <button type="button"
+                                    class="btn btn-outline-primary btn-sm me-2"
+                                    v-on:click="addToCart(item.Id, item.Price)">
+                                加入購物車
+                            </button>
+                            <button type="button"
+                                    class="btn btn-outline-danger btn-sm"
+                                    v-on:click="removeItem(item.Id)">
+                                移除
+                            </button>
                         </div>
                     </div>
-                    <div class="item-actions">
-                        <span>NT$ @item.Price</span>
-                        <button type="button" class="btn btn-secondary btn-sm">加入購物車</button>
-                        <button type="button" class="btn btn-danger btn-sm">移除</button>
-                    </div>
                 </div>
-            }
-        </section>
+                <!-- 當收藏清單為空時顯示訊息 -->
+                <div v-else class="text-center py-5">
+                    <p class="fs-4">收藏清單是空的，快去添加商品吧！</p>
+                </div>
+            </section>
+        </div>
+
+
 
         <!-- 結算區 -->
         <div class="d-flex justify-content-between">
-            <a href="#" class="btn btn-light btn-lg rounded-pill px-5">&larr; 繼續逛逛</a>
+            <a href="~/Home/Index" class="btn btn-light btn-lg rounded-pill px-5">&larr; 繼續逛逛</a>
             <a href="/OrderDetails.html" class="btn btn-light btn-lg rounded-pill px-5">付款 &rarr;</a>
         </div>
     </div>
 </body>
+<script src="~/Js/vue.global.js"></script>
+<script src="~/Js/Repeat.js"></script>
+<script src="~/Js/Api.js"></script>
+<script>
+    const { createApp, ref, onMounted } = Vue;
+
+const config = {
+    setup() {
+        // 資料
+        const favorites = ref([]); // 收藏清單資料
+
+        // API 調用 - 獲取收藏清單資料
+        const fetchFavoriteItems = async () => {
+            try {
+                const data = await Api.fetchFavorite(); // 調用 API
+                favorites.value = data; // 賦值購物車資料
+                console.log("收藏清單資料：", favorites.value);
+            } catch (error) {
+                console.error("無法獲取收藏清單資料：", error.message);
+                alert("獲取收藏清單資料時發生錯誤！");
+            }
+        };
+        const removeItem = async (id) => {
+            try {
+                await Api.deleteFavorite(id); // 調用 API
+                favorites.value = favorites.value.filter((item) => item.id !== id); // 本地移除項目
+                alert("商品已移除收藏清單！");
+                fetchFavoriteItems();
+            } catch (error) {
+                console.error("無法刪除收藏清單資料：", error.message);
+                alert("刪除收藏清單資料時發生錯誤！");
+            }
+        };
+
+        const addToCart = async (productId, price) => {
+            console.log("新增購物車 - 傳入參數：", { productId, price }); // 查看傳入的參數
+
+            try {
+                const response = await Api.addCart(productId, price); // 傳遞正確的參數
+                console.log("新增購物車 - API 回應：", response); // 查看 API 返回的結果
+                alert("商品已添加到購物車！");
+            } catch (error) {
+                console.error("新增購物車 - 發生錯誤：", error.message); // 查看錯誤訊息
+                alert("添加商品到購物車時發生錯誤！");
+            }
+        };
+
+
+
+        // 在元件載入時執行 API 調用
+        onMounted(() => {
+            fetchFavoriteItems();
+        });
+
+        return {
+            favorites,
+            removeItem,
+            addToCart,
+        };
+    },
+};
+
+// 創建 Vue 應用
+const app = createApp(config);
+app.mount("#app"); // 掛載應用到 DOM
+</script>
+
 
 </html>

@@ -131,6 +131,7 @@ namespace ReadMe_Front.Models.Services
 			return new ProfileVm
 			{
 				Account = member.Account,
+				Name = member.Name,
 				Email = member.Email
 			};
 		}
@@ -152,6 +153,7 @@ namespace ReadMe_Front.Models.Services
 
 			// 更新資料
 			memberInDb.Email = model.Email;
+			memberInDb.Name = model.Name;
 
 			// 儲存變更
 			_repo.UpdateMember(memberInDb);

@@ -10,12 +10,9 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%; /* 確保頁面佔滿視窗高度 */
-        }
-                
+		body {
+			background-color: #fafafa;
+		}
         /* 設置購物車和愛心圖標為 Logo 顏色 */
         .navbar i.fa-cart-plus,
         .navbar i.fa-heart {
@@ -54,6 +51,10 @@
                     text-decoration: underline; /* 鼠標停留時有下滑線 */
          }
 
+		.body-content{
+
+            margin-top:50px;
+		}
     </style>
 
 </head>
@@ -80,7 +81,7 @@
 			</div>
         </div>
     </nav>
-    <div class="container body-content" style="display: flex; flex-direction: column; min-height: 100vh;">
+    <div class="container body-content" style="display: flex; flex-direction: column; min-height: 80vh;">
         @RenderBody()
     </div>
     <footer class="footer">

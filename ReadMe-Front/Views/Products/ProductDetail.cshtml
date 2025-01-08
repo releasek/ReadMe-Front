@@ -13,10 +13,16 @@
     .picture {
         font-size: 20px
     }
-    a {
-        text-decoration: none;
-        color: black;
+    .card-footer button {
+        margin: 0 5px; /* 按鈕之間的水平間距 */
+        flex-grow: 1; /* 使兩個按鈕均勻分佈 */
     }
+
+    .card-footer form {
+        margin: 0;
+    }
+
+
 </style>
 <body>
     <div class="container" id="app" style="margin-top : 130px;">
@@ -45,9 +51,25 @@
                     <p>電子書售價：<span class="price">@Model.Price</span></p>
                     <p class="promotion">@Model.PromotionName</p>
                     <!-- 右側操作 -->
-                    <aside class="book-actions">
-                        <button>購買</button>
-                        <button>加入收藏列表</button>
+                    <!-- 操作按鈕 -->
+                    <aside class="book-actions d-flex flex-column">
+                        <!-- 購買 -->
+                        <form method="post" action="/Cart/AddToCart" class="mb-2">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="ProductId" value="@Model.Id" />
+                            <input type="hidden" name="Price" value="@Model.Price" />
+                            <button type="submit" class="btn btn-primary btn-sm">立即購買</button>
+                        </form>
+
+
+                        <!-- 加入收藏 -->
+                        <form method="post" action="/Cart/AddToFavorite">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="ProductId" value="@Model.Id" />
+                            <button type="submit" class="btn btn-secondary btn-sm" >加入收藏列表</button>
+                        </form>
+
+
                     </aside>
                 </div>
             </div>            
@@ -62,8 +84,9 @@
         </section>                 
 
         <div class="related-books">
-            @Html.Action("ProductAuthor", "Products", new { author = Model.Author })
+            @Html.Action("ProductAuthor", "Products", new { Author = Model.Author })
         </div>
             
     </div>
 </body>
+

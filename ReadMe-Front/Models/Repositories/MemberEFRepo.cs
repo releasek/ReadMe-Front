@@ -93,12 +93,8 @@ namespace ReadMe_Front.Models.Repositories
 		/// <param name="member">會員資料</param>
 		public void UpdateMember(User user)
 		{
-			using (var db = new AppDbContext())
-			{
-				db.Users.Attach(user);
-				db.Entry(user).State = System.Data.Entity.EntityState.Modified;
-				db.SaveChanges();
-			}
+			_context.Entry(user).State = EntityState.Modified;
+			_context.SaveChanges();
 		}
 
 		/// <summary>
@@ -110,6 +106,9 @@ namespace ReadMe_Front.Models.Repositories
 			_context.Entry(user).State = EntityState.Modified;
 			_context.SaveChanges();
 		}
+
+
+
 
 	}
 }

@@ -32,7 +32,11 @@ namespace ReadMe_Front.Models.Services
 
             return productItem;
         }  
-
+        /// <summary>
+        /// 取得收藏資料
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
         public List<ProductDetailVm> GetFavoriteProducts(string account)
         {
             return _productRepo.GetFavorite(account);
@@ -45,6 +49,14 @@ namespace ReadMe_Front.Models.Services
                 throw new KeyNotFoundException($"未找到相關作者{Author}的書籍");
             }
             return authorBook;
+        }
+        /// <summary>
+        /// 刪除收藏
+        /// </summary>
+        /// <param name="id"></param>
+        public void DeleteFavorite(int id)
+        {
+            _productRepo.DeleteFavorite(id);
         }
     }
 

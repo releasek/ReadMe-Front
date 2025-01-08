@@ -43,7 +43,7 @@
     }
 
     .step {
-        padding: 10px 20px;
+/*        padding: 10px 20px;*/
         border-bottom: 2px solid transparent;
     }
 
@@ -177,7 +177,7 @@
     }
 
     .progress-bar {
-        width: 100%;
+        width: 95%;
         height: 2px;
         background-color: #e0e0e0;
         position: absolute;
@@ -232,7 +232,7 @@
     }
 
     .check {
-        background-color: #40B3E9;
+/*        background-color: #40B3E9;*/
     }
 
     /* 標籤列 */
@@ -332,8 +332,10 @@
                     <div v-for="(item, index) in cart.CartItems" :key="item.Id" class="cart-item border-bottom py-3">
                         <!-- 商品項目 -->
                         <div class="item-info d-flex align-items-center">
-                            @*<input type="checkbox" v-model="item.checked" class="form-check-input me-3">*@
-                            <img :src="item.ImageURL" :alt="`商品圖片 - ${item.Title}`" class="item-image me-3">
+                            <input type="checkbox" v-model="item.checked" class="form-check-input me-3">
+                            <a :href="`/Products/ProductDetail/${item.ProductId}`">
+                                <img :src="item.ImageURL" :alt="`商品圖片 - ${item.Title}`" class="item-image me-3">
+                            </a>
                             <div>
                                 <h3 class="item-title mb-1">{{ item.Title }}</h3>
                                 <p class="item-publisher mb-1">出版社：{{ item.Publisher }}</p>
@@ -344,12 +346,12 @@
                             <span class="item-price me-3">價格：NT$ {{ item.Price }}</span>
                             <button type="button"
                                     class="btn btn-secondary btn-sm ms-2"
-                                    v-on:click="addToWishlist(item)">
+                                    v-on:click="addToWishlist(item.ProductId)">
                                 加入待購清單
                             </button>
                             <button type="button"
                                     class="btn-remove btn btn-secondary btn-sm ms-2"
-                                    v-on:click="removeItem(item.Id)">
+                                    v-on:click="removeItem(item.ProductId)">
                                 移除
                             </button>
                         </div>
@@ -401,8 +403,8 @@
         </div>
         <!-- 結算區 end-->
         <div class="d-flex justify-content-between">
-            <a href="#" class="btn btn-light btn-lg rounded-pill px-5">&larr; 繼續逛逛</a>
-            <a href="/OrderDetails.html" class="btn btn-light btn-lg rounded-pill px-5">付款 &rarr;</a>
+            <a href="~/Home/Index" class="btn btn-light btn-lg rounded-pill px-5">&larr; 繼續逛逛</a>
+            <a href="/Cart/OrderDetails" class="btn btn-light btn-lg rounded-pill px-5">付款 &rarr;</a>
         </div>
     </div>
     <script src="~/Js/vue.global.js"></script>
@@ -488,6 +490,18 @@
                     alert("移除購物車項目時發生錯誤！");
                 }
             };
+            const addToWishlist = async (itemId) => {
+                try {
+                    // 調用 API 新增到待購清單
+                    await Api.addToWishlist(itemId);
+                    console.log("新增至待購清單的項目 ID:", itemId);
+                    alert("成功新增至待購清單！");
+                } catch (error) {
+                    console.error("加入待購清單失敗：", error.message);
+                    alert("加入待購清單時發生錯誤！");
+                }
+            };
+
 
             
 
@@ -502,6 +516,7 @@
                 cart,
                 discounts,
                 removeItem,
+                addToWishlist,
             };
         },
     };
