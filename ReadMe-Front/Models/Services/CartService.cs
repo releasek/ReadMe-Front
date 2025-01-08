@@ -60,6 +60,10 @@ namespace ReadMe_Front.Models.Services
 
 
         }
+        public void CreateOrder(string account, int cartid)
+        {
+            _cartEFRepo.CreateOrder(account, cartid);
+        }
         public int GetUserId(string account)
         {
             var userid = _cartEFRepo.GetUserid(account);
@@ -77,7 +81,7 @@ namespace ReadMe_Front.Models.Services
         {
             _cartEFRepo.DeleteCartItem(cartItemId);
         }
-        public void DeleteCart(int cartId)
+        public void ClearCart(int cartId)
         {
             _cartEFRepo.DeleteCart(cartId);
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic.ApplicationServices;
 using ReadMe_Front.Models.DAOs;
 using ReadMe_Front.Models.EFModels;
+using ReadMe_Front.Models.Services;
 using ReadMe_Front.Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,51 @@ namespace ReadMe_Front.Models.Repositories
 {
     public class CartEFRepo
     {
+        public void GetOrderDetail(string orderName)
+        {
+            using (var db = new AppDbContext())
+            {
+              
+            }
+        }
+        /// <summary>
+        /// 創建訂單
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="cartid"></param>
+        public void CreateOrder(string account, int cartid)
+        {
+            using (var db = new AppDbContext())
+            {
+                var _service = new CartService();
+                var cart = _service.GetCartInfo(account);
+                var userid= db.Users.FirstOrDefault(u => u.Account == account).Id;
+                var orderName = $"{DateTime.Now:yyyyMMddHHmmss}{new Random().Next(1000, 9999)}";
+                var order = new Order
+                {
+                    OrderName = orderName,
+                    UserID = userid,
+                    TotalAmount =cart.DiscountedPrice,
+                    OrderDate = DateTime.Now
+                };
+                foreach (var item in cart.CartItems)
+                {
+                    var orderItem = new OrderDetail
+                    {
+                        OrderId = order.Id,
+                        ProductId =item.ProductId,
+                        UnitPrice = item.Price
+                    };
+                    db.OrderDetails.Add(orderItem);
+                }
+                db.Orders.Add(order);
+                db.SaveChanges();
+            }
+        }
+        /// <summary>
+        /// 取得促銷活動
+        /// </summary>
+        /// <returns></returns>
         public List<PromotionVm> GetPromotionsVmItem()
         {
             using (var db = new AppDbContext())
@@ -175,7 +221,12 @@ namespace ReadMe_Front.Models.Repositories
                 }
             }
         }
-
+        /// <summary>
+        /// 透過帳號得到userId
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public int GetUserid(string name)
         {
             using (var db = new AppDbContext())
