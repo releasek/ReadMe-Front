@@ -1,4 +1,5 @@
-﻿using ReadMe_Front.Models.Services;
+﻿using ReadMe_Front.Models.EFModels;
+using ReadMe_Front.Models.Services;
 using ReadMe_Front.Models.ViewModels;
 using System;
 using System.Net;
@@ -98,21 +99,35 @@ namespace ReadMe_Front.Controllers
                 return Content(HttpStatusCode.InternalServerError, new { message = $"加入購物車失敗：{ex.Message}" });
             }
         }
+        [HttpPost]
+        [Route("api/cartapi/CreateOrder")]
+        public IHttpActionResult CreateOrder(int cartid)
+        {
+            //string account = User.Identity.Name;
+            string account = "user06";
+            var cart = _service.GetCartInfo(account);
+            if (cart == null)
+            {
+                return BadRequest("購物車為空");
+            }
+            _service.CreateOrder(account, cartid);
+            return Ok("訂單已建立");
+        }
 
-        //[HttpDelete]
-        //[Route("api/cartapi/clearCart")]
-        //public IHttpActionResult ClearCart()
-        //{
-        //    string account = User.Identity.Name;
+        [HttpDelete]
+        [Route("api/cartapi/clearCart")]
+        public IHttpActionResult ClearCart(int cartid)
+        {
+            string account = User.Identity.Name;
 
-        //    if (string.IsNullOrEmpty(account))
-        //    {
-        //        return BadRequest("帳號為空");
-        //    }
+            if (string.IsNullOrEmpty(account))
+            {
+                return BadRequest("帳號為空");
+            }
 
-        //    _service.ClearCart(account);
-        //    return Ok("購物車已清空");
-        //}
+            _service.ClearCart(cartid);
+            return Ok("購物車已清空");
+        }
 
     }
     public class AddCartVm
