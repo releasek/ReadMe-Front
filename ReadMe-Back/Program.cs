@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using ReadMe_Back.Models.EFModels;
+
 namespace ReadMe_Back
 {
     public class Program
@@ -8,6 +11,8 @@ namespace ReadMe_Back
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
             var app = builder.Build();
 
