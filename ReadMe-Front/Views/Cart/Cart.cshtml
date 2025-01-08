@@ -43,7 +43,7 @@
     }
 
     .step {
-        padding: 10px 20px;
+/*        padding: 10px 20px;*/
         border-bottom: 2px solid transparent;
     }
 
@@ -177,7 +177,7 @@
     }
 
     .progress-bar {
-        width: 100%;
+        width: 95%;
         height: 2px;
         background-color: #e0e0e0;
         position: absolute;
@@ -232,7 +232,7 @@
     }
 
     .check {
-        background-color: #40B3E9;
+/*        background-color: #40B3E9;*/
     }
 
     /* 標籤列 */
@@ -332,7 +332,7 @@
                     <div v-for="(item, index) in cart.CartItems" :key="item.Id" class="cart-item border-bottom py-3">
                         <!-- 商品項目 -->
                         <div class="item-info d-flex align-items-center">
-                            @*<input type="checkbox" v-model="item.checked" class="form-check-input me-3">*@
+                            <input type="checkbox" v-model="item.checked" class="form-check-input me-3">
                             <a :href="`/Products/ProductDetail/${item.ProductId}`">
                                 <img :src="item.ImageURL" :alt="`商品圖片 - ${item.Title}`" class="item-image me-3">
                             </a>
@@ -404,7 +404,7 @@
         <!-- 結算區 end-->
         <div class="d-flex justify-content-between">
             <a href="~/Home/Index" class="btn btn-light btn-lg rounded-pill px-5">&larr; 繼續逛逛</a>
-            <a href="/OrderDetails.html" class="btn btn-light btn-lg rounded-pill px-5">付款 &rarr;</a>
+            <a href="/Cart/OrderDetails" class="btn btn-light btn-lg rounded-pill px-5">付款 &rarr;</a>
         </div>
     </div>
     <script src="~/Js/vue.global.js"></script>

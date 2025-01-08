@@ -404,6 +404,7 @@
     <Content Include="Views\Members\Register.cshtml" />
     <Content Include="Views\Members\RegisterConfirm.cshtml" />
     <Content Include="Views\Products\ProductDetail - 複製.cshtml" />
+    <Content Include="Views\Cart\OrderDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

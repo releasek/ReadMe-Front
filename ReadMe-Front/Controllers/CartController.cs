@@ -62,6 +62,17 @@ namespace ReadMe_Front.Controllers
                 return RedirectToAction("Details", "Products", new { id = productId }); // 返回商品詳情頁
             }
         }
+        [HttpGet]
+        
+        public ActionResult OrderDetails()
+        {
+            return View();
+        }
+        public ActionResult OrderFinish()
+        {
+            return View();
+        }
+
 
     }
 }
