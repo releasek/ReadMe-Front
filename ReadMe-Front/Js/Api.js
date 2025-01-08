@@ -146,4 +146,66 @@ window.Api = {
             throw error; // 向外層拋出錯誤
         }
     },
+    // API 調用 - 新增訂單
+    async createOrder(cartId) {
+        try {
+            const response = await fetch(`${baseUrl}/CreateOrder?cartid=${cartId}`, {
+                method: "GET",
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json(); // 假設返回新增訂單的結果
+            console.log(`Order created for Cart ID: ${cartId}. Result:`, result);
+            return result; // 返回訂單資訊
+        } catch (error) {
+            console.error("Failed to create order:", error);
+            throw error; // 向外層拋出錯誤
+        }
+    },
+
+    // API 調用 - 清空購物車
+    async  clearCart(cartId) {
+    try {
+        const response = await fetch(`${baseUrl}/clearCart?cartid=${cartId}`, {
+            method: "DELETE",
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.text(); // 假設返回清空操作的結果
+        console.log(`Cart with ID: ${cartId} has been cleared. Message: ${result}`);
+        return result;
+    } catch (error) {
+        console.error("Failed to clear cart:", error);
+        throw error;
+    }
+},
+
+// API 調用 - 查詢訂單
+    async fetchOrder(orderName) {
+    try {
+        const response = await fetch(`${baseUrl}/getOrder?orderName=${orderName}`, {
+            method: "GET",
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json(); // 假設返回訂單詳細資訊
+        console.log(`Order details for ${orderName}:`, result);
+        return result; // 返回訂單資訊
+    } catch (error) {
+        console.error("Failed to fetch order:", error);
+        throw error;
+    }
+},
+
+
+
 };

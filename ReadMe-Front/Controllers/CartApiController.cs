@@ -85,7 +85,7 @@ namespace ReadMe_Front.Controllers
                 return BadRequest("請提供有效的商品資訊！");
             }
 
-            string account = "user06";
+            string account = User.Identity.Name;
 
 
             try
@@ -100,27 +100,28 @@ namespace ReadMe_Front.Controllers
                 return Content(HttpStatusCode.InternalServerError, new { message = $"加入購物車失敗：{ex.Message}" });
             }
         }
-        [HttpPost]
+        [HttpGet]
         [Route("api/cartapi/CreateOrder")]
         public IHttpActionResult CreateOrder(int cartid)
         {
-            //string account = User.Identity.Name;
-            string account = "user06";
+            string account = User.Identity.Name;
+            //string account = "user06";
             var cart = _service.GetCartInfo(account);
             if (cart == null)
             {
                 return BadRequest("購物車為空");
             }
-            _service.CreateOrder(account, cartid);
-            return Ok("訂單已建立");
+            var orderDetail = _service.CreateOrder(account, cartid);
+
+            return Ok(orderDetail);
         }
 
         [HttpDelete]
         [Route("api/cartapi/clearCart")]
         public IHttpActionResult ClearCart(int cartid)
         {
-            //string account = User.Identity.Name;
-            string account = "user06";
+            string account = User.Identity.Name;
+            //string account = "user06";
 
             if (string.IsNullOrEmpty(account))
             {
@@ -131,10 +132,18 @@ namespace ReadMe_Front.Controllers
             return Ok("購物車已清空");
         }
         [HttpGet]
-        [Route("api/cartapi/getOrert")]
+        [Route("api/cartapi/getOrder")]
         public IHttpActionResult GetOrder(string orderName)
         {
-            var order =_service.GetOrderDetail(orderName);
+            if (string.IsNullOrEmpty(orderName))
+            {
+                return BadRequest("Order name cannot be null or empty.");
+            }
+            var order = _service.GetOrderDetail(orderName);
+            if (order == null)
+            {
+                return NotFound();
+            }
             return Ok(order);
         }
 
