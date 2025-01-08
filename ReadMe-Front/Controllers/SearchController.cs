@@ -1,60 +1,34 @@
-﻿using ReadMe_Front.Models.Repositories;
-using ReadMe_Front.Models.Services;
+﻿using ReadMe_Front.Models.DTOs;
+using ReadMe_Front.Models.Infra;
+using ReadMe_Front.Models.Repositories;
+using ReadMe_Front.Models.ViewModels;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace ReadMe_Front.Controllers
 {
     public class SearchController : Controller
     {
-        private SearchService _searchService;
-        private CategoryEFRepo _efRepo;
+        //private SearchService _searchService;
+        private SearchEFRepo _efRepo;
 
         public SearchController()
         {
-            _searchService = new SearchService();
-            _efRepo = new CategoryEFRepo();
+            _efRepo = new SearchEFRepo();
         }
 
         // GET: Search
-        //public ActionResult Result(string input = "", int pageNumber = 1, int pageSize = 12)
-        //{
-        //    var initialResults = new SearchVm
-        //    {
-        //        Data = new SearchService().Search(input, pageNumber, pageSize).Data,
-        //        PaginationInfo = new SearchService().Search(input, pageNumber, pageSize).paginationInfo
-        //    };
-
-        //    // 將搜尋字串傳遞到 View
-        //    ViewBag.SearchInput = input;
-        //    return View(initialResults);
-        //}
-
         public ActionResult Result()
         {
             return View();
         }
-
-        public ActionResult _PagedResult(string input = "", int pageNumber = 1, int pageSize = 12, string categoryName = null, string publisher = null, string author = null)
+        public ActionResult _Products(string keyword, int pageNumber = 1, int pageSize = 12)
         {
-            var pagedResults = _searchService.FilterResults(input, pageNumber, pageSize, categoryName, publisher, author);
+            ViewBag.keyword = keyword;
 
-            ViewBag.SearchInput = input;
-
-            return View(pagedResults);
+            var pagedProducts = _efRepo.Search(keyword, pageNumber, pageSize);
+            var model = new Paged<SearchVm>(pagedProducts.Data.Select(dto => dto.Dto2Vm()).ToList(), pagedProducts.Pagination);
+            return PartialView(model);
         }
-
-        [HttpPost]
-        public JsonResult FilterResults(string input, int pageNumber = 1, int pageSize = 12, string categoryName = null, string publisher = null, string author = null)
-        {
-            var filterResults = _searchService.FilterResults(input);
-
-            // 返回 JSON 結果
-            return Json(new
-            {
-                data = filterResults.Data,
-                pagination = filterResults.PaginationInfo
-            });
-        }
-
     }
 }

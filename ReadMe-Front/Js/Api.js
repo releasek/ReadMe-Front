@@ -1,5 +1,6 @@
 const baseUrl = "/api/cartapi";
 const favoriteUrl = "/api/favoriteapi";
+const searchUrl = "/api/searchapi";
 
 window.Api = {
 
@@ -145,5 +146,22 @@ window.Api = {
             console.error("Failed to delete cart:", error);
             throw error; // 向外層拋出錯誤
         }
+    },
+
+    // 取得最初搜尋結果
+    async fetchSearch(input) {
+        try {
+            const response = await fetch(`${searchUrl}/getSearchResults?input=${encodeURIComponent(input)}`, {
+                method: "GET",
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json(); // 返回搜尋結果
+        }
+        catch (error) {
+            console.error("Fetch error:", error);
+            throw error;
+        }        
     },
 };

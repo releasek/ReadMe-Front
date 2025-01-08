@@ -1,6 +1,5 @@
 ﻿using ReadMe_Front.Models.DTOs;
 using ReadMe_Front.Models.EFModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,7 +24,7 @@ namespace ReadMe_Front.Models.Repositories
                                  Author = product.Author,
                                  Price = product.Price,
                                  CategoryName = category.CategoryName,
-                                 ParentCategoriesName = input,
+                                 ParentCategoryName = input,
                                  ImageURL = product.ImageURL
                              };
                 return result.ToList();
@@ -49,7 +48,7 @@ namespace ReadMe_Front.Models.Repositories
                                  Author = product.Author,
                                  Price = product.Price,
                                  CategoryName = input,
-                                 ParentCategoriesName = parentCategory.ParentCategoriesName,
+                                 ParentCategoryName = parentCategory.ParentCategoriesName,
                                  ImageURL = product.ImageURL
                              };
                 return result.ToList();
@@ -86,149 +85,10 @@ namespace ReadMe_Front.Models.Repositories
                                   Price = product.Price,
                                   ImageURL = product.ImageURL,
                                   CategoryName = category.CategoryName,
-                                  ParentCategoriesName = parentCategory.ParentCategoriesName,
+                                  ParentCategoryName = parentCategory.ParentCategoriesName,
                               };
 
                 return results.ToList();
-            }
-        }
-
-        //public Paged<CategoryDto> FilterResults(string input, int pageNumber = 1, int pageSize = 12, string categoryName = null, string publisher = null, string author = null)
-        //{
-        //    //precondition check
-        //    pageNumber = (pageNumber < 1) ? 1 : pageNumber;
-        //    pageSize = (pageSize < 1) ? 12 : pageSize;
-
-
-        //    // 再篩選邏輯
-        //    var filteredResults = initialResults.Data.AsQueryable();
-
-        //    // 根據分類篩選
-        //    if (!string.IsNullOrEmpty(categoryName))
-        //    {
-        //        filteredResults = filteredResults.Where(x => x.CategoryName == categoryName);
-        //    }
-
-        //    // 根據出版社篩選
-        //    if (!string.IsNullOrEmpty(publisher))
-        //    {
-        //        filteredResults = filteredResults.Where(x => x.Publisher == publisher);
-        //    }
-        //    // 根據出版社篩選
-        //    if (!string.IsNullOrEmpty(author))
-        //    {
-        //        filteredResults = filteredResults.Where(x => x.Author == author);
-        //    }
-
-        //    var filteredList = filteredResults.ToList();
-        //    int recordCount = filteredList.Count;
-
-        //    int recordCount = results.Count();
-
-        //    List<CategoryDto> pagedData = results.OrderBy(x => x.Id).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-
-        //    return new Paged<CategoryDto>(pagedData, pageNumber, pageSize, recordCount);
-
-        //    return new Paged<CategoryDto>(filteredList, initialResults.paginationInfo.PageNumber, initialResults.paginationInfo.PageSize, recordCount);
-        //}
-
-    }
-
-    /// <summary>
-    /// 存放單頁紀錄及分頁資訊
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class Paged<CategoryDto>
-    {
-        public List<CategoryDto> Data { get; set; }
-        public PaginationInfo PaginationInfo { get; set; }
-
-        public Paged(List<CategoryDto> data, int pageNumber, int pageSize, int recordCount)
-        {
-            this.Data = data;
-            this.PaginationInfo = new PaginationInfo(pageNumber, pageSize, recordCount);
-        }
-    }
-
-
-    /// <summary>
-    /// 存放分頁資訊
-    /// </summary>
-    /// <param name="currentPage">頁碼</param>
-    /// <param name="pageSize">每頁筆數</param>
-    /// <param name="recordCount">總筆數</param>
-    public class PaginationInfo
-    {
-        public PaginationInfo(int currentPage, int pageSize, int recordCount)
-        {
-            //precondition check
-            currentPage = (currentPage < 1) ? 1 : currentPage;
-            pageSize = (pageSize < 1) ? 12 : pageSize;
-            recordCount = (recordCount < 0) ? 0 : recordCount;
-
-            PageNumber = currentPage;
-            PageSize = pageSize;
-            RecordCount = recordCount;
-        }
-
-        public int PageNumber { get; }
-        public int PageSize { get; }
-        public int RecordCount { get; }
-
-
-
-        /// <summary>
-        /// 總頁數
-        /// </summary>
-        public int Pages
-        {
-            get
-            {
-                return (int)Math.Ceiling((double)RecordCount / PageSize);
-            }
-        }
-
-        /// <summary>
-        /// 是否顯示第一頁
-        /// </summary>
-        public bool ShowFirstPage
-        {
-            get
-            {
-                return PageNumber > 1;
-            }
-        }
-
-        /// <summary>
-        /// 是否顯示上一頁
-        /// </summary>
-        public bool ShowPrevPage
-        {
-            get
-            {
-                return PageNumber > 1;
-            }
-        }
-
-        /// <summary>
-        /// 是否顯示最末頁
-        /// </summary>
-        public bool ShowLastPage
-        {
-            get
-            {
-                return PageNumber < Pages;
-            }
-        }
-
-        /// <summary>
-        /// 是否顯示下一頁
-        /// </summary>
-        public bool ShowNextPage
-        {
-            get
-            {
-                return PageNumber < Pages;
             }
         }
     }

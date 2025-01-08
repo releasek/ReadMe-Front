@@ -1,0 +1,117 @@
+﻿@using ReadMe_Front.Models.ViewModels
+@model ReadMe_Front.Models.Infra.Paged<SearchVm>
+@{
+    var products = Model.Data;
+}
+<style>
+    .card {
+        display: flex;
+        flex-direction: column; /* 垂直排列 */
+        justify-content: space-between; /* 保持內容上下對齊 */
+        height: 100%; /* 設置卡片高度填滿容器 */
+        width: 170px; /* 設置固定寬度 */
+    }
+
+    .card-img-top {
+        width: 100%; /* 保持圖片寬度適應卡片容器 */
+        height: 210px; /* 設定固定高度 */
+        object-fit: cover; /* 保持圖片比例且填滿卡片 */
+    }
+
+    .card-text {
+        font-size: 14px;
+        color: #555;
+        text-align: left; /* 將價格對齊到右側 */
+        margin-top: auto; /* 確保價格始終在底部 */
+    }
+    .card-title {
+        font-size: 13px;
+        font-weight: bold;
+        line-height: 1.5;
+        height: 3em; /* 固定高度，確保標題區域一致 */
+        overflow: hidden;
+        word-wrap: break-word;
+    }
+
+    .card-body {
+        padding: 15px; /* 縮小內間距 */
+        font-size: 14px; /* 調整字體大小 */
+        line-height: 1.2; /* 調整行距，縮小高度 */
+        flex-grow: 1; /* 讓卡片的內容區域自動填滿空間 */
+        justify-content: space-between; /* 讓標題與價格分佈在頂部和底部 */
+    }
+
+    a {
+        text-decoration: none;
+        color: black;
+    }
+
+    .btn-primary {
+        background-color: #7AB8B8;
+        color: white;
+        border-color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #f8f9fa; /* Hover時背景變淡灰 */
+        color: black; /* Hover時文字變黑 */
+        border-color: gray; /* 邊框仍保持灰色 */
+    }
+
+    .btn-success {
+        background-color: #1E73BE;
+        color: white; /* 字體顏色設置為灰色 */
+        border-color: white; /* 邊框顏色設置為灰色 */
+    }
+
+    .btn-success:hover {
+        background-color: #f8f9fa; /* Hover時背景變淡灰 */
+        color: black; /* Hover時文字變黑 */
+        border-color: gray; /* 邊框仍保持灰色 */
+    }
+</style>
+<!-- 商品查詢結果區塊 -->
+<div class="row" style="margin-top:130px">
+    @if (products.Count() == 0)
+    {
+        <h2>對不起，找不到 @ViewBag.Keyword，請重新查詢</h2>
+    }
+    else
+    {        
+        <h2>@ViewBag.keyword 搜尋結果共 @Model.Pagination.TotalRecords 筆，頁數 @Model.Pagination.PageNumber / @Model.Pagination.TotalPages</h2>
+        
+        
+        foreach (var item in Model.Data)
+        {
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
+                <div class="card h-100">
+                    <a href="~/Products/ProductDetail/@item.Id">
+                        <img src="@item.ImageURL" class="card-img-top" alt="@item.Title">
+                    </a>
+                    <div class="card-body p-2">
+                        <a href="~/Products/ProductDetail/@item.Id">
+                            <h5 class="card-title mb-1">@item.Title</h5>
+                            <p class="text-muted mb-1">NT$ @item.Price</p>
+                        </a>
+                    </div>
+                    <div class="card-footer bg-white border-0 flex-column align-items-center">
+                        <button v-on:click="addToCart({ id: @item.Id, price: @item.Price })" class="btn btn-success btn-sm">購買</button>
+                        <a href="~/Products/ProductDetail/@item.Id" class="btn btn-primary btn-sm ">加入收藏</a>
+
+                    </div>
+                </div>
+            </div>
+        }
+        <!-- 分頁 -->
+        <div class="d-flex justify-content-center align-items-center mt-4">
+            @{
+                var pInfo = Model.Pagination;
+                pInfo.RouteValues = new { keyword = ViewBag.keyword }; // 若在不同頁裡想重覆使用分頁列, 可以在這裡變化要傳入的參數
+                pInfo.ActionName = "Result";
+                pInfo.ControllerName = "Search";
+            }
+            @Html.Partial("_Pagination", pInfo)
+        </div>
+    }
+
+</div>

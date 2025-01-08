@@ -182,17 +182,19 @@
     <Compile Include="Models\EFModels\Wishlist.cs" />
     <Compile Include="Models\Infra\DAHealper.cs" />
     <Compile Include="Models\Infra\HashUtility.cs" />
+    <Compile Include="Models\Infra\Paged.cs" />
+    <Compile Include="Models\Infra\Pagination.cs" />
     <Compile Include="Models\Interfaces\ICategoryRepo.cs" />
     <Compile Include="Models\Repositories\CartEFRepo.cs" />
     <Compile Include="Models\Repositories\CategoryDapperRepo.cs" />
     <Compile Include="Models\Repositories\CategoryEFRepo.cs" />
     <Compile Include="Models\Repositories\MemberEFRepo.cs" />
     <Compile Include="Models\Repositories\ProductEFRepo.cs" />
+    <Compile Include="Models\Repositories\SearchEFRepo.cs" />
     <Compile Include="Models\Services\CartService.cs" />
     <Compile Include="Models\Services\CategoryService.cs" />
     <Compile Include="Models\Services\MemberService.cs" />
     <Compile Include="Models\Services\ProductService.cs" />
-    <Compile Include="Models\Services\SearchService.cs" />
     <Compile Include="Models\ViewModels\CartItemVm.cs" />
     <Compile Include="Models\ViewModels\CartVm.cs" />
     <Compile Include="Models\ViewModels\CategoryVm.cs" />
@@ -408,6 +410,9 @@
     <Content Include="Views\Products\ProductDetail - 複製.cshtml" />
     <Content Include="Views\Cart\OrderDetails.cshtml" />
     <Content Include="Views\Cart\OrderFinish.cshtml" />
+    <Content Include="Views\Categories\SubCategory.cshtml" />
+    <Content Include="Views\Search\_Products.cshtml" />
+    <Content Include="Views\Shared\_Pagination.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

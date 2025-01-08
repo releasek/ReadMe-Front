@@ -1,4 +1,6 @@
-﻿namespace ReadMe_Front.Models.DTOs
+﻿using ReadMe_Front.Models.ViewModels;
+
+namespace ReadMe_Front.Models.DTOs
 {
     public class CategoryDto
     {
@@ -16,6 +18,24 @@
 
         public string CategoryName { get; set; }
 
-        public string ParentCategoriesName { get; set; }
+        public string ParentCategoryName { get; set; }
+    }
+
+    public static class ProductExts
+    {
+        public static SearchVm Dto2Vm(this CategoryDto dto)
+        {
+            return new SearchVm
+            {
+                Id = dto.Id,
+                Title = dto.Title,
+                Price = dto.Price,
+                ImageURL = dto.ImageURL,
+                Author = dto.Author,
+                Publisher = dto.Publisher,
+                Category = dto.CategoryName,
+                ParentCategory = dto.ParentCategoryName,
+            };
+        }
     }
 }
