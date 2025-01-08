@@ -16,11 +16,29 @@ namespace ReadMe_Front.Models.Repositories
 {
     public class CartEFRepo
     {
-        public void GetOrderDetail(string orderName)
+        /// <summary>
+        /// 單筆訂單資料
+        /// </summary>
+        /// <param name="orderName"></param>
+        /// <returns></returns>
+        public OrderVm GetOrderDetail(string orderName)
         {
             using (var db = new AppDbContext())
             {
-              
+                var order = db.Orders.Where(n => n.OrderName == orderName)
+                    .Select(o => new OrderVm
+                    {
+                        Id = o.Id,
+                        OrderName = o.OrderName,
+                        UserID = o.UserID,
+                        TotalAmount = o.TotalAmount,
+                        OrderDate = o.OrderDate
+                    }).FirstOrDefault();
+                if (order == null)
+                {
+                    throw new KeyNotFoundException($"Order with name '{orderName}' was not found.");
+                }
+                return order;
             }
         }
         /// <summary>
@@ -28,7 +46,7 @@ namespace ReadMe_Front.Models.Repositories
         /// </summary>
         /// <param name="account"></param>
         /// <param name="cartid"></param>
-        public void CreateOrder(string account, int cartid)
+        public List<OrderVm> CreateOrder(string account, int cartid)
         {
             using (var db = new AppDbContext())
             {
@@ -55,6 +73,16 @@ namespace ReadMe_Front.Models.Repositories
                 }
                 db.Orders.Add(order);
                 db.SaveChanges();
+
+                return db.Orders.Where(o => o.OrderName == order.OrderName)
+                    .Select(o => new OrderVm
+                    {
+                        Id = o.Id,
+                        OrderName = o.OrderName,
+                        UserID = o.UserID,
+                        TotalAmount = o.TotalAmount,
+                        OrderDate = o.OrderDate
+                    }).ToList();
             }
         }
         /// <summary>

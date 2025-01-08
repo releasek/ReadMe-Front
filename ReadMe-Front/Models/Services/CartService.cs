@@ -17,6 +17,10 @@ namespace ReadMe_Front.Models.Services
         {
             _cartEFRepo = new CartEFRepo();
         }
+        public OrderVm GetOrderDetail(string orderName)
+        {
+            return _cartEFRepo.GetOrderDetail(orderName);
+        }
         public List<PromotionVm> GetPromotionsVmItem()
         {
             return _cartEFRepo.GetPromotionsVmItem();
@@ -60,9 +64,9 @@ namespace ReadMe_Front.Models.Services
 
 
         }
-        public void CreateOrder(string account, int cartid)
+        public List<OrderVm> CreateOrder(string account, int cartid)
         {
-            _cartEFRepo.CreateOrder(account, cartid);
+            return _cartEFRepo.CreateOrder(account, cartid);
         }
         public int GetUserId(string account)
         {

@@ -287,38 +287,17 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
 
                 <!-- 操作按鈕 -->
                 <div class="d-flex justify-content-between mt-4">
                     <a href="/Cart/Cart" class="btn btn-light btn-lg rounded-pill px-5">&larr; 返回購物車</a>
-                    <a href="/Cart/OrderFinish" class="btn btn-lg rounded-pill px-5">
-                    </a>
-                    <button v-on:click="handlePayment(cart.Id)" class="btn btn-light btn-lg rounded-pill px-5">付款 &rarr;</button>
+                    <button v-on:click="handlePayment(cart.Id)" class="btn btn-danger btn-lg rounded-pill px-5">付款 &rarr;</button>
                 </div>
-            </div>
-            <!-- 模態框 -->
-            <div v-if="showOrderModal" class="modal" tabindex="-1" style="display: block; background: rgba(0, 0, 0, 0.5);">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">訂單完成</h5>
-                            <button type="button" class="close" v-on:click="closeModal">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <p>感謝您的購買！以下是訂單資訊：</p>
-                            <ul>
-                                <li><strong>訂單編號：</strong>{{ orderInfo.orderName }}</li>
-                                <li><strong>總金額：</strong>NT${{ cart.DiscountedPrice }}</li>
-                            </ul>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" v-on:click="goToOrderFinish">前往完成頁面</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+               </div>
+           </div>
+       </div>
 
             <script src="~/Js/vue.global.js"></script>
             <script src="~/Js/Repeat.js"></script>
@@ -331,8 +310,6 @@
                         // 資料
                         const cart = ref([]); // 購物車資料
                         const paymentOptions = ["貨到付款", "信用卡/金融卡", "信用卡分期付款"];
-                        const showOrderModal = ref(false); // 模態框顯示控制
-                        const orderInfo = ref({}); // 訂單資訊
 
                         // API 調用 - 獲取購物車資料
                         const fetchCartItems = async () => {
@@ -351,31 +328,16 @@
                                 console.log("按鈕:", cartId)
                                 // Step 1: 新增訂單
                                 const orderResult = await Api.createOrder(cartId); // 調用 API 新增訂單
-                                console.log("回傳的order", showOrderModal,)
-                                const orderName = orderResult.orderName; // 假設後端返回 orderName
-
-                                // Step 2: 使用訂單名稱查詢詳細資料
-                                const orderDetails = await Api.fetchOrder(orderName);
-                                console.log('查詢到的訂單資料:', orderDetails);
-
-                                // Step 3: 清空購物車
+                                console.log("回傳的name:", orderResult)
+                                const orderName = orderResult.OrderName; // 假設後端返回 orderName
+                                console.log("回傳的name:", orderName)
+                                // Step 2: 清空購物車
                                 await Api.clearCart(cartId); // 調用 API 清空購物車
 
-                                orderInfo.value = orderDetails;; // 更新訂單資訊
-                                showOrderModal.value = true; // 顯示模態框
-
+                                alert("付款完成！訂單已建立並清空購物車！");
                             } catch (error) {
                                 alert(`付款過程中發生錯誤：${error.message}`);
                             }
-                        };
-                        // 關閉模態框
-                        const closeModal = () => {
-                            showOrderModal.value = false;
-                        };
-
-                        // 跳轉到完成頁面
-                        const goToOrderFinish = () => {
-                            window.location.href = `/Cart/OrderFinish`;
                         };
 
                         // 定義反應性數據
@@ -398,10 +360,6 @@
                             selectedIndex,
                             selectOption,
                             handlePayment,
-                            orderInfo,
-                            closeModal,
-                            goToOrderFinish,
-                            showOrderModal,
                         };
                     },
                 };
