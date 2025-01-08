@@ -21,7 +21,7 @@
 <body>
     <div class="container" id="app" style="margin-top : 130px;">
         <!-- 麵包start -->
-        <nav aria-label="breadcrumb" >
+        <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/Home/Index">首頁</a></li>
                 <li class="breadcrumb-item"><a href="/Categories/ParentCategory?parentCategoryName=@Model.ParentCategoryName">@Model.ParentCategoryName</a></li>
@@ -32,53 +32,62 @@
         <!--麵包end -->
         <!-- 書籍內容區 -->
         <main class="book-content">
-            <!-- 書籍資訊 -->
             <div class="book-info row">
                 <div class="col-4">
-                    <img src="@Model.ImageURL" alt="書籍封面">
+                    <img :src="productDetail.imageURL" alt="書籍封面" />
                 </div>
                 <div class="details col-8">
-                    <h2>@Model.Title</h2>
-                    <p>作者：@Model.Author</p>
-                    <p>出版社：@Model.Publisher</p>
-                    <p>出版日期：@Model.PublishDate</p>
-                    <p>電子書售價：<span class="price">@Model.Price</span></p>
-                    <p class="promotion">@Model.PromotionName</p>
-                    <!-- 右側操作 -->
+                    <h2>{{ productDetail.title }}</h2>
+                    <p>作者：{{ productDetail.author }}</p>
+                    <p>出版社：{{ productDetail.publisher }}</p>
+                    <p>出版日期：{{ productDetail.publishDate }}</p>
+                    <p>電子書售價：<span class="price">{{ productDetail.price }}</span></p>
+                    <p class="promotion">{{ productDetail.promotionName }}</p>
+
                     <!-- 操作按鈕 -->
                     <aside class="book-actions d-flex flex-column">
                         <!-- 購買 -->
-                        <form method="post" action="/Cart/AddToCart" class="mb-2">
-                            @* 防止 CSRF 攻擊 *@
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="ProductId" value="@Model.Id" />
-                            <input type="hidden" name="Price" value="@Model.Price" />
-                            <button type="submit" class="btn btn-primary w-100">立即購買</button>
+                        <form v-on:submit.prevent="addToCart">
+                            <button type="submit" class="btn btn-primary w-100 mb-2">立即購買</button>
                         </form>
-
                         <!-- 加入收藏 -->
-                        <form method="post" action="/Wishlist/AddToWishlist">
-                            @* 防止 CSRF 攻擊 *@
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="ProductId" value="@Model.Id" />
+                        <form v-on:submit.prevent="addToWishlist">
                             <button type="submit" class="btn btn-secondary w-100">加入收藏列表</button>
                         </form>
                     </aside>
                 </div>
-            </div>            
+            </div>
         </main>
 
         <!-- 書籍描述 -->
+        <!-- 書籍描述 -->
         <section class="book-description mt-4">
             <h3>書籍介紹</h3>
-            <p>
-                @Model.Description
-            </p>
-        </section>                 
+            <p>{{ productDetail.description }}</p>
+        </section>
 
-        <div class="related-books">
-            @Html.Action("ProductAuthor", "Products", new { Author = Model.Author })
+        <!-- 相關書籍 -->
+        <div class="row">
+            <div v-if="books && books.length > 0">
+                <div v-for="book in books"
+                     :key="book.id"
+                     class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
+                    <div class="card h-100">
+                        <img :src="book.imageURL" class="card-img-top" alt="書籍封面" />
+                        <div class="card-body p-2">
+                            <h5 class="card-title mb-1">{{ book.title }}</h5>
+                            <p class="card-text mb-1">{{ book.author }}</p>
+                            <p class="text-muted mb-1">NT$ {{ book.price }}</p>
+                        </div>
+                        <div class="card-footer bg-white border-0 d-flex justify-content-between p-2">
+                            <button v-on:click="buyBook(book.id)" class="btn btn-primary btn-sm">購買</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p v-else>{{ message }}</p>
         </div>
+    </div>
             
     </div>
 </body>
