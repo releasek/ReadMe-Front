@@ -33,7 +33,7 @@ namespace ReadMe_Front.Controllers
             {
                 _service.AddFavorite(userId, productId);
                 TempData["Message"] = "商品已成功加入收藏清單！";
-                return RedirectToAction("Favorites", "Cart");
+                return RedirectToAction("Products", "Cart");
             }
             catch (Exception ex)
             {
@@ -53,7 +53,7 @@ namespace ReadMe_Front.Controllers
                 // 添加到購物車的業務邏輯
                 _service.AddCartItem(account,productId,price);
                 TempData["Message"] = "商品已成功加入購物車！";
-                return RedirectToAction("Index", "Cart"); // 跳轉到購物車頁面
+                return RedirectToAction("Cart", "Cart"); // 跳轉到購物車頁面
             }
             catch (Exception ex)
             {

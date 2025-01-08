@@ -1,0 +1,154 @@
+﻿@using ReadMe_Front.Models.ViewModels
+@model ProductDetailVm
+
+@{
+    ViewBag.Title = "商品詳細頁 ";
+    Layout = "~/Views/Shared/_Layout2.cshtml"; // 指定 Layout
+}
+<style>
+    .newline {
+        white-space: nowrap;
+    }
+
+    .picture {
+        font-size: 20px
+    }
+
+    a {
+        text-decoration: none;
+        color: black;
+    }
+</style>
+<body>
+    <div class="container" id="app" style="margin-top : 130px;">
+        <!-- 麵包start -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/Home/Index">首頁</a></li>
+                <li class="breadcrumb-item"><a href="/Categories/ParentCategory?parentCategoryName={{books.ParentCategoryName}}">{{books.ParentCategoryName}}</a></li>
+                <li class="breadcrumb-item"><a href="/Categories/SubCategory?subCategoryName={{books.CategoryName}}">{{books.CategoryName}}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{books.Title}}</li>
+            </ol>
+        </nav>
+        <!--麵包end -->
+        <!-- 書籍內容區 -->
+        <!-- 書籍內容區 -->
+        <main class="book-content" v-if="books">
+            <div class="book-info row">
+                <div class="col-4">
+                    <img :src="books.ImageURL" alt="書籍封面" />
+                </div>
+                <div class="details col-8">
+                    <h2>{{ books.Title }}</h2>
+                    <p>作者：{{ books.Author }}</p>
+                    <p>出版社：{{ books.Publisher }}</p>
+                    <p>出版日期：{{ books.PublishDate }}</p>
+                    <p>電子書售價：<span class="price">{{ books.Price }}</span></p>
+                </div>
+            </div>
+        </main>
+        <p v-else>商品資料加載中...</p>
+
+
+        <!-- 書籍描述 -->
+        <section class="book-description mt-4">
+            <h3>書籍介紹</h3>
+            <p>{{ books.Description }}</p>
+        </section>
+
+        <!-- 相關書籍 -->
+        <div v-if="relatedBooks.length > 0">
+            <div v-for="book in relatedBooks" :key="book.id" class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
+                <div class="card h-100">
+                    <img :src="book.ImageURL" class="card-img-top" alt="書籍封面" />
+                    <div class="card-body p-2">
+                        <h5 class="card-title mb-1">{{ book.Title }}</h5>
+                        <p class="card-text mb-1">{{ book.Author }}</p>
+                        <p class="text-muted mb-1">NT$ {{ book.Price }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p v-else>目前沒有相關書籍。</p>
+
+
+        @*<div class="card-footer bg-white border-0 d-flex justify-content-between p-2">
+            <button v-on:click="buyBook(book.id)" class="btn btn-primary btn-sm">購買</button>
+        </div>*@
+
+    </div>
+    @if (Model != null)
+    {
+        <script>
+            window.productId = @Model.Id;
+            window.authorName = "@Model.Author";
+        </script>
+    }
+    else
+    {
+        <p>商品資料加載失敗。</p>
+    }
+</body>
+<script src="~/Js/vue.global.js"></script>
+<script src="~/Js/Repeat.js"></script>
+<script src="~/Js/Api.js"></script>
+<script>
+    const { createApp, ref, onMounted } = Vue;
+
+    const config = {
+        setup() {
+            const books = ref(null); // 單一書本資料
+            const relatedBooks = ref([]); // 相關作者書籍資料
+            const isLoading = ref(true); // 資料加載狀態
+            const message = ref("目前沒有相關書籍");
+
+            const fetchProductItems = async (productId) => {
+                isLoading.value = true;
+                try {
+                    const data = await Api.fetchProducts(productId);
+                    books.value = data;
+                } catch (error) {
+                    console.error("無法獲取書本資料：", error.message);
+                    alert("無法獲取書本資料，請稍後再試！");
+                } finally {
+                    isLoading.value = false;
+                }
+            };
+
+            const fetchAuthorItems = async (authorName) => {
+                isLoading.value = true;
+                try {
+                    const data = await Api.fetchAuthors(authorName);
+                    relatedBooks.value = data;
+                } catch (error) {
+                    console.error("無法獲取相關書籍資料：", error.message);
+                    alert("無法獲取相關書籍資料，請稍後再試！");
+                } finally {
+                    isLoading.value = false;
+                }
+            };
+
+            onMounted(() => {
+                const productId = window.productId;
+                const authorName = window.authorName;
+
+                if (productId && authorName) {
+                    fetchProductItems(productId);
+                    fetchAuthorItems(authorName);
+                } else {
+                    alert("商品資料加載失敗，請刷新頁面重試！");
+                }
+            });
+
+            return {
+                books,
+                relatedBooks,
+                isLoading,
+                message,
+            };
+        },
+    };
+
+    createApp(config).mount("#app");
+
+</script>
