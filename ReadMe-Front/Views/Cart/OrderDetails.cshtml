@@ -1,0 +1,352 @@
+﻿@model IEnumerable<ReadMe_Front.Models.ViewModels.CartItemVm>
+
+@{
+    ViewBag.Title = "OrderDetails";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        body {
+            background-color: #f9f9f9;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 900px;
+        }
+
+        .order-container, .payment-method {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .product-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .product-image img {
+            width: 100px;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .product-details {
+            flex-grow: 1;
+        }
+
+        .voucher-section, .shipping-section {
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        .text-muted {
+            color: #666 !important;
+        }
+
+        .text-danger {
+            color: #e60012 !important;
+        }
+
+        .btn-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+            .btn-link:hover {
+                text-decoration: underline;
+            }
+
+        .payment-method .btn-group .btn {
+            border: 1px solid #ddd;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .btn-danger {
+            background-color: #ff5722;
+            color: #fff;
+            border: none;
+        }
+
+            .btn-danger:hover {
+                background-color: #d32f2f;
+            }
+        /* 進度條 */
+        .progress-section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .progress-bar {
+            width: 95%;
+            height: 2px;
+            background-color: #e0e0e0;
+            position: absolute;
+            top: 15px;
+            z-index: 1;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #40B3E9;
+            transition: width 0.3s ease;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+            gap: 100px;
+        }
+
+        .step {
+            text-align: center;
+            color: #999;
+            transition: all 0.3s ease;
+        }
+
+        .step-circle {
+            width: 28px;
+            height: 28px;
+            background-color: #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 14px;
+            color: white;
+        }
+
+        .step.active .step-circle {
+            background-color: #40B3E9;
+        }
+
+        .step-label {
+            margin-top: 0.5rem;
+            font-size: 14px;
+        }
+
+        .step.active .step-label {
+            color: #40B3E9;
+        }
+
+/*        .check {
+            background-color: #40B3E9;
+        }*/
+
+        /* 彈出視窗 */
+        .modal {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            width: 50%;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .coupon-list {
+            list-style: none;
+            padding: 0;
+        }
+
+            .coupon-list li {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 1px solid #ddd;
+                padding: 10px 0;
+            }
+
+        .btn-use {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+            .btn-use:hover {
+                background-color: #0056b3;
+            }
+
+        .summary-details {
+            font-size: 14px;
+            color: #333;
+            
+        }
+
+            .summary-details div {
+                display: flex;
+               
+                margin-bottom: 10px;
+                justify-content: flex-end;
+            }
+
+            .summary-details .total {
+                font-size: 16px;
+                font-weight: bold;
+                color: #e60012;
+            }
+    </style>
+
+    <body>
+        <div class="container" id="app" style="margin-top:40px;">
+            <!-- 導覽 strat -->
+            <progress-component :current-page="2"></progress-component>
+            <!-- 導覽 end -->
+
+            <div>
+                <div class="order-container">
+                    <h5>訂單商品</h5>
+                    <div class="product-item mb-4"
+                         v-for="(item, index) in cart.CartItems || []"
+                         :key="item.Id"
+                         :style="{ borderBottom: index < (cart.CartItems?.length || 0) - 1 ? '1px solid #ccc' : 'none', paddingBottom: '10px' }">
+                        <div class="product-image">
+                            <img :src="item.ImageURL" :alt="item.Title">
+                        </div>
+                        <div class="product-details">
+                            <h6>{{ item.Title }}</h6>
+                            <p class="text-muted">選項：{{ item.Option }}</p>
+                        </div>
+                        <div class="text-end">
+                            <p class="mb-0">價格: ${{ item.Price }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 付款方式區 -->
+                <div class="payment-method">
+                    <h5 class="mb-4">付款方式</h5>
+                    <div class="btn-group d-flex mb-4" role="group">
+                        <button v-for="(option, index) in paymentOptions"
+                                :key="index"
+                                type="button"
+                                class="btn flex-fill"
+                                :class="{ 'btn-danger': selectedIndex === index, 'btn-light': selectedIndex !== index }"
+                                v-on:click="selectOption(index)">
+                            {{ option }}
+                        </button>
+                    </div>
+                    <table class="table mb-4">
+                        <tbody>
+                            <tr>
+                                <td>付款方式</td>
+                                <td>{{ paymentOptions[selectedIndex] }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="text-end pt-3">
+                        <div class="summary-details">
+                            <div>
+                                <span>訂單小計：</span>
+                                <span>NT${{ cart.TotalPrice || 0 }}</span>
+                            </div>
+                            <div>
+                                <span>促銷折抵：</span>
+                                <span>-NT${{ cart.DiscountValue || 0 }}</span>
+                            </div>
+                            <div class="total">
+                                <span>訂單總計：</span>
+                                <span>NT${{ cart.DiscountedPrice || 0 }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 操作按鈕 -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="/Cart/Cart" class="btn btn-light btn-lg rounded-pill px-5">&larr; 返回購物車</a>
+                    <a href="/Cart/OrderFinish" class="btn btn-lg rounded-pill px-5">付款 &rarr;</a>
+                </div>
+            </div>
+        </div>
+
+            <script src="~/Js/vue.global.js"></script>
+            <script src="~/Js/Repeat.js"></script>
+            <script src="~/Js/Api.js"></script>
+            <script>
+                const { createApp, ref, onMounted } = Vue;
+
+                const config = {
+                    setup() {
+                        // 資料
+                        const cart = ref([]); // 購物車資料
+
+                        // API 調用 - 獲取購物車資料
+                        const fetchCartItems = async () => {
+                            try {
+                                const data = await Api.fetchCart(); // 調用 API
+                                cart.value = data; // 賦值購物車資料
+                                console.log("購物車資料：", cart.value);
+                            } catch (error) {
+                                console.error("無法獲取購物車資料：", error.message);
+                                alert("獲取購物車資料時發生錯誤！");
+                            }
+                        };
+                        // 定義反應性數據
+                        const paymentOptions = ["貨到付款", "信用卡/金融卡", "信用卡分期付款"];
+                        const selectedIndex = Vue.ref(0); // 預設選中第一個按鈕
+
+                        // 定義方法
+                        const selectOption = (index) => {
+                            selectedIndex.value = index; // 更新選中按鈕的索引
+                        };
+
+
+                        // 在元件載入時執行 API 調用
+                        onMounted(() => {
+                            fetchCartItems(); // 獲取購物車資料
+                        });
+
+                        return {
+                            cart,
+                            paymentOptions,
+                            selectedIndex,
+                            selectOption,
+                        };
+                    },
+                };
+
+                // 創建 Vue 應用
+                const app = createApp(config);
+                app.component("progress-component", Progress); // 註冊組件
+                app.mount("#app"); // 掛載應用到 DOM
+           </script>
+</body>
+</html>

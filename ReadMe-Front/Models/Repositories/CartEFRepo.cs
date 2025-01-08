@@ -130,7 +130,7 @@ namespace ReadMe_Front.Models.Repositories
         {
             using (var db = new AppDbContext())
             {
-                var cartItem = db.CartItems.FirstOrDefault(ci => ci.Id == cartItemId);
+                var cartItem = db.CartItems.FirstOrDefault(ci => ci.ProductId == cartItemId);
                 if (cartItem != null)
                 {
                     db.CartItems.Remove(cartItem);

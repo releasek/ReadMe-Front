@@ -21,39 +21,37 @@ namespace ReadMe_Front.Controllers
         /// <returns></returns>
         public ActionResult ProductDetail(int id)
         {
-            //try
-            //{
-            //    var productDetail = _productService.GetProductById(id);
+            try
+            {
+                var productDetail = _productService.GetProductById(id);
 
-            //    if (productDetail == null)
-            //    {
-            //        return HttpNotFound("找不到商品");
-            //    }
+                if (productDetail == null)
+                {
+                    return HttpNotFound("找不到商品");
+                }
 
-            //    return View(productDetail);
-            //}
-            //catch (KeyNotFoundException ex)
-            //{
-            //    ViewBag.ErrorMessage = ex.Message;
-            //    return View("Error");
-            //}
-            //catch (Exception ex)
-            //{
-            //    ViewBag.ErrorMessage = "發生未知錯誤：" + ex.Message;
-            //    return View("Error");
-            //}
-            return View();
+                return View(productDetail);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View("Error");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "發生未知錯誤：" + ex.Message;
+                return View("Error");
+            }
         }
         public ActionResult ProductAuthor(string Author)
         {
 
-            //var AuthorBook = _productService.GetAuthorBook(Author);
-            //if (AuthorBook == null)
-            //{
-            //    return HttpNotFound("找不到相關作者");
-            //}
-            //return View(AuthorBook);
-            return View();
+            var AuthorBook = _productService.GetAuthorBook(Author);
+            if (AuthorBook == null)
+            {
+                return HttpNotFound("找不到相關作者");
+            }
+            return View(AuthorBook);
         }
         /// <summary>
         /// 收藏清單

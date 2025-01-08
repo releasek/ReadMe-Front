@@ -49,20 +49,21 @@
                     <aside class="book-actions d-flex flex-column">
                         <!-- 購買 -->
                         <form method="post" action="/Cart/AddToCart" class="mb-2">
-                            @* 防止 CSRF 攻擊 *@
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="ProductId" value="@Model.Id" />
                             <input type="hidden" name="Price" value="@Model.Price" />
-                            <button type="submit" class="btn btn-primary w-100">立即購買</button>
+                            <button type="submit" >立即購買</button>
                         </form>
 
+
                         <!-- 加入收藏 -->
-                        <form method="post" action="/Wishlist/AddToWishlist">
-                            @* 防止 CSRF 攻擊 *@
+                        <form method="post" action="/Cart/AddToFavorite">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="ProductId" value="@Model.Id" />
-                            <button type="submit" class="btn btn-secondary w-100">加入收藏列表</button>
+                            <button type="submit" >加入收藏列表</button>
                         </form>
+
+
                     </aside>
                 </div>
             </div>            

@@ -2,6 +2,21 @@ const baseUrl = "/api/cartapi";
 const favoriteUrl = "/api/favoriteapi";
 
 window.Api = {
+
+    // 取得商品資料
+    async fetchProducts(productid) {
+        const response = await fetch(`${baseUrl}/getProducts?id=${productId}`, {
+            method: "GET",
+        });
+        return await response.json(); // 返回商品資料
+    },
+    // 取得作者資料
+    async fetchAuthors(author) {
+        const response = await fetch(`${baseUrl}/getAuthors?author=${author}`, {
+            method: "GET",
+        });
+        return await response.json(); // 返回作者資料
+    },
     // 取得購物車資料
     async fetchCart() {
         try {
