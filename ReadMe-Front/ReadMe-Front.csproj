@@ -192,6 +192,7 @@
     <Compile Include="Models\Services\CategoryService.cs" />
     <Compile Include="Models\Services\MemberService.cs" />
     <Compile Include="Models\Services\ProductService.cs" />
+    <Compile Include="Models\Services\SearchService.cs" />
     <Compile Include="Models\ViewModels\CartItemVm.cs" />
     <Compile Include="Models\ViewModels\CartVm.cs" />
     <Compile Include="Models\ViewModels\CategoryVm.cs" />
