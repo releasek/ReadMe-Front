@@ -10,26 +10,46 @@
 <div class="row">
     @if (Model != null && Model.Any())
     {
-        foreach (var book in Model)
-        {
-            <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
-                <div class="card h-100">
-                    <img src="@book.ImageURL" class="card-img-top" alt="書籍封面">
-                    <div class="card-body p-2">
-                        <h5 class="card-title mb-1">@book.Title</h5>
-                        <p class="card-text mb-1">@book.Author</p>
-                        <p class="text-muted mb-1">NT$ @book.Price</p>
-                    </div>
-                    <div class="card-footer bg-white border-0 d-flex justify-content-between p-2">
-                        <button>購買</button>
-                    </div>
-                </div>
+    foreach (var book in Model)
+    {
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
+        <div class="card h-100">
+            <!-- 書籍封面 -->
+            <img src="@book.ImageURL" class="card-img-top" alt="書籍封面" style="height: 200px; object-fit: cover;">
+
+            <!-- 書籍資訊 -->
+            <div class="card-body p-2">
+                <h5 class="card-title mb-1" style="font-size: 1rem;">@book.Title</h5>
+                <p class="card-text mb-1" style="font-size: 0.875rem;">@book.Author</p>
+                <p class="text-muted mb-1" style="font-size: 0.875rem;">電子書售價：NT$ @book.Price</p>
             </div>
-        }
+
+            <!-- 操作按鈕 -->
+            <div class="card-footer bg-white border-0 d-flex justify-content-between p-2">
+                <!-- 購買表單 -->
+                <form method="post" action="/Cart/AddToCart" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="ProductId" value="@book.Id" />
+                    <input type="hidden" name="Price" value="@book.Price" />
+                    <button type="submit" class="btn btn-primary btn-sm">購買</button>
+                </form>
+
+                <!-- 加入收藏表單 -->
+                <form method="post" action="/Cart/AddToFavorite" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="ProductId" value="@book.Id" />
+                    <button type="submit" class="btn btn-secondary btn-sm">收藏</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    }
     }
     else
     {
-        <p>@ViewBag.Message</p>
+    <p>@ViewBag.Message</p>
     }
 </div>
 
