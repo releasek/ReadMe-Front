@@ -164,7 +164,29 @@
             font-weight: bold;
             margin: 20px 0;
         }
+        .btn-primary {
+            background-color: #7AB8B8;
+            color: white;
+            border-color: white;
+        }
 
+            .btn-primary:hover {
+                background-color: #f8f9fa; /* Hover時背景變淡灰 */
+                color: black; /* Hover時文字變黑 */
+                border-color: gray; /* 邊框仍保持灰色 */
+            }
+
+        .btn-success {
+            background-color: #1E73BE;
+            color: white; /* 字體顏色設置為灰色 */
+            border-color: white; /* 邊框顏色設置為灰色 */
+        }
+
+            .btn-success:hover {
+                background-color: #f8f9fa; /* Hover時背景變淡灰 */
+                color: black; /* Hover時文字變黑 */
+                border-color: gray; /* 邊框仍保持灰色 */
+            }
     </style>
 </head>
 
@@ -185,7 +207,7 @@
                 <option value="priceLow">價格低</option>
             </select>
             <div >
-                <button v-on:click="removeSelectedItems" class="btn btn-success btn-sm">選擇項目移除</button>
+                <button class="btn btn-success btn-sm">選擇項目移除</button>
             </div>
         </div>
 
@@ -199,33 +221,35 @@
         <div class="container">
             <section class="favorites-section">
                 <!-- 檢查收藏清單是否存在 -->
-                <div v-if="favorites && favorites.length > 0">
-                    <div v-for="(item, index) in filteredFavorites" :key="item.Id" class="cart-item border-bottom py-3">
-                        <input type="checkbox" v-model="item.checked" class="form-check-input me-3">
-                        <div class="item-info d-flex align-items-center">
-                            <a :href="`/Products/ProductDetail/${item.Id}`">
-                                <img :src="item.ImageURL" alt="商品封面" class="item-image me-3" style="width: 100px; height: auto;">
-                            </a>
-                            <div>
-                                <h3 class="item-title mb-2">{{ item.Title }}</h3>
-                                <p class="item-author mb-1">作者：{{ item.Author  }}</p>
-                                <p class="item-publisher mb-1">出版社：{{ item.Publisher  }}</p>
-                            </div>
-                        </div>
-                        <div class="item-actions mt-2 d-flex align-items-center">
-                            <span class="item-price me-3">NT$ {{ item.Price }}</span>
-                            <button type="button"
-                                    class="btn btn-outline-primary btn-sm me-2"
-                                    v-on:click="addToCart(item.Id, item.Price)">
-                                加入購物車
-                            </button>
-                            <button type="button"
-                                    class="btn btn-outline-danger btn-sm"
-                                    v-on:click="removeItem(item.Id)">
-                                移除
-                            </button>
-                        </div>
-                    </div>
+                @*<div v-if="favorites && favorites.length > 0">*@
+                  <div v-if="filteredFavorites.length > 0">
+                    <!-- 使用 Vue 的 v-for 渲染多個商品 -->
+                      <div v-for="(item, index) in filteredFavorites" :key="item.Id" class="cart-item border-bottom py-3">
+                          <input type="checkbox" v-model="item.checked" class="form-check-input me-3">
+                          <div class="item-info d-flex align-items-center">
+                              <a :href="`/Products/ProductDetail/${item.Id}`">
+                                  <img :src="item.ImageURL" alt="商品封面" class="item-image me-3" style="width: 100px; height: auto;">
+                              </a>
+                              <div>
+                                  <h3 class="item-title mb-2">{{ item.Title }}</h3>
+                                  <p class="item-author mb-1">作者：{{ item.Author  }}</p>
+                                  <p class="item-publisher mb-1">出版社：{{ item.Publisher  }}</p>
+                              </div>
+                          </div>
+                          <div class="item-actions mt-2 d-flex align-items-center">
+                              <span class="item-price me-3">NT$ {{ item.Price }}</span>
+                              <button type="button"
+                                      class="btn btn-outline-primary btn-sm me-2"
+                                      v-on:click="addToCart(item.Id, item.Price)">
+                                  加入購物車
+                              </button>
+                              <button type="button"
+                                      class="btn btn-outline-danger btn-sm"
+                                      v-on:click="removeItem(item.Id)">
+                                  移除
+                              </button>
+                          </div>
+                      </div>
                 </div>
                 <!-- 當收藏清單為空時顯示訊息 -->
                 <div v-else class="text-center py-5">
@@ -277,8 +301,6 @@ const config = {
                 alert("獲取收藏清單資料時發生錯誤！");
             }
         };
-
-        //API-調用刪除清單
         const removeItem = async (id) => {
             try {
                 await Api.deleteFavorite(id); // 調用 API
@@ -288,25 +310,6 @@ const config = {
             } catch (error) {
                 console.error("無法刪除收藏清單資料：", error.message);
                 alert("刪除收藏清單資料時發生錯誤！");
-            }
-        };
-
-        //移除選項項目
-        const removeSelectedItems = async () => {
-            const selectedItems = favorites.value.filter((item) => item.checked);
-            if (selectedItems.length === 0) {
-                alert("請選擇要移除的項目！");
-                return;
-            }
-            try {
-                for (const item of selectedItems) {
-                    await Api.deleteFavorite(item.Id);
-                }
-                favorites.value = favorites.value.filter((item) => !item.checked);
-                alert("選擇的項目已成功移除！");
-            } catch (error) {
-                console.error("移除項目失敗：", error.message);
-                alert("移除項目時發生錯誤！");
             }
         };
 
@@ -341,7 +344,6 @@ const config = {
             filteredFavorites,
             filter,
             applyFilter,
-            removeSelectedItems,
         };
     },
 };

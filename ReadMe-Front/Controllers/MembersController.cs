@@ -110,7 +110,7 @@ namespace ReadMe_Front.Controllers
 				Response.Cookies.Add(cookie);
 
 				// 導向 returnUrl
-				return Redirect(returnUrl);
+				return RedirectToAction("Index","Home");
 			}
 			catch (Exception ex)
 			{
