@@ -15,7 +15,19 @@
    "T4TemplatePath": null,
    "Tables": [
       {
+         "Name": "[dbo].[AdminGroup]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[AdminPermissions]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AdminRoles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AdminUsers]",
          "ObjectType": 0
       },
       {

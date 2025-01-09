@@ -6,21 +6,26 @@ namespace ReadMe_Front.Models.EFModels
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class AdminPermission
+    [Table("AdminGroup")]
+    public partial class AdminGroup
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public AdminPermission()
+        public AdminGroup()
         {
             AdminRoles = new HashSet<AdminRole>();
+            AdminUsers = new HashSet<AdminUser>();
         }
 
         public int Id { get; set; }
 
         [Required]
         [StringLength(50)]
-        public string PermissionName { get; set; }
+        public string GroupName { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AdminRole> AdminRoles { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AdminUser> AdminUsers { get; set; }
     }
 }
