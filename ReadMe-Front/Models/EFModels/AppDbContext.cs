@@ -8,7 +8,7 @@ namespace ReadMe_Front.Models.EFModels
     public partial class AppDbContext : DbContext
     {
         public AppDbContext()
-            : base("name=AppDbContext")
+            : base("name=AppDbContext1")
         {
         }
 
@@ -57,8 +57,7 @@ namespace ReadMe_Front.Models.EFModels
             modelBuilder.Entity<Cart>()
                 .HasMany(e => e.CartItems1)
                 .WithRequired(e => e.Cart1)
-                .HasForeignKey(e => e.CartId)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.CartId);
 
             modelBuilder.Entity<Category>()
                 .HasMany(e => e.Products)
