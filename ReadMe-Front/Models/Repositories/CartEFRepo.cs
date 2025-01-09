@@ -16,8 +16,30 @@ namespace ReadMe_Front.Models.Repositories
 {
     public class CartEFRepo
     {
+        public List<OrderVm> MemberOrderDetail(string account)
+        {
+            using (var db = new AppDbContext())
+            {
+                var userid = GetUserid(account);
+                var result = from OrderDetails in db.OrderDetails
+                             join Orders in db.Orders on OrderDetails.OrderId equals Orders.Id
+                             join Products in db.Products on OrderDetails.ProductId equals Products.Id
+                             where Orders.UserID == userid
+                             select new OrderVm
+                             {
+                                 Id = Orders.Id,
+                                 OrderName = Orders.OrderName,
+                                 UserID = Orders.UserID,
+                                 TotalAmount = Orders.TotalAmount,
+                                 OrderDate = Orders.OrderDate.ToString("yyyy-MM-dd"),
+                                 Payment = "信用卡",
+                                 PaymentStatus = "已付款",
+                             };
+                return result.ToList();
+            }
+        }
         /// <summary>
-        /// 
+        /// 會員訂單資料
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
