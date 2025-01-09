@@ -31,14 +31,14 @@
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="ProductId" value="@book.Id" />
                     <input type="hidden" name="Price" value="@book.Price" />
-                    <button type="submit" class="btn btn-primary btn-sm">購買</button>
+                    <button v-on:click="addToCart({ id: @item.Id, price: @item.Price })" class="btn btn-success btn-sm">購買</button>
                 </form>
-
+   
                 <!-- 加入收藏表單 -->
                 <form method="post" action="/Cart/AddToFavorite" class="d-inline">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="ProductId" value="@book.Id" />
-                    <button type="submit" class="btn btn-secondary btn-sm">收藏</button>
+                    <a href="~/Products/ProductDetail/@item.Id" class="btn btn-primary btn-sm ">加入收藏</a>
                 </form>
             </div>
         </div>

@@ -13,12 +13,17 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Models\DTOs\" />
-    <Folder Include="Models\Services\" />
-    <Folder Include="Models\Repositories\" />
+    <Folder Include="Models\Interface\" />
+    <Folder Include="Models\NewFolder\" />
   </ItemGroup>
 
 </Project>
