@@ -4,16 +4,18 @@ namespace ReadMe_Front.Models.Infra
 {
     public class Pagination
     {
-        public Pagination(int pageNumber, int pageSize, int totalRecords)
+        public Pagination(int pageNumber, int pageSize, int totalRecords, string selectedOption)
         {
             PageNumber = pageNumber;
             PageSize = pageSize;
             TotalRecords = totalRecords;
+            this.selectedOption = selectedOption;
         }
         public object RouteValues { get; set; } // 傳遞篩選條件的路由參數
         public string ActionName { get; set; } // Action 名稱
         public string ControllerName { get; set; } // Controller 名稱
 
+        public string selectedOption { get; }
         public int PageNumber { get; }
         public int PageSize { get; }
         public int TotalRecords { get; }

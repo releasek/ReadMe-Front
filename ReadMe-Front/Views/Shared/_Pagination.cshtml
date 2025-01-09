@@ -12,6 +12,7 @@
 		var baseValues = new System.Web.Routing.RouteValueDictionary(Model.RouteValues);
 		baseValues["pageNumber"] = pageNumber;
 		baseValues["pageSize"] = Model.PageSize;
+		baseValues["selectedOption"] = Model.selectedOption;
 		return baseValues;
 	};
 
