@@ -184,7 +184,6 @@
     <Compile Include="Models\Infra\HashUtility.cs" />
     <Compile Include="Models\Infra\Paged.cs" />
     <Compile Include="Models\Infra\Pagination.cs" />
-    <Compile Include="Models\Interfaces\ICategoryRepo.cs" />
     <Compile Include="Models\Repositories\CartEFRepo.cs" />
     <Compile Include="Models\Repositories\CategoryDapperRepo.cs" />
     <Compile Include="Models\Repositories\CategoryEFRepo.cs" />
