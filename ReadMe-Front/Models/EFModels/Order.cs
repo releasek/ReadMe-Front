@@ -16,10 +16,6 @@ namespace ReadMe_Front.Models.EFModels
 
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(255)]
-        public string OrderName { get; set; }
-
         public int UserID { get; set; }
 
         public int TotalAmount { get; set; }

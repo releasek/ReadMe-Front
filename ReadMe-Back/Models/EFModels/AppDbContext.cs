@@ -13,7 +13,13 @@ public partial class AppDbContext : DbContext
     {
     }
 
+    public virtual DbSet<AdminGroup> AdminGroups { get; set; }
+
     public virtual DbSet<AdminPermission> AdminPermissions { get; set; }
+
+    public virtual DbSet<AdminRole> AdminRoles { get; set; }
+
+    public virtual DbSet<AdminUser> AdminUsers { get; set; }
 
     public virtual DbSet<Cart> Carts { get; set; }
 
@@ -37,18 +43,63 @@ public partial class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<AdminGroup>(entity =>
+        {
+            entity.ToTable("AdminGroup");
+
+            entity.Property(e => e.GroupName)
+                .IsRequired()
+                .HasMaxLength(50);
+        });
+
         modelBuilder.Entity<AdminPermission>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Permission");
+
+            entity.Property(e => e.PermissionName)
+                .IsRequired()
+                .HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<AdminRole>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_AdminRole");
+
+            entity.Property(e => e.RoleName)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.HasOne(d => d.Group).WithMany(p => p.AdminRoles)
+                .HasForeignKey(d => d.GroupId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_AdminRoles_AdminGroup");
+
+            entity.HasOne(d => d.Permission).WithMany(p => p.AdminRoles)
+                .HasForeignKey(d => d.PermissionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_AdminRoles_AdminRoles");
+        });
+
+        modelBuilder.Entity<AdminUser>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__AdminPer__3214EC07C947E8F5");
 
+            entity.HasIndex(e => e.Username, "IX_AdminPermissions").IsUnique();
+
             entity.HasIndex(e => e.Username, "UQ__AdminPer__536C85E4251B9526").IsUnique();
 
-            entity.Property(e => e.PasswordHash)
+            entity.Property(e => e.GroupId).HasDefaultValueSql("('DefaultGroup')");
+            entity.Property(e => e.Password)
                 .IsRequired()
                 .HasMaxLength(255);
             entity.Property(e => e.Username)
                 .IsRequired()
                 .HasMaxLength(255);
+
+            entity.HasOne(d => d.Group).WithMany(p => p.AdminUsers)
+                .HasForeignKey(d => d.GroupId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_AdminUsers_AdminGroup");
         });
 
         modelBuilder.Entity<Cart>(entity =>
