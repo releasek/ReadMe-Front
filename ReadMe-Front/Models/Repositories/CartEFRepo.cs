@@ -46,7 +46,7 @@ namespace ReadMe_Front.Models.Repositories
         /// </summary>
         /// <param name="account"></param>
         /// <param name="cartid"></param>
-        public List<OrderVm> CreateOrder(string account, int cartid)
+        public OrderVm CreateOrder(string account, int cartid)
         {
             using (var db = new AppDbContext())
             {
@@ -82,7 +82,7 @@ namespace ReadMe_Front.Models.Repositories
                         UserID = o.UserID,
                         TotalAmount = o.TotalAmount,
                         OrderDate = o.OrderDate
-                    }).ToList();
+                    }).FirstOrDefault();
             }
         }
         /// <summary>
