@@ -1,13 +1,14 @@
 ﻿using ReadMe_Front.Models.DTOs;
 using ReadMe_Front.Models.EFModels;
 using ReadMe_Front.Models.Infra;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ReadMe_Front.Models.Repositories
 {
     public class SearchEFRepo
     {
-        public Paged<CategoryDto> Search(string input, int pageNumber, int pageSize)
+        public Paged<CategoryDto> Search(string input, int pageNumber, int pageSize, string selectedOption)
         {
             // 確保 input 不為 null，並移除首尾多餘空白
             input = input?.Trim();
@@ -23,10 +24,16 @@ namespace ReadMe_Front.Models.Repositories
                              p.Author.ToLower().Contains(input.ToLower()) ||   // 作者包含 input
                              p.Publisher.ToLower().Contains(input.ToLower()))); // 出版社包含 input
 
+                // 若 selectedOption 不為 null，加入額外篩選條件
+                if (!string.IsNullOrEmpty(selectedOption))
+                {
+                    query = query.Where(p => p.Category.CategoryName == selectedOption);
+                }
+
 
                 // 計算總筆數
                 var totalCount = query.Count();
-                var pagination = new Pagination(pageNumber, pageSize, totalCount);
+                var pagination = new Pagination(pageNumber, pageSize, totalCount, selectedOption);
 
 
                 // 分頁資料
@@ -46,9 +53,42 @@ namespace ReadMe_Front.Models.Repositories
                             ParentCategoriesName = p.Category.ParentCategory.ParentCategoriesName
                         }).ToList();
 
-                return new Paged<CategoryDto>(data, pagination);
+                var options = data
+                            .Select(x => x.CategoryName)
+                            .Distinct()
+                            .OrderBy(x => x)
+                            .ToList();
+
+                return new Paged<CategoryDto>(data, pagination, selectedOption, options);
             }
         }
 
+        public List<CategoryDto> SearchWithoutPagination(string keyword)
+        {
+            keyword = keyword?.Trim();
+
+            using (var db = new AppDbContext())
+            {
+                var query = db.Products
+                    .Include("Categories")
+                    .Where(p =>
+                        (string.IsNullOrEmpty(keyword) ||
+                         p.Title.ToLower().Contains(keyword.ToLower()) ||
+                         p.Author.ToLower().Contains(keyword.ToLower()) ||
+                         p.Publisher.ToLower().Contains(keyword.ToLower()))
+                    );
+
+                return query.Select(p => new CategoryDto
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    ImageURL = p.ImageURL,
+                    Price = p.Price,
+                    Publisher = p.Publisher,
+                    Author = p.Author,
+                    CategoryName = p.Category.CategoryName,
+                }).ToList();
+            }
+        }
     }
 }

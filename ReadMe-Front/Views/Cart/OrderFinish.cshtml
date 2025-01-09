@@ -185,63 +185,97 @@
             padding 10px;
         }
     </style>
-<body>
-    <div class="container" id="app" style="margin-top:40px;">
+    <body>
+        <div class="container" id="app" style="margin-top:40px;">
 
-        <!-- 導覽 strat -->
-        <progress-component :current-page="3"></progress-component>
-        <!-- 導覽 end -->
-        <!-- 訂單資訊 -->
-        <div class="order-page">
-            <div class="order-completion">
-                <div class="icon-container">
-                    <img src="~/image/ckeck.png" alt="Success" class="success-icon" />
-                </div>
-                <h2>訂單建立完成</h2>
-                <p class="order-number">訂單編號：<span class="order-id">CB040603474</span></p>
-                <p class="instruction">請拍照，或儲存網址以便日後查詢。</p>
-
-                <div class="order-details">
-                    <div class="item">
-                        @*<img src="product-image.jpg" alt="百香芒果" class="product-image" />*@
-                        @*<div class="item-info">
-                            <h4 class="product-name">百香芒果</h4>
-                            <p class="product-price">NT$ 65 * 1</p>
-                        </div>
-                        <p class="item-total">NT$ 65</p>*@
+            <!-- 導覽 strat -->
+            <progress-component :current-page="3"></progress-component>
+            <!-- 導覽 end -->
+            <!-- 訂單資訊 -->
+            <div class="order-page">
+                <div class="order-completion">
+                    <div class="icon-container">
+                        <img src="~/image/ckeck.png" alt="Success" class="success-icon" />
                     </div>
-                    <div class="summary">
-                         <p>小計 <span class="summary-value">NT$ 65</span></p>
-                        <p>金流手續費 <span class="summary-value">NT$ 0</span></p>
-                        @*<p>運費 <span class="summary-value">NT$ 60</span></p>*@ 
-                        <p class="total">總計 <span class="total-value">NT$ 125</span></p>
+                    <h2>訂單建立完成</h2>
+                    <p v-if="orderInfo && orderInfo.OrderName">
+                        訂單編號：<span class="order-id">{{ orderInfo.OrderName }}</span>
+                    </p>
+                    <p v-else>
+                        訂單資訊載入中...
+                    </p>
+                    <p class="instruction">請拍照，或儲存網址以便日後查詢。</p>
+
+                    <div class="order-details">
+                        <div class="item">
+                            @*<img src="product-image.jpg" alt="百香芒果" class="product-image" />*@
+                            @*<div class="item-info">
+                    <h4 class="product-name">百香芒果</h4>
+                    <p class="product-price">NT$ 65 * 1</p>
+                </div>
+                <p class="item-total">NT$ 65</p>*@
+                        </div>
+                        <div class="summary">
+                            <p>小計 <span class="summary-value">NT${{orderInfo.TotalAmount}}</span></p>
+                            <p>金流手續費 <span class="summary-value">NT$ 0</span></p>
+                            @*<p>運費 <span class="summary-value">NT$ 60</span></p>*@
+                            <p class="total">總計 <span class="total-value">NT${{orderInfo.TotalAmount}}</span></p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- 結算區 end-->
-        <div class="d-flex justify-content-between">
-            <a href="~/Home/index" class="btn btn-lg rounded-pill px-5">&larr; 回主頁</a>
-            @*<a href="~/Home/index" class="btn btn-lg rounded-pill px-5">回主頁 &rarr;</a>*@
-        </div>
-    </div>
+            <!-- 結算區 end-->
+            <div class="d-flex justify-content-between">
+                <a href="~/Home/index" class="btn btn-lg rounded-pill px-5">&larr; 回主頁</a>
 
-    </div>
-    <script src="~/Js/vue.global.js"></script>
-    <script src="~/Js/Repeat.js"></script>
-    <script src="~/Js/Progress.js"></script>
-    <script>
-           const{createApp}=Vue
-           const config={
-               setup(){
-                   return{
+            </div>
+        </div>
+        </div>
+        <script src="~/Js/vue.global.js"></script>
+        <script src="~/Js/Repeat.js"></script>
+        <script src="~/Js/Api.js"></script>
+        <script>
+            const { createApp, ref, onMounted } = Vue;
 
-                   }
-               }
-           }
-           const app=createApp(config)
-           app.component("progress-component",Progress)
-           app.mount("#app")
-    </script>
-</body>
+            const app = createApp({
+                setup() {
+                    const orderInfo = ref({
+                        OrderName: "載入中...", // 初始提示
+                        TotalAmount: 0,
+                    });
+                    const ordername = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.OrderName));
+
+                    // 定義 API 調用函式
+                    const fetchOrder = async (ordername) => {
+                        try {
+                            console.log("訂單名稱", ordername);
+                            const data = await Api.fetchOrder(ordername); // 將 JSON 資料解析為物件
+                            orderInfo.value = data; // 將資料綁定到 `orderInfo`
+                            console.log("收到訂單的資料：", data);
+                        } catch (error) {
+                            alert(`調用訂單發生錯誤：${error.message}`);
+                        }
+                    };
+
+                    // 在元件掛載時執行 API 調用
+                    onMounted(() => {
+                        if (ordername) {
+                            fetchOrder(ordername);
+                        } else {
+                            console.error("未提供訂單名稱！");
+                        }
+                    });
+
+                    return {
+                        orderInfo, // 將資料綁定到模板中
+                    };
+                },
+            });
+
+            // 註冊組件並掛載應用
+            app.component("progress-component", Progress);
+            app.mount("#app");
+        </script>
+
+    </body>
 </html>

@@ -178,11 +178,10 @@
         <!-- 篩選器 -->
         <div class="dropdown-filter">
             <label for="filter">篩選加入：</label>
-            <select id="filter">
+            <select id="filter" v-model="filter" v-on:change="applyFilter">
                 <option value="all">全部</option>
-                <option value="books">日期排序</option>
-                <option value="electronics">價格高</option>
-                <option value="electronics">價格低</option>
+                <option value="priceHigh">價格高</option>
+                <option value="priceLow">價格低</option>
             </select>
         </div>
         <!-- 標籤類 -->
@@ -195,9 +194,10 @@
         <div class="container">
             <section class="favorites-section">
                 <!-- 檢查收藏清單是否存在 -->
-                <div v-if="favorites && favorites.length > 0">
+                @*<div v-if="favorites && favorites.length > 0">*@
+                  <div v-if="filteredFavorites.length > 0">
                     <!-- 使用 Vue 的 v-for 渲染多個商品 -->
-                    <div v-for="(item, index) in favorites" :key="item.Id" class="cart-item border-bottom py-3">
+                    <div v-for="(item, index) in filteredFavorites" :key="item.Id" class="cart-item border-bottom py-3">
                         <div class="item-info d-flex align-items-center">
                             <a :href="`/Products/ProductDetail/${item.Id}`">
                                 <img :src="item.ImageURL" alt="商品封面" class="item-image me-3" style="width: 100px; height: auto;">
@@ -235,7 +235,7 @@
         <!-- 結算區 -->
         <div class="d-flex justify-content-between">
             <a href="~/Home/Index" class="btn btn-light btn-lg rounded-pill px-5">&larr; 繼續逛逛</a>
-            <a href="/OrderDetails.html" class="btn btn-light btn-lg rounded-pill px-5">付款 &rarr;</a>
+            <a href="~/Cart/Cart" class="btn btn-light btn-lg rounded-pill px-5">付款 &rarr;</a>
         </div>
     </div>
 </body>
@@ -243,12 +243,24 @@
 <script src="~/Js/Repeat.js"></script>
 <script src="~/Js/Api.js"></script>
 <script>
-    const { createApp, ref, onMounted } = Vue;
+    const { createApp, ref, onMounted, computed } = Vue;
 
 const config = {
     setup() {
         // 資料
         const favorites = ref([]); // 收藏清單資料
+        const filter = ref("all"); // 篩選條件
+
+        // 篩選後的收藏清單
+        const filteredFavorites = computed(() => {
+            if (filter.value === "priceHigh") {
+                return [...favorites.value].sort((a, b) => b.Price - a.Price);
+            }
+            if (filter.value === "priceLow") {
+                return [...favorites.value].sort((a, b) => a.Price - b.Price);
+            }
+            return favorites.value;
+        });
 
         // API 調用 - 獲取收藏清單資料
         const fetchFavoriteItems = async () => {
@@ -286,6 +298,10 @@ const config = {
             }
         };
 
+        // 篩選功能
+        const applyFilter = () => {
+            console.log("篩選條件變更為：", filter.value);
+        };
 
 
         // 在元件載入時執行 API 調用
@@ -297,6 +313,9 @@ const config = {
             favorites,
             removeItem,
             addToCart,
+            filteredFavorites,
+            filter,
+            applyFilter,
         };
     },
 };

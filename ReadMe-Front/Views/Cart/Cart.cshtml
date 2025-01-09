@@ -360,6 +360,7 @@
                 <!-- 當購物車為空時顯示訊息 -->
                 <div v-else class="empty-cart text-center py-5">
                     <p class="fs-4">購物車是空的，快去選購商品吧！</p>
+                    <a href="~/Home/index" class="btn btn-outline-secondary btn-sm">回首頁</a>
                 </div>
             </section>
         </div>
@@ -367,7 +368,7 @@
 
         <!-- 商品列表區  end-->
 
-        <div id="app">
+        <div v-if="cart.CartItems && cart.CartItems.length > 0">
             <div class="discount-container">
                 <h3>全館優惠折價卷</h3>
                 <ul class="discount-list">
@@ -380,7 +381,7 @@
         </div>
 
         <!-- 結算區 start-->
-        <div class="coupon-and-summary ">
+        <div class="coupon-and-summary " v-if="cart.CartItems && cart.CartItems.length > 0">
 
             <!-- 結算區 -->
             <div class="summary-section mx-auto">
@@ -401,10 +402,13 @@
                 </div>
             </div>
         </div>
+
         <!-- 結算區 end-->
-        <div class="d-flex justify-content-between">
-            <a href="~/Home/Index" class="btn btn-light btn-lg rounded-pill px-5">&larr; 繼續逛逛</a>
-            <a href="/Cart/OrderDetails" class="btn btn-light btn-lg rounded-pill px-5">付款 &rarr;</a>
+        <div v-if="cart.CartItems && cart.CartItems.length > 0">
+            <div class="d-flex justify-content-between">
+                <a href="~/Home/Index" class="btn btn-light btn-lg rounded-pill px-5">&larr; 繼續逛逛</a>
+                <a v-on:click="checkPay" href="javascript:void(0)" class="btn btn-light btn-lg rounded-pill px-5">付款 &rarr;</a>
+            </div>
         </div>
     </div>
     <script src="~/Js/vue.global.js"></script>
@@ -502,6 +506,15 @@
                 }
             };
 
+            const checkPay = () => {
+                if (confirm("是否確認付款？")) {
+                    // 如果確認付款，跳轉到指定路徑
+                    window.location.href = "/Cart/OrderDetails";
+                } else {
+                    // 如果取消，執行其他邏輯（此處可留空或打印日志）
+                    console.log("使用者取消付款");
+                }
+            };
 
             
 
@@ -517,6 +530,7 @@
                 discounts,
                 removeItem,
                 addToWishlist,
+                checkPay,
             };
         },
     };

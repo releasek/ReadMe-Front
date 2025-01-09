@@ -1,13 +1,12 @@
 ﻿using Dapper;
 using ReadMe_Front.Models.DTOs;
-using ReadMe_Front.Models.Interfaces;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 
 namespace ReadMe_Front.Models.Repositories
 {
-    public class CategoryDapperRepo : ICategoryRepo
+    public class CategoryDapperRepo
     {
         private string _connString;
 
