@@ -314,8 +314,8 @@
                         <div class="modal-body">
                             <p>感謝您的購買！以下是訂單資訊：</p>
                             <ul>
-                                <li><strong>訂單編號：</strong>NT${{ orderInfo.OrderName }}</li>
-                                <li><strong>總金額：</strong>NT${{ cart.DiscountedPrice }}</li>
+                                <li><strong>訂單編號：</strong>{{ orderInfo.OrderName }}</li>
+                                <li><strong>總金額：</strong>NT${{ orderInfo.TotalAmount }}</li>
                             </ul>
                         </div>
                         <div class="modal-footer">
@@ -389,7 +389,7 @@
 
                         // 跳轉到完成頁面
                         const goToOrderFinish = () => {
-                            window.location.href = `/Cart/OrderFinish`;
+                            window.location.href = `/Cart/OrderFinish?orderName=${orderInfo.value.OrderName}`;
                         };
 
                         // 定義反應性數據
