@@ -164,7 +164,17 @@
             font-weight: bold;
             margin: 20px 0;
         }
+        .btn-primary {
+            background-color: #7AB8B8;
+            color: white;
+            border-color: white;
+        }
 
+            .btn-primary:hover {
+                background-color: #f8f9fa; /* Hover時背景變淡灰 */
+                color: black; /* Hover時文字變黑 */
+                border-color: gray; /* 邊框仍保持灰色 */
+            }
     </style>
 </head>
 
@@ -185,7 +195,7 @@
                 <option value="priceLow">價格低</option>
             </select>
             <div >
-                <button v-on:click="removeSelectedItems" class="btn btn-secondary btn-sm">選擇項目移除</button>
+                <button v-on:click="removeSelectedItems" class="btn btn-primary btn-sm">選擇項目移除</button>
             </div>
         </div>
 
