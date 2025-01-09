@@ -9,9 +9,10 @@
         font-size: 18px;
     }
 
-    .subcat a {
-        padding-left: 2rem;
-    }
+	.subcat a {
+		padding-left: 1rem;
+		font-size: 16px;
+	}
 
     a {
         text-decoration: none;
@@ -22,6 +23,53 @@
         margin: 0;
     }
 
+    /*.card {
+        display: flex;
+        flex-direction: column;*/ /* 垂直排列 */
+        /*justify-content: space-between;*/ /* 保持內容上下對齊 */
+        /*height: 100%;*/ /* 設置卡片高度填滿容器 */
+        /*width: 170px;*/ /* 設置固定寬度 */
+    /*}
+
+    .card-img-top {
+        width: 100%;*/ /* 保持圖片寬度適應卡片容器 */
+        /*height: 210px;*/ /* 設定固定高度 */
+        /*object-fit: cover;*/ /* 保持圖片比例且填滿卡片 */
+    /*}
+
+    .card-text {
+        font-size: 14px;
+        color: #555;
+        text-align: left;*/ /* 將價格對齊到右側 */
+        /*margin-top: auto;*/ /* 確保價格始終在底部 */
+    /*}
+
+    .card-title {
+        line-height: 1.5;*/ /* 行高，設置為字體大小的 1.5 倍 */
+        /*font-size: 13px;*/ /* 字體大小 */
+        /*height: calc(1.5em * 2);*/ /* 高度為兩行 */
+        /*overflow: hidden;*/ /* 隱藏溢出的部分 */
+        /*text-overflow: ellipsis;*/ /* 顯示省略號 */
+        /*display: -webkit-box;*/ /* 需要 Webkit 支援 */
+        /*-webkit-line-clamp: 2;*/ /* 限制顯示兩行 */
+        /*-webkit-box-orient: vertical;*/ /* 垂直排列子元素 */
+    /*}
+
+    .card-body {
+        padding: 15px;*/ /* 縮小內間距 */
+        /*font-size: 14px;*/ /* 調整字體大小 */
+        /*line-height: 1.2;*/ /* 調整行距，縮小高度 */
+        /*flex-grow: 1;*/ /* 讓卡片的內容區域自動填滿空間 */
+        /*justify-content: space-between;*/ /* 讓標題與價格分佈在頂部和底部 */
+    /*}
+    .btn {
+        font-size: 14px;
+        border-radius: 5px;
+        height:30px;
+    }*/
+	.row {
+		display: flex;
+	}
     .card {
         display: flex;
         flex-direction: column; /* 垂直排列 */
@@ -43,29 +91,60 @@
         margin-top: auto; /* 確保價格始終在底部 */
     }
 
-    .card-title {
-        line-height: 1.5; /* 行高，設置為字體大小的 1.5 倍 */
-        font-size: 13px; /* 字體大小 */
-        height: calc(1.5em * 2); /* 高度為兩行 */
-        overflow: hidden; /* 隱藏溢出的部分 */
-        text-overflow: ellipsis; /* 顯示省略號 */
-        display: -webkit-box; /* 需要 Webkit 支援 */
-        -webkit-line-clamp: 2; /* 限制顯示兩行 */
-        -webkit-box-orient: vertical; /* 垂直排列子元素 */
+    body {
+        padding-top: 20px;
     }
 
-    .card-body {
-        padding: 15px; /* 縮小內間距 */
-        font-size: 14px; /* 調整字體大小 */
-        line-height: 1.2; /* 調整行距，縮小高度 */
-        flex-grow: 1; /* 讓卡片的內容區域自動填滿空間 */
-        justify-content: space-between; /* 讓標題與價格分佈在頂部和底部 */
+    .container {
+        max-width: 1140px; /* 與 Navbar 對齊 */
+        margin: 0 auto; /* 水平置中 */
     }
-    .btn {
-        font-size: 14px;
-        border-radius: 5px;
-        height:30px;
+
+    .card-title {
+        font-size: 13px;
+        font-weight: bold;
+        line-height: 1.5;
+        height: 3em; /* 固定高度，確保標題區域一致 */
+        overflow: hidden;
+        word-wrap: break-word;
     }
+
+	.card-body {
+		/*padding: 15px;*/ /* 縮小內間距 */
+		/*font-size: 14px;*/ /* 調整字體大小 */
+		/*line-height: 1.2;*/ /* 調整行距，縮小高度 */
+		/*flex-grow: 1;*/ /* 讓卡片的內容區域自動填滿空間 */
+		/*justify-content: space-between;*/ /* 讓標題與價格分佈在頂部和底部 */
+	}
+	.card-container {
+		display: flex; /* 水平排列 */
+		gap: 3px; /* 卡片間距 */
+		justify-content: space-between; /* 水平對齊方式 */
+	}
+    a {
+        text-decoration: none;
+        color: black;
+    }
+     .btn-primary {
+          background-color: #7AB8B8; 
+          color: white; 
+          border-color: white; 
+     }
+     .btn-primary:hover {
+          background-color: #f8f9fa; /* Hover時背景變淡灰 */
+          color: black; /* Hover時文字變黑 */
+          border-color: gray; /* 邊框仍保持灰色 */
+     }
+     .btn-success {
+          background-color: #1E73BE;
+          color: white; /* 字體顏色設置為灰色 */
+          border-color: white; /* 邊框顏色設置為灰色 */
+     }
+     .btn-success:hover{
+          background-color: #f8f9fa; /* Hover時背景變淡灰 */
+          color: black; /* Hover時文字變黑 */
+          border-color: gray; /* 邊框仍保持灰色 */
+     }
 </style>
 
 <!-- Context Start -->
@@ -81,55 +160,92 @@
     </nav>
     <!-- 麵包屑--end -->
     <h4 itemprop="name">全站分類</h4>
-    <div class="row">
-        <div class="list-group list-group-flush col-2 category-sidebar">
-            @foreach (var categoryGroup in Model.GroupCategory)
-            {
-                <ul>
-                    <li class="list-group-item list-group-item-action maincat">
-                        <a href="/Categories/ParentCategory?parentCategoryName=@categoryGroup.ParentCategoryName">@categoryGroup.ParentCategoryName</a>
-                    </li>
-                    <!-- 顯示子類別，分割CategoryName並逐一顯示 -->
-                    @foreach (var subCategory in categoryGroup.CategoryName.Split(','))
-                    {
-                        <li class="list-group-item list-group-item-action subcat">
-                            <a href="/Categories/SubCategory?subCategoryName=@subCategory.Trim()">@subCategory.Trim()</a> <!-- Trim() 去除多餘的空白 -->
-                        </li>
-                    }
-                </ul>
-            }
-        </div>
-        <!-- Cart start -->
-        <div class="cart col-10 mb-3">
-            @foreach (var itemGroup in Model.GroupProduct)
-            {
-                <div class="row justify-content-center">
-                    <div class="row mb-4">
-                        <h4 class="col-11">@itemGroup.ParentCategoryName</h4>
-                        <a href="@Url.Action("ParentCategory","Categories",new { parentCategoryName = itemGroup.ParentCategoryName })" class="btn btn-outline-secondary btn-sm col-auto d-flex align-items-center justify-content-center">More</a>
-                    </div>
+	<div class="row">
+		<div class="list-group list-group-flush col-2 category-sidebar">
+			@foreach (var categoryGroup in Model.GroupCategory)
+			{
+				<ul>
+					<li class="list-group-item list-group-item-action maincat">
+						<a href="/Categories/ParentCategory?parentCategoryName=@categoryGroup.ParentCategoryName">@categoryGroup.ParentCategoryName</a>
+					</li>
+					<!-- 顯示子類別，分割CategoryName並逐一顯示 -->
+					@foreach (var subCategory in categoryGroup.CategoryName.Split(','))
+					{
+						<li class="list-group-item list-group-item-action subcat">
+							<a href="/Categories/SubCategory?subCategoryName=@subCategory.Trim()">@subCategory.Trim()</a> <!-- Trim() 去除多餘的空白 -->
+						</li>
+					}
+				</ul>
+			}
+		</div>
+		<!-- Cart start -->
+		<div class="row cart col-10 mb-3">
+			@foreach (var itemGroup in Model.GroupProduct)
+			{
+				<div class="row justify-content-center">
+					<div class="d-flex justify-content-between align-items-center mb-3">
+						<h4 class="col-11">@itemGroup.ParentCategoryName</h4>
+						<a href="@Url.Action("ParentCategory","Categories",new { parentCategoryName = itemGroup.ParentCategoryName })" class="btn btn-outline-secondary btn-sm col-auto d-flex align-items-center justify-content-center">More</a>
+					</div>
+					<div class="card-container">
+						@foreach (var item in itemGroup.Products.Take(5))
+						{
 
-                    @foreach (var item in itemGroup.Products.Take(5))
-                    {
-                        <div class="card border-1 col-auto m-1" style="width: 11rem;">
-                            <div class="card-img">
-                                <a href="~/Products/ProductDetail/@item.Id">
-                                    <img src="@item.ImageURL" class="card-img-top img-fluid" alt="...">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <a href="~/Products/ProductDetail/@item.Id">
-                                    <h5 class="card-title text-start">@item.Title</h5>
-                                </a>
-                                <p class="card-text text-start">$ @item.Price</p>
-                            </div>
-                        </div>
-                    }
-                    <hr>
-                </div>
-            }
-        </div>
-        <!-- Cart end -->
-    </div>
+							<div class=" card-body mb-4">
+								<div class="card h-100">
+									<a href="~/Products/ProductDetail/@item.Id">
+										<img src="@item.ImageURL" class="card-img-top" alt="@item.Title">
+									</a>
+									<div class="card-body p-2">
+										<a href="~/Products/ProductDetail/@item.Id">
+											<h5 class="card-title mb-1">@item.Title</h5>
+											<p class="text-muted mb-1">NT$ @item.Price</p>
+										</a>
+									</div>
+									<div class="card-footer bg-white border-0 flex-column align-items-center">
+										<button v-on:click="addToCart({ id: @item.Id, price: @item.Price })" class="btn btn-success btn-sm">購買</button>
+										<a href="~/Products/ProductDetail/@item.Id" class="btn btn-primary btn-sm ">加入收藏</a>
+
+									</div>
+								</div>
+							</div>
+					    }
+				    </div>
+				</div>
+			<hr />
+			}
+		</div>
+
+			@*<div class="cart col-10 mb-3">
+				@foreach (var itemGroup in Model.GroupProduct)
+				{
+					<div class="row justify-content-center">
+						<div class="row mb-4">
+							<h4 class="col-11">@itemGroup.ParentCategoryName</h4>
+							<a href="@Url.Action("ParentCategory","Categories",new { parentCategoryName = itemGroup.ParentCategoryName })" class="btn btn-outline-secondary btn-sm col-auto d-flex align-items-center justify-content-center">More</a>
+						</div>
+
+						@foreach (var item in itemGroup.Products.Take(5))
+						{
+							<div class="card border-1 col-auto m-1" style="width: 11rem;">
+								<div class="card-img">
+									<a href="~/Products/ProductDetail/@item.Id">
+										<img src="@item.ImageURL" class="card-img-top img-fluid" alt="...">
+									</a>
+								</div>
+								<div class="card-body">
+									<a href="~/Products/ProductDetail/@item.Id">
+										<h5 class="card-title text-start">@item.Title</h5>
+									</a>
+									<p class="card-text text-start">$ @item.Price</p>
+								</div>
+							</div>
+						}
+						<hr>
+					</div>
+				}
+			</div>*@
+			<!-- Cart end -->
+		</div>
 </div>
 <!-- Context End -->
