@@ -20,7 +20,7 @@ namespace ReadMe_Front.Models.Services
         {
             var products = _dapperRepo.GetProducts();
 
-            List<GroupCategoryVm> productSet = products.GroupBy(c => c.ParentCategoryName)
+            List<GroupCategoryVm> productSet = products.GroupBy(c => c.ParentCategoriesName)
                                                          .Select(group => new GroupCategoryVm
                                                          {
                                                              ParentCategoryName = group.Key,  // 父類別名稱
@@ -40,7 +40,7 @@ namespace ReadMe_Front.Models.Services
         public List<GroupCategoryVm> GetGroupCat()
         {
             var categories = _dapperRepo.GetCategories();
-            var categoryDictionary = categories.GroupBy(c => c.ParentCategoryName)
+            var categoryDictionary = categories.GroupBy(c => c.ParentCategoriesName)
                                                .ToDictionary(
                                                     group => group.Key, // Key 為 ParentCategoryName
                                                     group => group.Select(item => item.CategoryName).ToList() // Value 為其子 CategoryName 的列表
@@ -86,7 +86,7 @@ namespace ReadMe_Front.Models.Services
             {
                 throw new KeyNotFoundException("找不到此分類。");
             }
-            var groupProduct = sub.GroupBy(p => p.ParentCategoryName) // 按 ParentCategoryName 分組
+            var groupProduct = sub.GroupBy(p => p.ParentCategoriesName) // 按 ParentCategoryName 分組
                                             .Select(group => new GroupCategoryVm
                                             {
                                                 CategoryName = input,

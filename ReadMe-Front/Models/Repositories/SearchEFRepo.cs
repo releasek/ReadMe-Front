@@ -43,7 +43,7 @@ namespace ReadMe_Front.Models.Repositories
                             Publisher = p.Publisher,
                             Author = p.Author,
                             CategoryName = p.Category.CategoryName,
-                            ParentCategoryName = p.Category.ParentCategory.ParentCategoriesName
+                            ParentCategoriesName = p.Category.ParentCategory.ParentCategoriesName
                         }).ToList();
 
                 return new Paged<CategoryDto>(data, pagination);

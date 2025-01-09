@@ -24,7 +24,7 @@ namespace ReadMe_Front.Models.Repositories
                                  Author = product.Author,
                                  Price = product.Price,
                                  CategoryName = category.CategoryName,
-                                 ParentCategoryName = input,
+                                 ParentCategoriesName = input,
                                  ImageURL = product.ImageURL
                              };
                 return result.ToList();
@@ -48,7 +48,7 @@ namespace ReadMe_Front.Models.Repositories
                                  Author = product.Author,
                                  Price = product.Price,
                                  CategoryName = input,
-                                 ParentCategoryName = parentCategory.ParentCategoriesName,
+                                 ParentCategoriesName = parentCategory.ParentCategoriesName,
                                  ImageURL = product.ImageURL
                              };
                 return result.ToList();
@@ -85,7 +85,7 @@ namespace ReadMe_Front.Models.Repositories
                                   Price = product.Price,
                                   ImageURL = product.ImageURL,
                                   CategoryName = category.CategoryName,
-                                  ParentCategoryName = parentCategory.ParentCategoriesName,
+                                  ParentCategoriesName = parentCategory.ParentCategoriesName,
                               };
 
                 return results.ToList();

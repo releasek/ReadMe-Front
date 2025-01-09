@@ -18,7 +18,7 @@ namespace ReadMe_Front.Models.DTOs
 
         public string CategoryName { get; set; }
 
-        public string ParentCategoryName { get; set; }
+        public string ParentCategoriesName { get; set; }
     }
 
     public static class ProductExts
@@ -34,7 +34,7 @@ namespace ReadMe_Front.Models.DTOs
                 Author = dto.Author,
                 Publisher = dto.Publisher,
                 Category = dto.CategoryName,
-                ParentCategory = dto.ParentCategoryName,
+                ParentCategory = dto.ParentCategoriesName,
             };
         }
     }
