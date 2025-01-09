@@ -17,6 +17,31 @@ namespace ReadMe_Front.Models.Repositories
     public class CartEFRepo
     {
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        public List<OrderVm> MemberOrder(string account)
+        {
+            using (var db = new AppDbContext())
+            {
+                var userId = GetUserid(account);
+                
+                return db.Orders.Where(a=>a.UserID==userId)
+                .AsEnumerable() // 將數據加載到記憶體
+                .Select(o => new OrderVm
+                {
+                    Id = o.Id,
+                    OrderName = o.OrderName,
+                    UserID = o.UserID,
+                    TotalAmount = o.TotalAmount,
+                    OrderDate = o.OrderDate.ToString("yyyy-MM-dd"), // 格式化日期
+                    Payment ="信用卡",
+                    PaymentStatus = "已付款",
+                }).ToList();
+            }
+        }
+        /// <summary>
         /// 單筆訂單資料
         /// </summary>
         /// <param name="orderName"></param>
@@ -31,8 +56,7 @@ namespace ReadMe_Front.Models.Repositories
                         Id = o.Id,
                         OrderName = o.OrderName,
                         UserID = o.UserID,
-                        TotalAmount = o.TotalAmount,
-                        OrderDate = o.OrderDate
+                        TotalAmount = o.TotalAmount,                      
                     }).FirstOrDefault();
                 if (order == null)
                 {
@@ -80,8 +104,7 @@ namespace ReadMe_Front.Models.Repositories
                         Id = o.Id,
                         OrderName = o.OrderName,
                         UserID = o.UserID,
-                        TotalAmount = o.TotalAmount,
-                        OrderDate = o.OrderDate
+                        TotalAmount = o.TotalAmount,                      
                     }).FirstOrDefault();
             }
         }

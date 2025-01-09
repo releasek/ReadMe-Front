@@ -151,6 +151,7 @@
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\FavoriteApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MemberApiController.cs" />
     <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\OrderdetailsDto.cs" />
     <Compile Include="Controllers\ProductApiController.cs" />
@@ -413,6 +414,8 @@
     <Content Include="Views\Search\_Products.cshtml" />
     <Content Include="Views\Shared\_Pagination.cshtml" />
     <Content Include="Views\Products\ProductAuthor.cshtml" />
+    <Content Include="Views\Members\MemberProductDetail.cshtml" />
+    <Content Include="Views\Members\MemberOrderDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

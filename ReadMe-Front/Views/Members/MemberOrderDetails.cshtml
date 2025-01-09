@@ -1,0 +1,202 @@
+﻿
+@{
+    ViewBag.Title = "MemberOrderDetails";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <style>
+
+        /* 內容頁 */
+        .purchase-history {
+            width: 100%;
+            max-width: 900px;
+            margin: 20px auto;
+            font-family: Arial, sans-serif;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        /* 內容表格 */
+        .order-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 20px auto;
+            font-family: Arial, sans-serif;
+            /* border-top: 1px solid #ddd; */
+        }
+
+        /* 表頭樣式 */
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            background-color: #f5f5f5;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+            .table-header div {
+                flex: 1;
+                font-size: 14px;
+                color: #333;
+            }
+
+        /* 資料列樣式 */
+        .table-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+            .table-row div {
+                flex: 1;
+                font-size: 14px;
+                color: #555;
+            }
+
+
+        a:hover {
+            color: darkred; /* 滑鼠懸停時的顏色 */
+        }
+        /* 左側 Sidebar */
+        .member-sidebar {
+            width: 200px; /* 固定寬度 */
+            padding: 20px; /* 增加內邊距 */
+            border-right: 1px solid #ddd; /* 增加右邊框 */
+            display: flex;
+            flex-direction: column; /* 垂直排列 */
+            justify-content: space-between; /* 均勻分布內容 */
+        }
+
+            /* 調整文字大小和間距 */
+            .member-sidebar ul {
+                padding: 0; /* 移除內邊距 */
+                list-style: none; /* 移除列表符號 */
+            }
+
+            .member-sidebar li {
+                font-size: 18px; /* 調整文字大小 */
+            }
+
+            .member-sidebar a {
+                text-decoration: none;
+                color: black;
+            }
+    </style>
+    <body>
+
+
+        <!-- Context Start -->
+        <div id="app" class="container">
+
+            <div class="row " style="margin-top : 70px; ">
+                <!-- 左側固定分類欄 Start -->
+                <div class="list-group list-group-flush col-md-2 member-sidebar">
+                    <ul>
+                        <li class="list-group-item list-group-item-action"><a href="~/Members/MemberOrderDetails">訂單紀錄</a></li>
+                        <li class="list-group-item list-group-item-action"><a href="~/Members/EditProfile">編輯會員資料</a></li>
+                        <li class="list-group-item list-group-item-action"><a href="~/Members/ChangePassword">修改密碼</a></li>
+                    </ul>
+                </div>
+                <!-- 左側固定分類欄 End -->
+                <!-- 內容頁 start -->
+                <div class="purchase-history">
+                    <!-- 標題 -->
+                    <h1 class="title">訂單紀錄</h1>
+
+                    <!-- 說明文字區 -->
+                    <div class="description-box">
+                        <p>
+                            若您對訂單、發票或有任何購書上的疑問，歡迎您寄信至客服信箱
+                            (<a href="mailto:service@readmoo.com">service@readmoo.com</a>) 詢問，將有專人為您服務。
+                        </p>
+                    </div>
+
+                    <!-- 表格區 -->
+                    <div class="order-container">
+                        <!-- 表頭 -->
+                        <div class="table-header">
+                            <div>訂單明細</div>
+                            <div>購買日期</div>
+                            <div>購買金額</div>
+                            <div>付款方式</div>
+                            <div>付款狀態</div>
+                        </div>
+
+                        <!-- 一筆資料 -->
+                        <div v-for="(order, index) in orders" :key="index" class="table-row">
+                            <div>
+                                <a :href="order.detailLink" style="color: gray; text-decoration: none;">{{ order.OrderName }}</a>
+                            </div>
+                            <div>{{ order.OrderDate }}</div>
+                            <div>{{ order.TotalAmount }}</div>
+                            <div>{{ order.Payment }}</div>
+                            <div>{{ order.PaymentStatus }}</div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+            <!-- 內容頁 end -->
+
+        </div>
+
+        </div>
+        <!-- Context End -->
+        <script src="~/Js/vue.global.js"></script>
+        <script src="~/Js/Repeat.js"></script>
+        <script src="~/Js/Api.js"></script>
+        <script>
+     const { createApp, ref, onMounted } = Vue;
+
+     const config = {
+         setup() {
+             // 資料
+             const orders = ref([]); // 購物車資料           
+
+             // API 調用 - 獲取購物車資料
+             const fetchCartItems = async () => {
+                 try {
+                     const data = await Api.fetchOrders(); // 調用 API
+                     orders.value = data; // 賦值購物車資料
+                     console.log("訂單資料：", orders.value);
+                 } catch (error) {
+                     console.error("無法獲取訂單資料：", error.message);
+                     alert("獲取訂單資料時發生錯誤！");
+                 }
+             };
+            
+         
+             // 在元件載入時執行 API 調用
+             onMounted(() => {
+                 fetchCartItems(); // 獲取購物車資料
+             });
+
+             return {
+                 orders,
+             };
+         },
+     };
+
+     // 創建 Vue 應用
+     const app = createApp(config);
+     app.mount("#app"); // 掛載應用到 DOM
+        </script>
+    </body>
+</html>
+

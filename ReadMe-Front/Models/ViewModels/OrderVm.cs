@@ -16,7 +16,11 @@ namespace ReadMe_Front.Models.ViewModels
 
         public int TotalAmount { get; set; }
 
-        public DateTime OrderDate { get; set; }
+        public string OrderDate { get; set; }
+
+        public string Payment { get; set; }
+
+        public string  PaymentStatus { get; set; }
 
     }
 }

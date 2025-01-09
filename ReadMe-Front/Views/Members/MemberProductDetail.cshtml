@@ -1,0 +1,215 @@
+﻿
+@{
+    ViewBag.Title = "MemberOrderDetails";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        .nav-item a {
+            text-decoration: none;
+            color: gray;
+            margin: 20px;
+            font-size: 16px;
+        }
+
+        /* 左側 Sidebar */
+        .member-sidebar {
+            width: 200px; /* 固定寬度 */
+            padding: 20px; /* 增加內邊距 */
+            border-right: 1px solid #ddd; /* 增加右邊框 */
+            display: flex;
+            flex-direction: column; /* 垂直排列 */
+            justify-content: space-between; /* 均勻分布內容 */
+        }
+
+            /* 調整文字大小和間距 */
+            .member-sidebar ul {
+                padding: 0; /* 移除內邊距 */
+                list-style: none; /* 移除列表符號 */
+            }
+
+            .member-sidebar li {
+                font-size: 18px; /* 調整文字大小 */
+            }
+
+            .member-sidebar a {
+                text-decoration: none;
+                color: black;
+            }
+        /* 內容頁 */
+        .purchase-history {
+            width: 100%;
+            max-width: 900px;
+            margin: 20px auto;
+            font-family: Arial, sans-serif;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        /* 內容表格 */
+        .order-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 20px auto;
+            font-family: Arial, sans-serif;
+            /* border-top: 1px solid #ddd; */
+        }
+
+        /* 表頭樣式 */
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            background-color: #f5f5f5;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+            .table-header div {
+                flex: 1;
+                font-size: 14px;
+                color: #333;
+            }
+
+        /* 資料列樣式 */
+        .table-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+            .table-row div {
+                flex: 1;
+                font-size: 14px;
+                color: #555;
+            }
+        /* 內容區 */
+        .cart-section {
+            padding: 20px;
+            background-color: #fff;
+            margin: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .item-info img {
+                width: 100px;
+                height: auto;
+            }
+
+        .item-actions {
+            text-align: right;
+        }
+
+            .item-actions button {
+                background-color: orangered;
+                color: #fff;
+                border: none;
+                padding: 5px 10px;
+                cursor: pointer;
+            }
+
+                .item-actions button:hover {
+                    background-color: #d32f2f;
+                }
+    </style>
+<body>
+
+
+    <!-- Context Start -->
+    <div id="app" class="container" >
+        <div class="row" style="margin-top : 70px; ">
+            <!-- 左側固定分類欄 Start -->
+            <div class="list-group list-group-flush col-md-2 member-sidebar">
+                <ul>
+                    <li class="list-group-item list-group-item-action"><a href="~/Members/MemberOrderDetails">訂單紀錄</a></li>
+                    <li class="list-group-item list-group-item-action"><a href="~/Members/EditProfile">編輯會員資料</a></li>
+                    <li class="list-group-item list-group-item-action"><a href="~/Members/ChangePassword">修改密碼</a></li>
+                </ul>
+            </div>
+            <!-- 左側固定分類欄 End -->
+            <!-- 內容頁 start -->
+            <div class="purchase-history">
+                <!-- 標題 -->
+                <h1 class="title">購買紀錄</h1>
+
+                <!-- 說明文字區 -->
+                <div class="description-box">
+                    <p>
+                        若您對訂單、發票或有任何購書上的疑問，歡迎您寄信至客服信箱
+                        (<a href="mailto:service@readmoo.com">service@readmoo.com</a>) 詢問，將有專人為您服務。
+                    </p>
+                </div>
+
+                <!-- 表格區 -->
+
+                <div class="container">
+                    <section class="cart-section">
+                        <div class="cart-item">
+                            <div class="item-info">
+                                <img src="https://via.placeholder.com/100x150" alt="書籍封面">
+                                <div>
+                                    <h3>料理美味的科學</h3>
+                                    <p>作者：方善文化</p>
+                                    <p>贈品：閱讀給朋友</p>
+                                </div>
+                            </div>
+                            <div class="item-actions">
+                                <span>數量：1</span>
+                                <span>價格：NT$ 252</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 內容頁 end -->
+
+    </div>
+
+    </div>
+    <!-- Context End -->
+    <script src="~/Js/vue.global.js"></script>
+    <script src="~/Js/Repeat.js"></script>
+    <script>
+           const{createApp}=Vue
+           const config={
+               setup(){
+                   return{
+
+                   }
+               }
+           }
+           const app=createApp(config)
+           app.component("navbar-component",NavBar)
+           app.mount("#app")
+    </script>
+</body>
+</html>
+
