@@ -407,7 +407,6 @@
     <Content Include="Views\Members\Index.cshtml" />
     <Content Include="Views\Members\Register.cshtml" />
     <Content Include="Views\Members\RegisterConfirm.cshtml" />
-    <Content Include="Views\Products\ProductDetail - 複製.cshtml" />
     <Content Include="Views\Cart\OrderDetails.cshtml" />
     <Content Include="Views\Cart\OrderFinish.cshtml" />
     <Content Include="Views\Categories\SubCategory.cshtml" />

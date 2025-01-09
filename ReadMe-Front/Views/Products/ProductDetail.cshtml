@@ -3,9 +3,13 @@
 
 @{
     ViewBag.Title = "商品詳細頁 - "+ @Model.Title;
-    Layout = "~/Views/Shared/_Layout2.cshtml"; // 指定 Layout
+    Layout = "~/Views/Shared/_Layout.cshtml"; // 指定 Layout
 }
 <style>
+    a {
+        text-decoration: none;
+        color: black;
+    }
     .newline {
         white-space: nowrap;
     }
@@ -21,7 +25,29 @@
     .card-footer form {
         margin: 0;
     }
+    .btn-primary {
+        background-color: #7AB8B8;
+        color: white;
+        border-color: white;
+    }
 
+    .btn-primary:hover {
+        background-color: #f8f9fa; /* Hover時背景變淡灰 */
+        color: black; /* Hover時文字變黑 */
+        border-color: gray; /* 邊框仍保持灰色 */
+    }
+
+    .btn-success {
+        background-color: #1E73BE;
+        color: white; /* 字體顏色設置為灰色 */
+        border-color: white; /* 邊框顏色設置為灰色 */
+    }
+
+    .btn-success:hover {
+        background-color: #f8f9fa; /* Hover時背景變淡灰 */
+        color: black; /* Hover時文字變黑 */
+        border-color: gray; /* 邊框仍保持灰色 */
+    }
 </style>
 <body>
     <div class="container" id="app" style="margin-top : 130px;">
@@ -65,7 +91,7 @@
                         <form method="post" action="/Cart/AddToFavorite">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="ProductId" value="@Model.Id" />
-                            <button type="submit" class="btn btn-secondary btn-sm" >加入收藏列表</button>
+                            <button type="submit" class="btn btn-success btn-sm" >加入收藏列表</button>
                         </form>
 
 

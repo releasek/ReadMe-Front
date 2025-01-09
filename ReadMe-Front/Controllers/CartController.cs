@@ -23,6 +23,7 @@ namespace ReadMe_Front.Controllers
         {
             return View();
         }
+        [Authorize]
         [HttpPost]
         public ActionResult AddToFavorite(int productId)
         {
@@ -44,6 +45,7 @@ namespace ReadMe_Front.Controllers
         }
 
         // 加入購物車
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddToCart(int productId, int price)

@@ -332,7 +332,7 @@
                     <div v-for="(item, index) in cart.CartItems" :key="item.Id" class="cart-item border-bottom py-3">
                         <!-- 商品項目 -->
                         <div class="item-info d-flex align-items-center">
-                            <input type="checkbox" v-model="item.checked" class="form-check-input me-3">
+                            @*<input type="checkbox" v-model="item.checked" class="form-check-input me-3">*@
                             <a :href="`/Products/ProductDetail/${item.ProductId}`">
                                 <img :src="item.ImageURL" :alt="`商品圖片 - ${item.Title}`" class="item-image me-3">
                             </a>
