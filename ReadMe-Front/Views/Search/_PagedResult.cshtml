@@ -1,4 +1,5 @@
 ﻿@using ReadMe_Front.Models.Repositories
+@using ReadMe_Front.Models.Infra
 @model Paged<ReadMe_Front.Models.DTOs.CategoryDto>
 
 @{
@@ -41,7 +42,7 @@
         <h3>@ViewBag.SearchInput 搜尋結果如下：</h3>
         <input type="hidden" id="originalSearchInput" value="@ViewBag.SearchInput" />
         <div id="paginationContainer">
-            <p>總筆數: @Model.PaginationInfo.RecordCount 當前頁碼: @Model.PaginationInfo.PageNumber / @Model.PaginationInfo.Pages</p>
+            <p>總筆數: @Model.Pagination.TotalRecords 當前頁碼: @Model.Pagination.PageNumber / @Model.Pagination.TotalPages</p>
         </div>
         <div>
             @*<label>分類：</label>
@@ -95,10 +96,10 @@
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 <!-- Previous Button -->
-                @if (Model.PaginationInfo.ShowFirstPage)
+                @if (Model.Pagination.ShowFirstPage)
                 {
                     <li class="page-item">
-                        <a class="page-link" href="@Url.Action("_PagedResult", new { pageNumber = Model.PaginationInfo.PageNumber - 1, pageSize = Model.PaginationInfo.PageSize, input = @ViewBag.SearchInput})" aria-label="Previous">
+                        <a class="page-link" href="@Url.Action("_PagedResult", new { pageNumber = Model.Pagination.PageNumber - 1, pageSize = Model.Pagination.PageSize, input = @ViewBag.SearchInput})" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -113,9 +114,9 @@
                 }
 
                 <!-- Page Numbers -->
-                @for (int i = 1; i <= Model.PaginationInfo.Pages; i++)
+                @for (int i = 1; i <= Model.Pagination.PageNumber; i++)
                 {
-                    if (i == Model.PaginationInfo.PageNumber)
+                    if (i == Model.Pagination.PageNumber)
                     {
                         <li class="page-item active">
                             <span class="page-link">@i</span>
@@ -124,16 +125,16 @@
                     else
                     {
                         <li class="page-item">
-                            <a class="page-link" href="@Url.Action("_PagedResult", new { pageNumber = i, pageSize = Model.PaginationInfo.PageSize, input = @ViewBag.SearchInput})">@i</a>
+                            <a class="page-link" href="@Url.Action("_PagedResult", new { pageNumber = i, pageSize = Model.Pagination.PageSize, input = @ViewBag.SearchInput})">@i</a>
                         </li>
                     }
                 }
 
                 <!-- Next Button -->
-                @if (Model.PaginationInfo.ShowLastPage)
+                @if (Model.Pagination.ShowLastPage)
                 {
                     <li class="page-item">
-                        <a class="page-link" href="@Url.Action("_PagedResult", new { pageNumber = Model.PaginationInfo.PageNumber + 1, pageSize = Model.PaginationInfo.PageSize, input = @ViewBag.SearchInput})" aria-label="Next">
+                        <a class="page-link" href="@Url.Action("_PagedResult", new { pageNumber = Model.Pagination.PageNumber + 1, pageSize = Model.Pagination.PageSize, input = @ViewBag.SearchInput})" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>

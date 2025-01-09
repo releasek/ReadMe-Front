@@ -142,22 +142,33 @@
 						{
 
 							<div class=" card-body mb-4">
-								<div class="card h-100">
-									<a href="~/Products/ProductDetail/@item.Id">
-										<img src="@item.ImageURL" class="card-img-top" alt="@item.Title">
-									</a>
-									<div class="card-body p-2">
-										<a href="~/Products/ProductDetail/@item.Id">
-											<h5 class="card-title mb-1">@item.Title</h5>
-											<p class="text-muted mb-1">NT$ @item.Price</p>
-										</a>
-									</div>
-									<div class="card-footer bg-white border-0 flex-column align-items-center">
-										<button v-on:click="addToCart({ id: @item.Id, price: @item.Price })" class="btn btn-success btn-sm">購買</button>
-										<a href="~/Products/ProductDetail/@item.Id" class="btn btn-primary btn-sm ">加入收藏</a>
+                                <div class="card h-100">
+                                    <a href="~/Products/ProductDetail/@item.Id">
+                                        <img src="@item.ImageURL" class="card-img-top" alt="@item.Title">
+                                    </a>
+                                    <div class="card-body p-2">
+                                        <a href="~/Products/ProductDetail/@item.Id">
+                                            <h5 class="card-title mb-1">@item.Title</h5>
+                                            <p class="text-muted mb-1">NT$ @item.Price</p>
+                                        </a>
+                                    </div>
+                                    <div class="card-footer bg-white border-0 d-flex justify-content-between p-2">
+                                        <!-- 購買表單 -->
+                                        <form method="post" action="/Cart/AddToCart" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="ProductId" value="@item.Id" />
+                                            <input type="hidden" name="Price" value="@item.Price" />
+                                            <button type="submit" class="btn btn-primary btn-sm">購買</button>
+                                        </form>
 
-									</div>
-								</div>
+                                        <!-- 加入收藏表單 -->
+                                        <form method="post" action="/Cart/AddToFavorite" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="ProductId" value="@item.Id" />
+                                            <button type="submit" class="btn btn-success btn-sm">收藏</button>
+                                        </form>
+                                    </div>
+                                </div>
 							</div>
 					    }
 				    </div>
