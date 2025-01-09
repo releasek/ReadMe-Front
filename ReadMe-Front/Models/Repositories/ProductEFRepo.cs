@@ -200,7 +200,7 @@ namespace ReadMe_Front.Models.Repositories
         {
             using (var db = new AppDbContext())
             {
-                return db.Products.OrderBy(x=>x.PublishDate).Take(6).ToList();
+                return db.Products.OrderByDescending(x=>x.PublishDate).Take(6).ToList();
             }
         }
         /// <summary>

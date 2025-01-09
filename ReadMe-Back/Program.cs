@@ -11,6 +11,8 @@ namespace ReadMe_Back
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+
             string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 

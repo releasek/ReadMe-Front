@@ -414,6 +414,7 @@
     <Content Include="Views\Categories\SubCategory.cshtml" />
     <Content Include="Views\Search\_Products.cshtml" />
     <Content Include="Views\Shared\_Pagination.cshtml" />
+    <Content Include="Views\Products\ProductAuthor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

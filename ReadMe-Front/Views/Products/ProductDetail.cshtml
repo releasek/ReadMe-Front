@@ -22,7 +22,6 @@
         margin: 0;
     }
 
-
 </style>
 <body>
     <div class="container" id="app" style="margin-top : 130px;">
@@ -41,7 +40,7 @@
             <!-- 書籍資訊 -->
             <div class="book-info row">
                 <div class="col-4">
-                    <img src="@Model.ImageURL" alt="書籍封面">
+                    <img src="@Model.ImageURL" alt="書籍封面" width="300" height="400">
                 </div>
                 <div class="details col-8">
                     <h2>@Model.Title</h2>
@@ -83,9 +82,9 @@
             </p>
         </section>                 
 
-        <div class="related-books">
-            @Html.Action("ProductAuthor", "Products", new { Author = Model.Author })
-        </div>
+		<div class="related-books">
+			@Html.Action("ProductAuthor", "Products", new { Author = Model.Author })
+		</div>
             
     </div>
 </body>
