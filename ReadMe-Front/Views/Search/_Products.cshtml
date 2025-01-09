@@ -74,13 +74,49 @@
 <div class="row" style="margin-top:130px">
     @if (products.Count() == 0)
     {
-        <h2>對不起，找不到 @ViewBag.Keyword，請重新查詢</h2>
+        <h3>對不起，找不到 @ViewBag.Keyword，請重新查詢</h3>
     }
     else
-    {        
-        <h2>@ViewBag.keyword 搜尋結果共 @Model.Pagination.TotalRecords 筆，頁數 @Model.Pagination.PageNumber / @Model.Pagination.TotalPages</h2>
-        
-        
+    {
+        <h3>@ViewBag.keyword 搜尋結果共 @Model.Pagination.TotalRecords 筆，頁數 @Model.Pagination.PageNumber / @Model.Pagination.TotalPages</h3>
+
+        <!-- 選項列表 -->
+        <div class="row">
+            <form id="filterForm" method="get" action="/Search/Result">
+                <!-- 關鍵字 -->
+                <input type="hidden" name="keyword" value="@Request.QueryString["keyword"]" />
+
+                <!-- 選項列表 -->
+                <div class="container">
+                    <table class="table table-bordered table-sm">                        
+                        <tr>
+                            <th class="table-active" style="width: 15%;">
+                                    <!-- 標題 -->
+                                    <label>分類（單選）</label>
+                            </th>
+                            <th style="width: 85%;">
+                                <label class="ms-1 me-2">
+                                    <input type="radio" name="selectedOption" value=""
+                                           @(string.IsNullOrEmpty(Request.QueryString["selectedOption"]) ? "checked" : "")
+                                           onchange="this.form.submit()" />
+                                    全部(@ViewBag.TotalCounts)
+                                </label>
+                                @foreach (var option in Model.Options)
+                                {
+                                    var count = ViewBag.CategoryCounts.ContainsKey(option) ? ViewBag.CategoryCounts[option] : 0;<!-- 獲取分類數量 -->
+                                    <label class="me-2">
+                                        <input type="radio" name="selectedOption" value="@option"
+                                               @(Request.QueryString["selectedOption"] == option ? "checked" : "")
+                                               onchange="this.form.submit()" />
+                                        @option (@count)
+                                    </label>
+                                }
+                            </th>
+                        </tr>                          
+                    </table>
+                </div>
+            </form>
+        </div>
         foreach (var item in Model.Data)
         {
             <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
@@ -115,3 +151,4 @@
     }
 
 </div>
+
