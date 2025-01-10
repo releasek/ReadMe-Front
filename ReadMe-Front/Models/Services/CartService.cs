@@ -64,9 +64,9 @@ namespace ReadMe_Front.Models.Services
 
 
         }
-        public List<OrderVm> GetMemberOrderDetail(string account)
+        public List<OrderVm> GetMemberOrderDetail(string orderName)
         {
-            return _cartEFRepo.MemberOrderDetail(account);
+            return _cartEFRepo.MemberOrderDetail(orderName);
         }
         public List<OrderVm> GetMemberOrder(string account)
         {

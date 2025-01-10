@@ -194,17 +194,7 @@ namespace ReadMe_Front.Controllers
 
 
 		}
-        [Authorize]
-        public ActionResult MemberOrderDetails()
-        {
-            return View();
-        }
-        [Authorize]
-        public ActionResult MemberProductDetail()
-		{
-            return View();
-        }
-        
+      
 
     }
 }
