@@ -17,17 +17,13 @@ namespace ReadMe_Front.Controllers
 	public class MembersController : Controller
 	{
 		private readonly MemberService _memberService;
-		
+
         public MembersController()
-		{
-			// 初始化資料庫上下文和儲存庫，並傳入 MemberService
-			var dbContext = new AppDbContext();
-			var memberRepo = new MemberEFRepo(dbContext);
-			_memberService = new MemberService(memberRepo);
-			
+        {
+            _memberService = new MemberService();
         }
 
-		[Authorize]
+        [Authorize]
 		// Get: Index 會員中心頁
 		public ActionResult Index()
 		{

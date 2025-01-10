@@ -11,15 +11,7 @@ namespace ReadMe_Front.Models.EFModels
         public int Id { get; set; }
 
         [Required]
-        [StringLength(255)]
-        public string Username { get; set; }
-
-        [Required]
-        [StringLength(255)]
-        public string Password { get; set; }
-
-        public int GroupId { get; set; }
-
-        public virtual AdminGroup AdminGroup { get; set; }
+        [StringLength(50)]
+        public string UserName { get; set; }
     }
 }
