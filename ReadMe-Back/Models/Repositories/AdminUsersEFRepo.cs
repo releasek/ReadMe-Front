@@ -14,7 +14,7 @@ namespace ReadMe_Back.Models.Repositories
         }
         public List<AdminUser> GetAllAdminUsers()
         {
-          
+
         }
         public List<AdminuserDto> GetAdminUsers()
         {
