@@ -13,9 +13,9 @@ namespace ReadMe_Front.Models.Repositories
     public class MemberEFRepo
     {
 		private readonly AppDbContext _context;
-		public MemberEFRepo(AppDbContext context)
+		public MemberEFRepo()
 		{
-			_context = context;
+			_context = new AppDbContext();
 		}
 
 		public void Create(RegisterDto dto)
