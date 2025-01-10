@@ -17,6 +17,7 @@ namespace ReadMe_Front.Controllers
         [Authorize]
         public ActionResult MemberProductDetail()
         {
+           
             // 從查詢字串中取得 orderName 的值
             string orderName = Request.QueryString["orderName"];
 
