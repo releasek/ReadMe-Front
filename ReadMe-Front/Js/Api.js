@@ -205,8 +205,16 @@ window.Api = {
         console.error("Failed to fetch order:", error);
         throw error;
     }
-},
+    },
 
+    // 取得會員訂單資料
+    async fetchOrders() {
+        const response = await fetch(`/api/memberapi/getMemberOrder`, {
+            method: "GET",
+        });
+        return await response.json(); // 取得資料訂單資料
+
+    },
 
 
 };

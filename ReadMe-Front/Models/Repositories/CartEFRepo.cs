@@ -16,6 +16,53 @@ namespace ReadMe_Front.Models.Repositories
 {
     public class CartEFRepo
     {
+        public List<OrderVm> MemberOrderDetail(string account)
+        {
+            using (var db = new AppDbContext())
+            {
+                var userid = GetUserid(account);
+                var result = from OrderDetails in db.OrderDetails
+                             join Orders in db.Orders on OrderDetails.OrderId equals Orders.Id
+                             join Products in db.Products on OrderDetails.ProductId equals Products.Id
+                             where Orders.UserID == userid
+                             select new OrderVm
+                             {
+                                 Id = Orders.Id,
+                                 OrderName = Orders.OrderName,
+                                 UserID = Orders.UserID,
+                                 TotalAmount = Orders.TotalAmount,
+                                 OrderDate = Orders.OrderDate.ToString("yyyy-MM-dd"),
+                                 Payment = "信用卡",
+                                 PaymentStatus = "已付款",
+                             };
+                return result.ToList();
+            }
+        }
+        /// <summary>
+        /// 會員訂單資料
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        public List<OrderVm> MemberOrder(string account)
+        {
+            using (var db = new AppDbContext())
+            {
+                var userId = GetUserid(account);
+                
+                return db.Orders.Where(a=>a.UserID==userId)
+                .AsEnumerable() // 將數據加載到記憶體
+                .Select(o => new OrderVm
+                {
+                    Id = o.Id,
+                    OrderName = o.OrderName,
+                    UserID = o.UserID,
+                    TotalAmount = o.TotalAmount,
+                    OrderDate = o.OrderDate.ToString("yyyy-MM-dd"), // 格式化日期
+                    Payment ="信用卡",
+                    PaymentStatus = "已付款",
+                }).ToList();
+            }
+        }
         /// <summary>
         /// 單筆訂單資料
         /// </summary>
@@ -31,8 +78,7 @@ namespace ReadMe_Front.Models.Repositories
                         Id = o.Id,
                         OrderName = o.OrderName,
                         UserID = o.UserID,
-                        TotalAmount = o.TotalAmount,
-                        OrderDate = o.OrderDate
+                        TotalAmount = o.TotalAmount,                      
                     }).FirstOrDefault();
                 if (order == null)
                 {
@@ -80,8 +126,7 @@ namespace ReadMe_Front.Models.Repositories
                         Id = o.Id,
                         OrderName = o.OrderName,
                         UserID = o.UserID,
-                        TotalAmount = o.TotalAmount,
-                        OrderDate = o.OrderDate
+                        TotalAmount = o.TotalAmount,                      
                     }).FirstOrDefault();
             }
         }

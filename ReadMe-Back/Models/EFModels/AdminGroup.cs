@@ -5,11 +5,13 @@ using System.Collections.Generic;
 
 namespace ReadMe_Back.Models.EFModels;
 
-public partial class AdminPermission
+public partial class AdminGroup
 {
     public int Id { get; set; }
 
-    public string PermissionName { get; set; }
+    public string GroupName { get; set; }
 
     public virtual ICollection<AdminRole> AdminRoles { get; set; } = new List<AdminRole>();
+
+    public virtual ICollection<AdminUser> AdminUsers { get; set; } = new List<AdminUser>();
 }

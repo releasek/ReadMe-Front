@@ -24,6 +24,7 @@ namespace ReadMe_Front.Models.EFModels
 
         public int TotalAmount { get; set; }
 
+        [Column(TypeName = "date")]
         public DateTime OrderDate { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -8,10 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\NewFolder1\**" />
-    <Content Remove="Models\NewFolder1\**" />
-    <EmbeddedResource Remove="Models\NewFolder1\**" />
-    <None Remove="Models\NewFolder1\**" />
+    <Compile Remove="Models\Interface\**" />
+    <Content Remove="Models\Interface\**" />
+    <EmbeddedResource Remove="Models\Interface\**" />
+    <None Remove="Models\Interface\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,12 +25,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\DTOs\" />
-    <Folder Include="Models\Interface\" />
-    <Folder Include="Models\NewFolder\" />
   </ItemGroup>
 
 </Project>

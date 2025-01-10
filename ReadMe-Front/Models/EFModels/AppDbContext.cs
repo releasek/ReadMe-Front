@@ -12,7 +12,10 @@ namespace ReadMe_Front.Models.EFModels
         {
         }
 
+        public virtual DbSet<AdminGroup> AdminGroups { get; set; }
         public virtual DbSet<AdminPermission> AdminPermissions { get; set; }
+        public virtual DbSet<AdminRole> AdminRoles { get; set; }
+        public virtual DbSet<AdminUser> AdminUsers { get; set; }
         public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<CartItem> CartItems { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
@@ -27,6 +30,24 @@ namespace ReadMe_Front.Models.EFModels
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AdminGroup>()
+                .HasMany(e => e.AdminRoles)
+                .WithRequired(e => e.AdminGroup)
+                .HasForeignKey(e => e.GroupId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AdminGroup>()
+                .HasMany(e => e.AdminUsers)
+                .WithRequired(e => e.AdminGroup)
+                .HasForeignKey(e => e.GroupId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AdminPermission>()
+                .HasMany(e => e.AdminRoles)
+                .WithRequired(e => e.AdminPermission)
+                .HasForeignKey(e => e.PermissionId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<Cart>()
                 .HasMany(e => e.CartItems)
                 .WithRequired(e => e.Cart)
