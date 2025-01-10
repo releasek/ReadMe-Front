@@ -1,173 +1,230 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ReadMe_Back.Models.EFModels;
+using ReadMe_Back.Models.Repositories;
 using ReadMe_Back.Models.ViewModels;
 
 namespace ReadMe_Back.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly ProductEFRepo _repo;
 
-        public ProductsController(AppDbContext context)
+        public ProductsController(ProductEFRepo repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         // GET: AllProducts
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var appDbContext = _context.Products
-                                        .Include(p => p.Category)
-                                        .Include(p => p.Category.ParentCategory)
-                                        .Select(p => new ProductVm
-                                        {
-                                            Id = p.Id,
-                                            Title = p.Title,
-                                            Author = p.Author,
-                                            Publisher = p.Publisher,
-                                            Description = p.Description,
-                                            Price = p.Price,
-                                            PublishDate = p.PublishDate,
-                                            CategoryName = p.Category.CategoryName,
-                                            ParentCategoryName = p.Category.ParentCategory.ParentCategoriesName,
-                                            ImageURL = p.ImageUrl
-                                        });
+            var allCategories = _repo.AllCategories().Distinct().ToList();
+            var products = _repo.GetProducts().Select(p => new ProductVm
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Author = p.Author,
+                Publisher = p.Publisher,
+                Description = p.Description,
+                Price = p.Price,
+                PublishDate = p.PublishDate,
+                CategoryName = p.Category.CategoryName,
+                ParentCategoryName = p.Category.ParentCategory.ParentCategoriesName,
+                ImageURL = p.ImageUrl,
+            }).ToList();
 
-            return View(await appDbContext.ToListAsync());
+            var vm = new ProductIndexVm
+            {
+                Products = products,
+                AllCategories = allCategories
+            };
+
+            return View(vm);
         }
 
+        [HttpPost]
         public IActionResult GetProduct(int id)
         {
-            var product = _context.Products.Find(id);
+            var product = _repo.GetProducts().FirstOrDefault(p => p.Id == id);
 
-            return Json(product);
-        }
-
-        // GET: Products/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products
-                .Include(p => p.Category)
-                .Include(p => p.Promotion)
-                .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Product not found." });
             }
 
-            return View(product);
+            return Json(new
+            {
+                id = product.Id,
+                title = product.Title,
+                author = product.Author,
+                publisher = product.Publisher,
+                price = product.Price,
+                publishdate = product.PublishDate?.ToString("yyyy-MM-dd"),
+                imageurl = product.ImageUrl,
+                categoryid = product.CategoryId,
+                categoryname = product.Category.CategoryName,
+                description = product.Description
+            });
         }
 
-        // GET: Products/Create
-        public IActionResult Create()
-        {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName");
-            ViewData["PromotionId"] = new SelectList(_context.Promotions, "Id", "PromotionName");
-            return View();
-        }
-
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Author,Publisher,Price,Description,CategoryId,PromotionId,PublishDate,ImageUrl")] Product product)
+        public IActionResult Update(ProductVm model)
         {
-            if (ModelState.IsValid)
+            if (model == null)
             {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId);
-            ViewData["PromotionId"] = new SelectList(_context.Promotions, "Id", "PromotionName", product.PromotionId);
-            return View(product);
-        }
-
-
-
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Author,Publisher,Price,Description,CategoryId,PromotionId,PublishDate,ImageUrl")] Product product)
-        {
-            if (id != product.Id)
-            {
-                return NotFound();
+                return BadRequest(new { message = "Invalid product data." });
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId);
-            ViewData["PromotionId"] = new SelectList(_context.Promotions, "Id", "PromotionName", product.PromotionId);
-            return View(product);
-        }
-
-        // GET: Products/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products
-                .Include(p => p.Category)
-                .Include(p => p.Promotion)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = _repo.GetProducts().FirstOrDefault(p => p.Id == model.Id);
             if (product == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Product not found." });
             }
 
-            return View(product);
-        }
+            // 更新產品的屬性
+            product.Title = model.Title;
+            product.Author = model.Author;
+            product.Publisher = model.Publisher;
+            product.Price = model.Price;
+            product.Description = model.Description;
+            product.CategoryId = model.CategoryId;
+            product.PublishDate = model.PublishDate;
+            product.ImageUrl = model.ImageURL;
 
-        // POST: Products/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var product = await _context.Products.FindAsync(id);
-            if (product != null)
+            try
             {
-                _context.Products.Remove(product);
+                // 保存更改到資料庫
+                _repo.UpdateProduct(product); // 假設在 Repo 中實現 Update 方法
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = "商品更新失敗", error = ex.Message });
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductExists(int id)
-        {
-            return _context.Products.Any(e => e.Id == id);
-        }
+        //// GET: Products/Details/5
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var product = await _context.Products
+        //        .Include(p => p.Category)
+        //        .Include(p => p.Promotion)
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (product == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(product);
+        //}
+
+        //// GET: Products/Create
+        //public IActionResult Create()
+        //{
+        //    ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName");
+        //    ViewData["PromotionId"] = new SelectList(_context.Promotions, "Id", "PromotionName");
+        //    return View();
+        //}
+
+        //// POST: Products/Create
+        //// To protect from overposting attacks, enable the specific properties you want to bind to.
+        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,Title,Author,Publisher,Price,Description,CategoryId,PromotionId,PublishDate,ImageUrl")] Product product)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(product);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId);
+        //    ViewData["PromotionId"] = new SelectList(_context.Promotions, "Id", "PromotionName", product.PromotionId);
+        //    return View(product);
+        //}
+
+
+
+        //// POST: Products/Edit/5
+        //// To protect from overposting attacks, enable the specific properties you want to bind to.
+        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Author,Publisher,Price,Description,CategoryId,PromotionId,PublishDate,ImageUrl")] Product product)
+        //{
+        //    if (id != product.Id)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            _context.Update(product);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!ProductExists(product.Id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId);
+        //    ViewData["PromotionId"] = new SelectList(_context.Promotions, "Id", "PromotionName", product.PromotionId);
+        //    return View(product);
+        //}
+
+        //// GET: Products/Delete/5
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var product = await _context.Products
+        //        .Include(p => p.Category)
+        //        .Include(p => p.Promotion)
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (product == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(product);
+        //}
+
+        //// POST: Products/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var product = await _context.Products.FindAsync(id);
+        //    if (product != null)
+        //    {
+        //        _context.Products.Remove(product);
+        //    }
+
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
+
+        //private bool ProductExists(int id)
+        //{
+        //    return _context.Products.Any(e => e.Id == id);
+        //}
     }
 }

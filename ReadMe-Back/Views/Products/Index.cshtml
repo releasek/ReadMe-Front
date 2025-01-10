@@ -1,13 +1,15 @@
-﻿@model IEnumerable<ReadMe_Back.Models.ViewModels.ProductVm>
+﻿@using ReadMe_Back.Models.ViewModels
+@model ProductIndexVm
 
 @{
     ViewData["Title"] = "Index";
+    var currentProductId = ViewBag.CurrentProductId as int?;
 }
 
 <h1 class="ms-4 mt-4">商品管理</h1>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-tw">
 
 <body class="sb-nav-fixed">
     <main>
@@ -16,37 +18,43 @@
             <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form action="/" method="post">
+                        <form asp-action="Update" method="post">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">編輯商品</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
+                                <div class="mb-3">
+                                    <input class="updateId" type="hidden" id="updateId" name="Id"/>
                                     <label for="exampleFormControlInput1" class="form-label">書名</label>
-                                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="">
+                                    <input type="text" class="form-control" id="itemTitle" name="Title" required>
                                     <label for="exampleFormControlInput1" class="form-label">作者</label>
-                                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="">
+                                    <input type="text" class="form-control" id="itemAuthor" name="Author" required>
                                     <label for="exampleFormControlInput1" class="form-label">出版社</label>
-                                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="">
+                                    <input type="text" class="form-control" id="itemPublisher" name="Publisher" required>
                                     <label for="exampleFormControlInput1" class="form-label">售價</label>
-                                    <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="">
+                                    <input type="number" class="form-control" id="itemPrice" name="Price" required min="0">
                                     <label for="exampleFormControlInput1" class="form-label">簡介</label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                    <label for="exampleFormControlInput1" class="form-label">分類</label>
-                                    <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search...">
-                                        <datalist id="datalistOptions">
-                                            <option value="分類1"></option>
-                                            <option value="分類2"></option>
-                                            <option value="分類3"></option>
-                                        </datalist>
-                                    <label for="exampleFormControlInput1" class="form-label">'出版日'</label>
-                                    <input type="date" class="form-control" id="exampleFormControlInput1" placeholder="">
+                                    <textarea class="form-control" id="itemDescription" rows="3" name="Description" required></textarea>
+                                        <div class="mb-3">
+                                            <label for="itemCategory">分類</label>
+                                            <input class="itemCategoryId" type="hidden" id="itemCategoryId" name="CategoryId" />
+                                            <select id="itemCategoryName" class="form-select" name="CategoryId">
+                                                @foreach (var category in Model.AllCategories)
+                                                {
+                                                    <option value="@category.Id">@category.CategoryName</option>
+                                                }
+                                            </select>
+                                        </div>                                    
+                                    <label for="exampleFormControlInput1" class="form-label">出版日</label>
+                                    <input type="date" class="form-control" id="itemPublishDate" name="PublishDate">
                                     <label for="exampleFormControlInput1" class="form-label">圖片檔名</label>
-                                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="xxx.jpg">
+                                    <input type="text" class="form-control" id="itemURL" name="ImageURL" required>
+                                </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary btnCancel" data-bs-dismiss="modal">取消</button>
-                                <button type="button" class="btn btn-primary btnEdit">修改</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                <button type="submit" class="btn btn-primary">修改</button>
                             </div>
                         </form>
                     </div>
@@ -66,7 +74,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary btnCancel" data-bs-dismiss="modal">取消</button>
-                                <button type="button" class="btn btn-primary btnDelete">確認</button>
+                                <button type="submit" class="btn btn-primary btnDelete">確認</button>
                             </div>
                         </form>
                     </div>
@@ -106,7 +114,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary btnCancel" data-bs-dismiss="modal">取消</button>
-                                <button type="button" class="btn btn-primary btnEdit">新增</button>
+                                <button type="submit" class="btn btn-primary btnEdit">新增</button>
                             </div>
                         </form>
                     </div>
@@ -148,7 +156,8 @@
                             </tr>
                         </tfoot>
                         <tbody>
-                            @foreach(var item in Model){
+                            @foreach (var item in Model.Products)
+                            {
                                 <tr>                                    
                                     <th scope="row">@item.Id</th>
                                     <td>@item.Title</td>
@@ -162,7 +171,6 @@
                                     <td>
                                         <a class="btn btn-outline-info me-2" onclick="EditForm(@item.Id)" id="editForm">編輯</a>
                                         <a class="btn btn-outline-danger" onclick="Delete(@item.Id)" id="editForm">刪除</a>
-                                        <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#editModal">編輯</button>
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除</button>
                                     </td>
                                 </tr>
@@ -179,21 +187,52 @@
     <script src="~js/scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="~/js/datatables-simple-demo.js"></script>
-<script>
-        var EditForm = function(id){
+
+    <script>    
+        $(document).ready(function () {
+            $('#itemCategoryName').change(function () {
+            // 取得選中的 categoryId
+            var selectedCategoryId = $(this).val();
+
+            // 更新隱藏欄位的值
+            $('#itemCategoryId').val(selectedCategoryId);
+        });
+        })
+        var EditForm = function(id) {
+            console.log("Sending ID: ", id); // 檢查傳入的 ID
             $.ajax({
                 type: "POST",
                 url: "/Products/GetProduct",
-                data: {id:id},
-                success: function(){
+                data: { id: id },
+                success: function(product) {
+                    console.log("Product loaded: ", product); // 檢查伺服器返回的數據
                     $("#editModal").modal('show');
+                    $("#itemTitle").val(product.title);
+                    $("#itemAuthor").val(product.author);
+                    $("#itemPublisher").val(product.publisher);
+                    $("#itemPrice").val(product.price);
+                    $("#itemDescription").val(product.description);
+                    $("#itemPublishDate").val(product.publishdate);
+                    $("#itemURL").val(product.imageurl);
+                    $("#itemCategoryId").val(product.categoryid);
+                    $("#itemCategoryName").val(product.categoryname);
+                    $("#updateId").val(product.id);
+
+                    $("#itemCategoryName").val(product.categoryid).change(); // 確保選項同步
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error: " + error);
+                    alert("Failed to load product details.");
                 }
-            })
-        }
-</script>
+            });
+        };
+
+    </script>
+
+    
 </body>
 </html>
-    <p>
+@*     <p>
         <a asp-action="Create">Create New</a>
     </p>
     <table class="table">
@@ -268,4 +307,4 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </table> *@
