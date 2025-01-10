@@ -93,6 +93,10 @@ namespace ReadMe_Back.Controllers
             {
                 // 保存更改到資料庫
                 _repo.UpdateProduct(product); // 假設在 Repo 中實現 Update 方法
+
+                // 設置 TempData，傳遞成功消息
+                TempData["SuccessMessage"] = "修改成功";
+
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

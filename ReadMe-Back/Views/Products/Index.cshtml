@@ -1,9 +1,10 @@
 ﻿@using ReadMe_Back.Models.ViewModels
+@using System.Web
 @model ProductIndexVm
 
 @{
     ViewData["Title"] = "Index";
-    var currentProductId = ViewBag.CurrentProductId as int?;
+    var successMessage = TempData["SuccessMessage"] as string;
 }
 
 <h1 class="ms-4 mt-4">商品管理</h1>
@@ -120,7 +121,16 @@
                     </div>
                 </div>
             </div>
-
+            <!--提示訊息 -->
+            @if (!string.IsNullOrEmpty(successMessage))
+            {
+                <script>
+                    $(document).ready(function() {
+                        alert('@Html.Raw(successMessage)');
+                    });
+                </script>
+            }
+            <!--Table Start -->
             <div class="card mb-4">
                 <div class="card-header">
                     <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createModal">新增商品</button>
