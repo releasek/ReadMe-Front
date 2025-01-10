@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ReadMe_Back.Models.EFModels.Product>
+﻿@model IEnumerable<ReadMe_Back.Models.ViewModels.ProductVm>
 
 @{
     ViewData["Title"] = "Index";
@@ -121,166 +121,78 @@
                     <table id="datatablesSimple">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
-                                <th>function</th>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Publisher</th>
+                                <th>Price</th>
+                                <th>PublishDate</th>
+                                <th>ImageURL</th>
+                                <th>CategoryName</th>
+                                <th>ParentCategoryName</th>
+                                <th>Function</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
-                                <th>function</th>
-                                <th>function</th>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Publisher</th>
+                                <th>Price</th>
+                                <th>PublishDate</th>
+                                <th>ImageURL</th>
+                                <th>CategoryName</th>
+                                <th>ParentCategoryName</th>
+                                <th>Function</th>
                             </tr>
                         </tfoot>
                         <tbody>
-                            <tr>
-                                <td>Donna Snider</td>
-                                <td>Customer Support</td>
-                                <td>New York</td>
-                                <td>27</td>
-                                <td>2011/01/25</td>
-                                <td>$112,000</td>
-                                <td>
-                                    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#editModal">編輯</button>
-                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除</button>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td>Donna Snider</td>
-                                <td>Customer Support</td>
-                                <td>New York</td>
-                                <td>27</td>
-                                <td>2011/01/25</td>
-                                <td>$112,000</td>
-                                <td>
-                                    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#editModal">編輯</button>
-                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Donna Snider</td>
-                                <td>Customer Support</td>
-                                <td>New York</td>
-                                <td>27</td>
-                                <td>2011/01/25</td>
-                                <td>$112,000</td>
-                                <td>
-                                    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#editModal">編輯</button>
-                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Donna Snider</td>
-                                <td>Customer Support</td>
-                                <td>New York</td>
-                                <td>27</td>
-                                <td>2011/01/25</td>
-                                <td>$112,000</td>
-                                <td>
-                                    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#editModal">編輯</button>
-                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Donna Snider</td>
-                                <td>Customer Support</td>
-                                <td>New York</td>
-                                <td>27</td>
-                                <td>2011/01/25</td>
-                                <td>$112,000</td>
-                                <td>
-                                    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#editModal">編輯</button>
-                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Donna Snider</td>
-                                <td>Customer Support</td>
-                                <td>New York</td>
-                                <td>27</td>
-                                <td>2011/01/25</td>
-                                <td>$112,000</td>
-                                <td>
-                                    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#editModal">編輯</button>
-                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Donna Snider</td>
-                                <td>Customer Support</td>
-                                <td>New York</td>
-                                <td>27</td>
-                                <td>2011/01/25</td>
-                                <td>$112,000</td>
-                                <td>
-                                    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#editModal">編輯</button>
-                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Donna Snider</td>
-                                <td>Customer Support</td>
-                                <td>New York</td>
-                                <td>27</td>
-                                <td>2011/01/25</td>
-                                <td>$112,000</td>
-                                <td>
-                                    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#editModal">編輯</button>
-                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Donna Snider</td>
-                                <td>Customer Support</td>
-                                <td>New York</td>
-                                <td>27</td>
-                                <td>2011/01/25</td>
-                                <td>$112,000</td>
-                                <td>
-                                    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#editModal">編輯</button>
-                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Donna Snider</td>
-                                <td>Customer Support</td>
-                                <td>New York</td>
-                                <td>27</td>
-                                <td>2011/01/25</td>
-                                <td>$112,000</td>
-                                <td>
-                                    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#editModal">編輯</button>
-                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Aonna Snider</td>
-                                <td>Customer Support</td>
-                                <td>New York</td>
-                                <td>27</td>
-                                <td>2011/01/25</td>
-                                <td>$112,000</td>
-                                <td>
-                                    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#editModal">編輯</button>
-                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除</button>
-                                </td>
-                            </tr>
+                            @foreach(var item in Model){
+                                <tr>                                    
+                                    <th scope="row">@item.Id</th>
+                                    <td>@item.Title</td>
+                                    <td>@item.Author</td>
+                                    <td>@item.Publisher</td>
+                                    <td>@item.Price</td>
+                                    <td>@item.PublishDate</td>
+                                    <td>@item.ImageURL</td>
+                                    <td>@item.CategoryName</td>
+                                    <td>@item.ParentCategoryName</td>
+                                    <td>
+                                        <a class="btn btn-outline-info me-2" onclick="EditForm(@item.Id)" id="editForm">編輯</a>
+                                        <a class="btn btn-outline-danger" onclick="Delete(@item.Id)" id="editForm">刪除</a>
+                                        <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#editModal">編輯</button>
+                                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除</button>
+                                    </td>
+                                </tr>
+                            }                            
                         </tbody>
                     </table>
                 </div>                
             </div>
         </div>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="~js/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    <script src="~/js/datatables-simple-demo.js"></script>
+<script>
+        var EditForm = function(id){
+            $.ajax({
+                type: "POST",
+                url: "/Products/GetProduct",
+                data: {id:id},
+                success: function(){
+                    $("#editModal").modal('show');
+                }
+            })
+        }
+</script>
+</body>
+</html>
     <p>
         <a asp-action="Create">Create New</a>
     </p>
@@ -306,13 +218,13 @@
                     @Html.DisplayNameFor(model => model.PublishDate)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ImageUrl)
+                    @Html.DisplayNameFor(model => model.ImageURL)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Category)
+                    @Html.DisplayNameFor(model => model.CategoryName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Promotion)
+                    @Html.DisplayNameFor(model => model.ParentCategoryName)
                 </th>
                 <th></th>
             </tr>
@@ -340,13 +252,13 @@
                         @Html.DisplayFor(modelItem => item.PublishDate)
                     </td>
                     <td>
-                            @Html.DisplayFor(modelItem => item.ImageUrl)
+                            @Html.DisplayFor(modelItem => item.ImageURL)
                     </td>
                     <td>
-                            @Html.DisplayFor(modelItem => item.Category)
+                            @Html.DisplayFor(modelItem => item.CategoryName)
                     </td>
                     <td>
-                            @Html.DisplayFor(modelItem => item.Promotion)
+                            @Html.DisplayFor(modelItem => item.ParentCategoryName)
                     </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -357,14 +269,3 @@
             }
         </tbody>
     </table>
-    </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="~js/scripts.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-    <script src="~/js/datatables-simple-demo.js"></script>
-<script>
-
-</script>
-</body>
-</html>

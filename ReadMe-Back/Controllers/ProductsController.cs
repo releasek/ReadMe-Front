@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ReadMe_Back.Models.EFModels;
+using ReadMe_Back.Models.ViewModels;
 
 namespace ReadMe_Back.Controllers
 {
@@ -14,11 +15,34 @@ namespace ReadMe_Back.Controllers
             _context = context;
         }
 
-        // GET: Products
+        // GET: AllProducts
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Products.Include(p => p.Category).Include(p => p.Promotion);
+            var appDbContext = _context.Products
+                                        .Include(p => p.Category)
+                                        .Include(p => p.Category.ParentCategory)
+                                        .Select(p => new ProductVm
+                                        {
+                                            Id = p.Id,
+                                            Title = p.Title,
+                                            Author = p.Author,
+                                            Publisher = p.Publisher,
+                                            Description = p.Description,
+                                            Price = p.Price,
+                                            PublishDate = p.PublishDate,
+                                            CategoryName = p.Category.CategoryName,
+                                            ParentCategoryName = p.Category.ParentCategory.ParentCategoriesName,
+                                            ImageURL = p.ImageUrl
+                                        });
+
             return View(await appDbContext.ToListAsync());
+        }
+
+        public IActionResult GetProduct(int id)
+        {
+            var product = _context.Products.Find(id);
+
+            return Json(product);
         }
 
         // GET: Products/Details/5
@@ -67,23 +91,7 @@ namespace ReadMe_Back.Controllers
             return View(product);
         }
 
-        // GET: Products/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId);
-            ViewData["PromotionId"] = new SelectList(_context.Promotions, "Id", "PromotionName", product.PromotionId);
-            return View(product);
-        }
 
         // POST: Products/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
