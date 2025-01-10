@@ -8,12 +8,11 @@ namespace ReadMe_Front.Models.EFModels
     public partial class AppDbContext : DbContext
     {
         public AppDbContext()
-            : base("name=AppDbContext1")
+            : base("name=AppDbContext")
         {
         }
 
-        public virtual DbSet<AdminGroup> AdminGroups { get; set; }
-        public virtual DbSet<AdminPermission> AdminPermissions { get; set; }
+        public virtual DbSet<AdminRoleFunction> AdminRoleFunctions { get; set; }
         public virtual DbSet<AdminRole> AdminRoles { get; set; }
         public virtual DbSet<AdminUser> AdminUsers { get; set; }
         public virtual DbSet<Cart> Carts { get; set; }
@@ -27,25 +26,25 @@ namespace ReadMe_Front.Models.EFModels
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Wishlist> Wishlists { get; set; }
+        public virtual DbSet<AdminRoleFunctionRel> AdminRoleFunctionRels { get; set; }
+        public virtual DbSet<AdminUserRoleRel> AdminUserRoleRels { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AdminGroup>()
-                .HasMany(e => e.AdminRoles)
-                .WithRequired(e => e.AdminGroup)
-                .HasForeignKey(e => e.GroupId)
-                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<AdminRoleFunction>()
+                .HasMany(e => e.AdminRoleFunctionRels)
+                .WithRequired(e => e.AdminRoleFunction)
+                .HasForeignKey(e => e.FunctionId);
 
-            modelBuilder.Entity<AdminGroup>()
-                .HasMany(e => e.AdminUsers)
-                .WithRequired(e => e.AdminGroup)
-                .HasForeignKey(e => e.GroupId)
-                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<AdminRole>()
+                .HasMany(e => e.AdminRoleFunctionRels)
+                .WithRequired(e => e.AdminRole)
+                .HasForeignKey(e => e.RoleId);
 
-            modelBuilder.Entity<AdminPermission>()
-                .HasMany(e => e.AdminRoles)
-                .WithRequired(e => e.AdminPermission)
-                .HasForeignKey(e => e.PermissionId)
+            modelBuilder.Entity<AdminRole>()
+                .HasMany(e => e.AdminUserRoleRels)
+                .WithRequired(e => e.AdminRole)
+                .HasForeignKey(e => e.RoleId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Cart>()
@@ -57,7 +56,8 @@ namespace ReadMe_Front.Models.EFModels
             modelBuilder.Entity<Cart>()
                 .HasMany(e => e.CartItems1)
                 .WithRequired(e => e.Cart1)
-                .HasForeignKey(e => e.CartId);
+                .HasForeignKey(e => e.CartId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Category>()
                 .HasMany(e => e.Products)

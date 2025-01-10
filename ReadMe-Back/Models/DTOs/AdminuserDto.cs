@@ -1,4 +1,6 @@
-﻿namespace ReadMe_Back.Models.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ReadMe_Back.Models.DTOs
 {
     public class AdminuserDto
     {
@@ -8,7 +10,7 @@
 
         public string GroupName { get; set; }
 
-        public string RoleName { get; set; }
+        //public string RoleName { get; set; }
 
         public string PermissionName { get; set; }
 
