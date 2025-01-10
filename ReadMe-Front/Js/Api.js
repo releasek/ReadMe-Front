@@ -216,5 +216,14 @@ window.Api = {
 
     },
 
+    // 取得會員訂單詳細資料
+    async fetchOrdersDetail(orderName) {
+        const response = await fetch(`/api/memberapi/getMemberOrderDetail?orderName=${orderName}`, {
+            method: "GET",
+        });
+        return await response.json(); // 取得資料訂單資料
+
+    },
+
 
 };

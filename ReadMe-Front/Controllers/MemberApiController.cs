@@ -19,8 +19,8 @@ namespace ReadMe_Front.Controllers
         [Route("api/memberapi/getMemberOrder")]
         public IHttpActionResult GetMemberOrder()
         {
-            //string account = User.Identity.Name;
-            string account = "user06";
+            string account = User.Identity.Name;
+            //string account = "user06";
 
             if (string.IsNullOrEmpty(account))
             {
@@ -32,6 +32,19 @@ namespace ReadMe_Front.Controllers
             {
                 return NotFound();
             }
+            return Ok(orders);
+        }
+        [HttpGet]
+        [Route("api/memberapi/getMemberOrderDetail")]
+        public IHttpActionResult GetMemberOrderDetail(string orderName)
+        {
+            string account = "suer06";
+
+            if (string.IsNullOrEmpty(account))
+            {
+                return BadRequest("帳號為空");
+            }
+            var orders = _service.GetMemberOrderDetail( orderName);
             return Ok(orders);
         }
     }

@@ -146,18 +146,7 @@ namespace ReadMe_Front.Controllers
             }
             return Ok(order);
         }
-        [HttpGet]
-        [Route("api/cartapi/getMemberOrderDetail")]
-        public IHttpActionResult GetMemberOrderDetail()
-        {
-            string account = User.Identity.Name;
-            if (string.IsNullOrEmpty(account))
-            {
-                return BadRequest("帳號為空");
-            }
-            var orders = _service.GetMemberOrderDetail(account);
-            return Ok(orders);
-        }
+    
     }
     public class AddCartVm
     {

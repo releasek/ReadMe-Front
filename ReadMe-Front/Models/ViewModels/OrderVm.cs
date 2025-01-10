@@ -22,5 +22,13 @@ namespace ReadMe_Front.Models.ViewModels
 
         public string  PaymentStatus { get; set; }
 
+        public string Titel { get; set; }
+
+        public string Author { get; set; }
+
+        public int UnitPrice { get; set; }
+
+        public string image { get; set;  }
+
     }
 }
