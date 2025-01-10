@@ -421,6 +421,8 @@
     <Content Include="Views\Products\ProductAuthor.cshtml" />
     <Content Include="Views\MemberOrder\MemberOrderDetails.cshtml" />
     <Content Include="Views\MemberOrder\MemberProductDetail.cshtml" />
+    <Content Include="Views\Members\EditConfirm.cshtml" />
+    <Content Include="Views\Members\ChangeConfirm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
