@@ -23,9 +23,9 @@ namespace ReadMe_Front.Models.Services
     {
         private MemberEFRepo _repo;
 
-        public MemberService(MemberEFRepo memberRepo)
+        public MemberService()
 		{
-			_repo = memberRepo;
+			_repo = new MemberEFRepo();
 		}
 
         public void Register(RegisterDto dto)

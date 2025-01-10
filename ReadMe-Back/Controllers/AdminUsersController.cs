@@ -21,8 +21,7 @@ namespace ReadMe_Back.Controllers
         // GET: AdminUsers
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.AdminUsers.Include(a => a.Group);
-            return View(await appDbContext.ToListAsync());
+            return View(await _context.AdminUsers.ToListAsync());
         }
 
         // GET: AdminUsers/Details/5
@@ -34,7 +33,6 @@ namespace ReadMe_Back.Controllers
             }
 
             var adminUser = await _context.AdminUsers
-                .Include(a => a.Group)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (adminUser == null)
             {
@@ -47,7 +45,6 @@ namespace ReadMe_Back.Controllers
         // GET: AdminUsers/Create
         public IActionResult Create()
         {
-            ViewData["GroupId"] = new SelectList(_context.AdminGroups, "Id", "GroupName");
             return View();
         }
 
@@ -56,7 +53,7 @@ namespace ReadMe_Back.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Username,Password,GroupId")] AdminUser adminUser)
+        public async Task<IActionResult> Create([Bind("Id,UserName")] AdminUser adminUser)
         {
             if (ModelState.IsValid)
             {
@@ -64,7 +61,6 @@ namespace ReadMe_Back.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GroupId"] = new SelectList(_context.AdminGroups, "Id", "GroupName", adminUser.GroupId);
             return View(adminUser);
         }
 
@@ -81,7 +77,6 @@ namespace ReadMe_Back.Controllers
             {
                 return NotFound();
             }
-            ViewData["GroupId"] = new SelectList(_context.AdminGroups, "Id", "GroupName", adminUser.GroupId);
             return View(adminUser);
         }
 
@@ -90,7 +85,7 @@ namespace ReadMe_Back.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Username,Password,GroupId")] AdminUser adminUser)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserName")] AdminUser adminUser)
         {
             if (id != adminUser.Id)
             {
@@ -117,7 +112,6 @@ namespace ReadMe_Back.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GroupId"] = new SelectList(_context.AdminGroups, "Id", "GroupName", adminUser.GroupId);
             return View(adminUser);
         }
 
@@ -130,7 +124,6 @@ namespace ReadMe_Back.Controllers
             }
 
             var adminUser = await _context.AdminUsers
-                .Include(a => a.Group)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (adminUser == null)
             {
