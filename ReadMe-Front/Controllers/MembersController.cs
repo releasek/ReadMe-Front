@@ -151,9 +151,9 @@ namespace ReadMe_Front.Controllers
 			// 更新會員資料
 			_memberService.UpdateProfile(name, model);
 
-			TempData["Message"] = "個人資料已更新";
-			return RedirectToAction("Index");
-		}
+            TempData["Message"] = "個人資料已更新";
+            return RedirectToAction("MemberOrderDetails", "MemberOrder");
+        }
 
 		[Authorize]
 		public ActionResult ChangePassword()
@@ -183,8 +183,8 @@ namespace ReadMe_Front.Controllers
 
 				_memberService.ChangePassword(dto, account);
 
-				TempData["SuccessMessage"] = "密碼修改成功！";
-				return RedirectToAction("Index", "Home");
+				TempData["Message"] = "密碼修改成功！";
+				return RedirectToAction("MemberOrderDetails", "MemberOrder");
 			}
 			catch (Exception ex)
 			{
