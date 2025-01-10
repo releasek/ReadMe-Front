@@ -6,6 +6,7 @@ namespace ReadMe_Back.Models.ViewModels
     {
         public int Id { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
         public string GroupName { get; set; }

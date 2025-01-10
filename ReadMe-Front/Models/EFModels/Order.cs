@@ -16,16 +16,15 @@ namespace ReadMe_Front.Models.EFModels
 
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(255)]
-        public string OrderName { get; set; }
-
         public int UserID { get; set; }
 
         public int TotalAmount { get; set; }
 
-        [Column(TypeName = "date")]
         public DateTime OrderDate { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string OrderName { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }

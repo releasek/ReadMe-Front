@@ -13,13 +13,15 @@ public partial class AppDbContext : DbContext
     {
     }
 
-    public virtual DbSet<AdminGroup> AdminGroups { get; set; }
-
-    public virtual DbSet<AdminPermission> AdminPermissions { get; set; }
-
     public virtual DbSet<AdminRole> AdminRoles { get; set; }
 
+    public virtual DbSet<AdminRoleFunction> AdminRoleFunctions { get; set; }
+
+    public virtual DbSet<AdminRoleFunctionRel> AdminRoleFunctionRels { get; set; }
+
     public virtual DbSet<AdminUser> AdminUsers { get; set; }
+
+    public virtual DbSet<AdminUserRoleRel> AdminUserRoleRels { get; set; }
 
     public virtual DbSet<Cart> Carts { get; set; }
 
@@ -43,63 +45,62 @@ public partial class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<AdminGroup>(entity =>
-        {
-            entity.ToTable("AdminGroup");
-
-            entity.Property(e => e.GroupName)
-                .IsRequired()
-                .HasMaxLength(50);
-        });
-
-        modelBuilder.Entity<AdminPermission>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_Permission");
-
-            entity.Property(e => e.PermissionName)
-                .IsRequired()
-                .HasMaxLength(50);
-        });
-
         modelBuilder.Entity<AdminRole>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_AdminRole");
+            entity.HasKey(e => e.Id).HasName("PK_Roles");
 
             entity.Property(e => e.RoleName)
                 .IsRequired()
                 .HasMaxLength(50);
+        });
 
-            entity.HasOne(d => d.Group).WithMany(p => p.AdminRoles)
-                .HasForeignKey(d => d.GroupId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_AdminRoles_AdminGroup");
+        modelBuilder.Entity<AdminRoleFunction>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Functions");
 
-            entity.HasOne(d => d.Permission).WithMany(p => p.AdminRoles)
-                .HasForeignKey(d => d.PermissionId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_AdminRoles_AdminRoles");
+            entity.Property(e => e.FunctionName)
+                .IsRequired()
+                .HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<AdminRoleFunctionRel>(entity =>
+        {
+            entity.HasNoKey();
+
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+            entity.HasOne(d => d.Function).WithMany()
+                .HasForeignKey(d => d.FunctionId)
+                .HasConstraintName("FK_RoleFunctionRels_Functions");
+
+            entity.HasOne(d => d.Role).WithMany()
+                .HasForeignKey(d => d.RoleId)
+                .HasConstraintName("FK_RoleFunctionRels_Roles");
         });
 
         modelBuilder.Entity<AdminUser>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AdminPer__3214EC07C947E8F5");
+            entity.HasKey(e => e.Id).HasName("PK_Users");
 
-            entity.HasIndex(e => e.Username, "IX_AdminPermissions").IsUnique();
-
-            entity.HasIndex(e => e.Username, "UQ__AdminPer__536C85E4251B9526").IsUnique();
-
-            entity.Property(e => e.GroupId).HasDefaultValueSql("('DefaultGroup')");
-            entity.Property(e => e.Password)
+            entity.Property(e => e.UserName)
                 .IsRequired()
-                .HasMaxLength(255);
-            entity.Property(e => e.Username)
-                .IsRequired()
-                .HasMaxLength(255);
+                .HasMaxLength(50);
+        });
 
-            entity.HasOne(d => d.Group).WithMany(p => p.AdminUsers)
-                .HasForeignKey(d => d.GroupId)
+        modelBuilder.Entity<AdminUserRoleRel>(entity =>
+        {
+            entity.HasNoKey();
+
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+            entity.HasOne(d => d.Role).WithMany()
+                .HasForeignKey(d => d.RoleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_AdminUsers_AdminGroup");
+                .HasConstraintName("FK_UserRoleRels_Roles");
+
+            entity.HasOne(d => d.User).WithMany()
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_UserRoleRels_Users");
         });
 
         modelBuilder.Entity<Cart>(entity =>
@@ -158,6 +159,9 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.OrderDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.OrderName)
+                .IsRequired()
+                .HasMaxLength(255);
             entity.Property(e => e.UserId).HasColumnName("UserID");
 
             entity.HasOne(d => d.User).WithMany(p => p.Orders)

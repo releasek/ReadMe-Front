@@ -168,10 +168,11 @@
     <Compile Include="Models\DTOs\LoginDto.cs" />
     <Compile Include="Models\DTOs\ProductDto.cs" />
     <Compile Include="Models\DTOs\RegisterDto.cs" />
-    <Compile Include="Models\EFModels\AdminGroup.cs" />
-    <Compile Include="Models\EFModels\AdminPermission.cs" />
     <Compile Include="Models\EFModels\AdminRole.cs" />
+    <Compile Include="Models\EFModels\AdminRoleFunction.cs" />
+    <Compile Include="Models\EFModels\AdminRoleFunctionRel.cs" />
     <Compile Include="Models\EFModels\AdminUser.cs" />
+    <Compile Include="Models\EFModels\AdminUserRoleRel.cs" />
     <Compile Include="Models\EFModels\AppDbContext.cs" />
     <Compile Include="Models\EFModels\Cart.cs" />
     <Compile Include="Models\EFModels\CartItem.cs" />

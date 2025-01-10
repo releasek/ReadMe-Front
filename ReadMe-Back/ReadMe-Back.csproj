@@ -8,17 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\Interface\**" />
-    <Content Remove="Models\Interface\**" />
-    <EmbeddedResource Remove="Models\Interface\**" />
-    <None Remove="Models\Interface\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Models\ViewModels\ProductsVm.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="efpt.config.json.user" />
   </ItemGroup>
 

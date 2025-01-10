@@ -5,9 +5,15 @@ using System.Collections.Generic;
 
 namespace ReadMe_Back.Models.EFModels;
 
-public partial class AdminRole
+public partial class AdminRoleFunctionRel
 {
     public int Id { get; set; }
 
-    public string RoleName { get; set; }
+    public int RoleId { get; set; }
+
+    public int FunctionId { get; set; }
+
+    public virtual AdminRoleFunction Function { get; set; }
+
+    public virtual AdminRole Role { get; set; }
 }

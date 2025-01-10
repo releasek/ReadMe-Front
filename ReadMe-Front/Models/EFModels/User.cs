@@ -12,6 +12,7 @@ namespace ReadMe_Front.Models.EFModels
         public User()
         {
             Orders = new HashSet<Order>();
+            AdminUserRoleRels = new HashSet<AdminUserRoleRel>();
         }
 
         public int Id { get; set; }
@@ -36,5 +37,8 @@ namespace ReadMe_Front.Models.EFModels
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AdminUserRoleRel> AdminUserRoleRels { get; set; }
     }
 }
