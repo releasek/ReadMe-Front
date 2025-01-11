@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ReadMe_Back.Models.EFModels;
+using ReadMe_Back.Models.Repositories;
+using ReadMe_Back.Models.Services;
 
 namespace ReadMe_Back
 {
