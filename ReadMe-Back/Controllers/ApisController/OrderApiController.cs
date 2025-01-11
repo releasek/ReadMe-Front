@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
+using ReadMe_Back.Models.Services;
+using ReadMe_Back.Models.ViewModels;
 
 namespace ReadMe_Back.Controllers.ApisController
 {
@@ -13,12 +16,20 @@ namespace ReadMe_Back.Controllers.ApisController
         {
             _orderService = orderService;
         }
-
-        [HttpGet]
+        [HttpGet("GetOrder")]
         public IActionResult GetOrder([FromQuery] OrderQueryParameters parameters)
         {
-            var order = _orderService.GetOrder(parameters);
-            return Ok(order);
+            try
+            {
+                var orders= _orderService.GetOrder(parameters);
+                return Ok(orders);
+            }
+            catch(Exception ex) 
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+
         }
+
     }
 }

@@ -1,29 +1,31 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "OrderMain";
-    Layout= "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
 <html lang="en">
-    <style>
-        /* 自定義樣式 */
-        .search-container {
-            margin-bottom: 20px;
-        }
+<style>
+    /* 自定義樣式 */
+    .search-container {
+        margin-bottom: 20px;
+    }
+
         .search-container input,
         .search-container select,
         .search-container button {
             margin-right: 10px;
         }
-        .table-container {
-            margin-top: 20px;
-        }
-        .pagination-container {
-            margin-top: 20px;
-            text-align: center;
-        }
-    </style>
+
+    .table-container {
+        margin-top: 20px;
+    }
+
+    .pagination-container {
+        margin-top: 20px;
+        text-align: center;
+    }
+</style>
 
 <body>
     <div class="container mt-4" id="app">
@@ -33,63 +35,69 @@
         <div class="search-container row">
             <div class="col-md-2">
                 <label for="start-date" class="form-label">開始時間</label>
-                <input type="date" id="start-date" class="form-control">
+                <input type="date" id="start-date" class="form-control" v-model="filters.startDate">
             </div>
             <div class="col-md-2">
                 <label for="end-date" class="form-label">結束時間</label>
-                <input type="date" id="end-date" class="form-control">
+                <input type="date" id="end-date" class="form-control" v-model="filters.endDate">
             </div>
             <div class="col-md-2">
                 <label for="order-type" class="form-label">數量</label>
-                <select id="order-type" class="form-select">
-                    <option>數量>5</option>
-                    <option>數量>10</option>
-                    <option>數量多排序</option>
-                    <option>數量少排序</option>
-
+                <select id="order-type" class="form-select" v-model="filters.orderType">
+                    <option value="">不限</option>
+                    <option value="quantity>5">數量>5</option>
+                    <option value="quantity>10">數量>10</option>
+                    <option value="quantityDesc">數量多排序</option>
+                    <option value="quantityAsc">數量少排序</option>
                 </select>
             </div>
             <div class="col-md-2">
                 <label for="payment-method" class="form-label">金額</label>
-                <select id="payment-method" class="form-select">
-                    <option>金額>1000</option>
-                    <option>金額>3000</option>
-                    <option>金額高排序</option>
-                    <option>金額低排序</option>
+                <select id="payment-method" class="form-select" v-model="filters.paymentMethod">
+                    <option value="">不限</option>
+                    <option value="amount>1000">金額>1000</option>
+                    <option value="amount>3000">金額>3000</option>
+                    <option value="amountDesc">金額高排序</option>
+                    <option value="amountAsc">金額低排序</option>
                 </select>
             </div>
-              <div class="col-md-2">
+            <div class="col-md-2">
                 <label for="global-search" class="form-label">搜尋</label>
                 <input type="text"
                        id="global-search"
                        class="form-control"
                        placeholder="訂單編號or收件人姓名"
-                       v-model="searchQuery">
-             </div>
+                       v-model="filters.searchQuery">
+            </div>
             <div class="col-md-2 d-flex align-items-end">
-                <button class="btn btn-primary w-100">查詢</button>
+                <button class="btn btn-primary w-100" v-on:click="fetchOrders">查詢</button>
             </div>
         </div>
 
         <!-- 表格展示 -->
-        <div class="table-container">
+        <div class="table-container mt-4">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>訂單編號</th>
-                        <th>收件人姓名</th>
-                        <th>商品數量</th>
+                        <th>訂單名稱</th>
+                        <th>用戶名稱</th>
+                        <th>商品總數量</th>
                         <th>總金額</th>
-                        <th>建立日期</th>
+                        <th>訂單日期</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody v-if="filteredOrders && filteredOrders.length > 0">
                     <tr v-for="(order, index) in filteredOrders" :key="index">
-                        <td>{{ order.orderNumber }}</td>
-                        <td>{{ order.recipientName }}</td>
-                        <td>{{ order.productCount }}</td>
+                        <td>{{ order.orderName }}</td>
+                        <td>{{ order.userName }}</td>
+                        <td>{{ order.totalQuantity }}</td>
                         <td>{{ order.totalAmount }}</td>
-                        <td>{{ order.createdDate }}</td>
+                        <td>{{ order.orderDate }}</td>
+                    </tr>
+                </tbody>
+                <tbody v-else>
+                    <tr>
+                        <td colspan="5" class="text-center">沒有符合條件的訂單</td>
                     </tr>
                 </tbody>
             </table>
@@ -114,50 +122,91 @@
     <script src="~/js/vue.global.js"></script>
     <script src="~/js/Api.js"></script>
     <script>
-        const { createApp, ref, computed } = Vue;
+        const { createApp, ref, computed, onMounted } = Vue;
 
         const appConfig = {
             setup() {
-                // 假設的訂單資料
-                const orders = ref([
-                    {
-                        orderNumber: "訂單 #001",
-                        recipientName: "李宏耀",
-                        productCount: 5,
-                        totalAmount: "NT$ 799",
-                        createdDate: "2025-01-01",
-                    },
-                    {
-                        orderNumber: "訂單 #002",
-                        recipientName: "羅花薇",
-                        productCount: 3,
-                        totalAmount: "NT$ 8800",
-                        createdDate: "2025-01-02",
-                    },
-                ]);
-
-                // 搜尋輸入框的數值
-                const searchQuery = ref("");
+                // 訂單資料
+                const orders = ref([]);
+                const filters = ref({
+                    searchQuery: "",
+                    startDate: "",
+                    endDate: "",
+                    orderType: "",
+                    paymentMethod: "",
+                });
+                const isLoading = ref(false);
+                const errorMessage = ref("");
 
                 // 根據搜尋條件過濾訂單資料
                 const filteredOrders = computed(() => {
-                    if (!searchQuery.value) {
-                        return orders.value;
+                    if (!Array.isArray(orders.value)) return []; // 防禦性檢查
+                    let filtered = orders.value;
+
+                    if (filters.value.searchQuery) {
+                        filtered = filtered.filter(order =>
+                            order.orderName.includes(filters.value.searchQuery) ||
+                            order.userName.includes(filters.value.searchQuery)
+                        );
                     }
-                    return orders.value.filter((order) =>
-                        order.orderNumber.includes(searchQuery.value) ||
-                        order.recipientName.includes(searchQuery.value)
-                    );
+
+                    if (filters.value.startDate) {
+                        filtered = filtered.filter(order =>
+                            new Date(order.orderDate) >= new Date(filters.value.startDate)
+                        );
+                    }
+
+                    if (filters.value.endDate) {
+                        filtered = filtered.filter(order =>
+                            new Date(order.orderDate) <= new Date(filters.value.endDate)
+                        );
+                    }
+
+                    return filtered;
                 });
 
-                return { orders, searchQuery, filteredOrders };
+                // 從 API 獲取訂單資料
+                const fetchOrders = async () => {
+                    try {
+                        isLoading.value = true;
+                        errorMessage.value = "";
+
+                        // 準備查詢參數
+                        const queryParams = {
+                            search: filters.value.searchQuery,
+                            startDate: filters.value.startDate,
+                            endDate: filters.value.endDate,
+                            orderType: filters.value.orderType,
+                            paymentMethod: filters.value.paymentMethod,
+                        };
+
+                        // 調用 API 函數
+                        const result = await Api.fetchOrderSearch(queryParams);
+                        orders.value = Array.isArray(result.orders) ? result.orders : []; // 防禦性處理
+                    } catch (error) {
+                        errorMessage.value = "無法獲取訂單資料，請稍後再試。";
+                        console.error(error);
+                    } finally {
+                        isLoading.value = false;
+                    }
+                };
+
+                // 初始化訂單資料
+                onMounted(fetchOrders);
+
+                return {
+                    orders,
+                    filters,
+                    filteredOrders,
+                    fetchOrders,
+                    isLoading,
+                    errorMessage,
+                };
             },
         };
 
         createApp(appConfig).mount("#app");
     </script>
+
 </body>
 </html>
-
-
-

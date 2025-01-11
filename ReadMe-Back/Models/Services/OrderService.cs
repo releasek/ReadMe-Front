@@ -13,9 +13,23 @@ namespace ReadMe_Back.Models.Services
             _orderEFRepo = orderEFRepo;
         }
 
-        public IQueryable<OrderVm> GetOrder(OrderQueryParameters parameters)
+        public List<OrderVm> GetOrder(OrderQueryParameters parameters)
         {
-            return _orderEFRepo.GetOrder(parameters);
+            try
+            {
+                // 從 Repository 獲取查詢結果
+                var query = _orderEFRepo.GetOrder(parameters);
+
+                // 將查詢轉換為 List 並返回
+                return query.ToList();
+            }
+            catch (Exception ex)
+            {
+                // 記錄日誌或處理錯誤
+                Console.WriteLine($"Error in Service Layer: {ex.Message}");
+                throw; // 將例外重新拋出
+            }
         }
+
     }
 }
