@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ReadMe_Back.Models.EFModels;
 using ReadMe_Back.Models.Repositories;
+using ReadMe_Back.Models.Services;
 
 namespace ReadMe_Back
 {
@@ -17,7 +18,8 @@ namespace ReadMe_Back
             string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
             builder.Services.AddScoped<ProductEFRepo>();
-
+            builder.Services.AddScoped<AdminUsersEFRepo>();
+            builder.Services.AddScoped<AdminUsersServices>();
 
             var app = builder.Build();
 

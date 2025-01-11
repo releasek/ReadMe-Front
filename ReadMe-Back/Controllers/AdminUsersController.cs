@@ -10,18 +10,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ReadMe_Back.Models.EFModels;
 using ReadMe_Back.Models.ViewModels;
+using ReadMe_Back.Models.Services;
+using ReadMe_Back.Models.DTOs;
 
 namespace ReadMe_Back.Controllers
 {
     public class AdminUsersController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly AdminUsersServices _service;
 
-        public AdminUsersController(AppDbContext context)
+        // 單一建構函數，注入兩個依賴
+        public AdminUsersController(AppDbContext context, AdminUsersServices service)
         {
-
             _context = context;
+            _service = service;
         }
+
         public IActionResult Login(string returnUrl = "/")
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -53,7 +58,18 @@ namespace ReadMe_Back.Controllers
         // GET: AdminUsers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.AdminUsers.ToListAsync());
+            // 獲取 DTO 資料
+            var adminUserDtos = await _service.GetAllAdminUsers();
+
+            // 映射為 ViewModel
+            var adminUserVms = adminUserDtos.Select(dto => new AdminUserVm
+            {
+                Id = dto.Id,
+                UserName = dto.UserName
+            }).ToList();
+
+            // 將 ViewModel 傳遞給 View
+            return View(adminUserVms);
         }
 
         // GET: AdminUsers/Details/5
