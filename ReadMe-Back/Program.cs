@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ReadMe_Back.Models.EFModels;
+using ReadMe_Back.Models.Repositories;
+using ReadMe_Back.Models.Services;
 
 namespace ReadMe_Back
 {
@@ -12,9 +14,15 @@ namespace ReadMe_Back
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            // µù¥U OrderEFRepo
+            builder.Services.AddScoped<OrderEFRepo>();
+
+            // µù¥U OrderService
+            builder.Services.AddScoped<OrderService>();
 
             string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+
 
             var app = builder.Build();
 

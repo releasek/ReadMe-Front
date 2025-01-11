@@ -42,35 +42,32 @@
             <div class="col-md-2">
                 <label for="order-type" class="form-label">數量</label>
                 <select id="order-type" class="form-select">
-                    <option>數量大</option>
-                    <option>數量小</option>
+                    <option>數量>5</option>
+                    <option>數量>10</option>
+                    <option>數量多排序</option>
+                    <option>數量少排序</option>
+
                 </select>
             </div>
             <div class="col-md-2">
-                <label for="payment-method" class="form-label">付款方式</label>
+                <label for="payment-method" class="form-label">金額</label>
                 <select id="payment-method" class="form-select">
-                    <option>信用卡</option>
-                    <option>ATM</option>
-                    <option>超商代碼</option>
+                    <option>金額>1000</option>
+                    <option>金額>3000</option>
+                    <option>金額高排序</option>
+                    <option>金額低排序</option>
                 </select>
             </div>
-            <div class="col-md-2">
-                <label for="status" class="form-label">訂單狀態</label>
-                <select id="status" class="form-select">
-                    <option>完成出貨</option>
-                    <option>訂單失效</option>
-                </select>
-            </div>
-            <div class="col-md-2 d-flex align-items-end">
-                <button class="btn btn-primary w-100">查詢</button>
-            </div>
-            <div class="col-md-12 mt-3">
-                <label for="global-search" class="form-label">全域搜尋</label>
+              <div class="col-md-2">
+                <label for="global-search" class="form-label">搜尋</label>
                 <input type="text"
                        id="global-search"
                        class="form-control"
-                       placeholder="輸入訂單編號或收件人姓名進行搜尋"
+                       placeholder="訂單編號or收件人姓名"
                        v-model="searchQuery">
+             </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button class="btn btn-primary w-100">查詢</button>
             </div>
         </div>
 
