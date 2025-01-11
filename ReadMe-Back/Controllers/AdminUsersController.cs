@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ReadMe_Back.Models.EFModels;
+using ReadMe_Back.Models.ViewModels;
 
 namespace ReadMe_Back.Controllers
 {
@@ -15,7 +19,35 @@ namespace ReadMe_Back.Controllers
 
         public AdminUsersController(AppDbContext context)
         {
+
             _context = context;
+        }
+        public IActionResult Login(string returnUrl = "/")
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Login(LoginVm vm, string returnUrl = "/")
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            if (!ModelState.IsValid) return View(vm);
+            if (vm.Username == "admin" && vm.Password == "123")
+            {
+                var calims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, vm.Username),
+                    new Claim("fullname", "Allen Kuo"),
+                    new Claim("function", "home_privacy"),
+                    new Claim("function", "products")
+                };
+                var calimsIdentity = new ClaimsIdentity(calims, "CookieAuth");
+                var userPrincipal = new ClaimsPrincipal(new[] { calimsIdentity });
+                HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userPrincipal);
+                return Redirect(returnUrl);
+            }
+            ModelState.AddModelError(string.Empty, "Account or password is invalid");
+            return View(vm);
         }
 
         // GET: AdminUsers
