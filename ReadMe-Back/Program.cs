@@ -14,12 +14,18 @@ namespace ReadMe_Back
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            // µù¥U OrderEFRepo
+            builder.Services.AddScoped<OrderEFRepo>();
+
+            // µù¥U OrderService
+            builder.Services.AddScoped<OrderService>();
 
             string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
             builder.Services.AddScoped<ProductEFRepo>();
             builder.Services.AddScoped<AdminUsersEFRepo>();
             builder.Services.AddScoped<AdminUsersServices>();
+
 
             var app = builder.Build();
 
