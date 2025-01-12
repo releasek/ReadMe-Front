@@ -25,6 +25,7 @@ namespace ReadMe_Back.Controllers
         {
             _context = context;
             _service = service;
+
         }
 
         public IActionResult Login(string returnUrl = "/")
@@ -59,7 +60,7 @@ namespace ReadMe_Back.Controllers
         public async Task<IActionResult> Index()
         {
             // 獲取 DTO 資料
-            var adminUserDtos = await _service.GetAllAdminUsers();
+            var adminUserDtos = await _service.GetAllAdminUsersAsync();
 
             // 映射為 ViewModel
             var adminUserVms = adminUserDtos.Select(dto => new AdminUserVm
@@ -71,6 +72,47 @@ namespace ReadMe_Back.Controllers
             // 將 ViewModel 傳遞給 View
             return View(adminUserVms);
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetRoles(int userId)
+        {
+            try
+            {
+                var assignedRoles = await _service.GetAssignedRolesAsync(userId); // 已分配角色
+                var unassignedRoles = await _service.GetUnassignedRolesAsync(userId); // 未分配角色
+
+                return Json(new { assignedRoles, unassignedRoles });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving roles: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateRoles([FromBody] UpdateRolesDto dto)
+        {
+            if (dto == null || dto.UserId <= 0 || dto.AssignedRoleIds == null)
+            {
+                return BadRequest(new { message = "請求參數無效" });
+            }
+
+            Console.WriteLine($"接收到的 UserId: {dto.UserId}");
+            Console.WriteLine($"接收到的 AssignedRoleIds: {string.Join(", ", dto.AssignedRoleIds)}");
+
+            try
+            {
+                await _service.UpdateRolesAsync(dto.UserId, dto.AssignedRoleIds);
+                return Ok(new { message = "角色更新成功" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"更新角色時發生錯誤: {ex.Message}");
+                return StatusCode(500, new { message = "角色更新失敗", error = ex.Message });
+            }
+        }
+
 
         // GET: AdminUsers/Details/5
         public async Task<IActionResult> Details(int? id)

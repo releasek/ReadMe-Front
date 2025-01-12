@@ -11,5 +11,8 @@
         //public string RoleName { get; set; }
 
         public string PermissionName { get; set; }
+
+        public string RoleName { get; set; }
+        
     }
 }
