@@ -73,7 +73,6 @@ namespace ReadMe_Back.Controllers
             return View(adminUserVms);
         }
 
-
         [HttpGet]
         public async Task<IActionResult> GetRoles(int userId)
         {
