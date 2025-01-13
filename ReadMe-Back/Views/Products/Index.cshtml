@@ -72,10 +72,11 @@
                             </div>
                             <div class="modal-body">
                                 <h2>確認刪除此商品嗎?</h2>
+                                <input class="selectedId" type="hidden" id="selectedId" value="selectedId" name="Id" />
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary btnCancel" data-bs-dismiss="modal">取消</button>
-                                <button type="submit" class="btn btn-primary btnDelete">確認</button>
+                                <button type="button" class="btn btn-primary" id="btnDelete">確認</button>
                             </div>
                         </form>
                     </div>
@@ -85,37 +86,41 @@
             <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form action="/" method="post">
+                        <form asp-action="Create" method="post">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">新增商品</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <label for="exampleFormControlInput1" class="form-label">書名</label>
-                                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="">
-                                <label for="exampleFormControlInput1" class="form-label">作者</label>
-                                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="">
-                                <label for="exampleFormControlInput1" class="form-label">出版社</label>
-                                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="">
-                                <label for="exampleFormControlInput1" class="form-label">售價</label>
-                                <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="">
-                                <label for="exampleFormControlInput1" class="form-label">簡介</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                <label for="exampleFormControlInput1" class="form-label">分類</label>
-                                <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search...">
-                                <datalist id="datalistOptions">
-                                    <option value="分類1"></option>
-                                    <option value="分類2"></option>
-                                    <option value="分類3"></option>
-                                </datalist>
-                                <label for="exampleFormControlInput1" class="form-label">'出版日'</label>
-                                <input type="date" class="form-control" id="exampleFormControlInput1" placeholder="">
-                                <label for="exampleFormControlInput1" class="form-label">圖片檔名</label>
-                                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="xxx.jpg">
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">書名</label>
+                                    <input type="text" class="form-control" id="itemTitle" name="Title" required>
+                                    <label for="exampleFormControlInput1" class="form-label">作者</label>
+                                    <input type="text" class="form-control" id="itemAuthor" name="Author" required>
+                                    <label for="exampleFormControlInput1" class="form-label">出版社</label>
+                                    <input type="text" class="form-control" id="itemPublisher" name="Publisher" required>
+                                    <label for="exampleFormControlInput1" class="form-label">售價</label>
+                                    <input type="number" class="form-control" id="itemPrice" name="Price" required min="0">
+                                    <label for="exampleFormControlInput1" class="form-label">簡介</label>
+                                    <textarea class="form-control" id="itemDescription" rows="3" name="Description" required></textarea>
+                                    <div class="mb-3">
+                                        <label for="itemCategory">分類</label>
+                                        <select id="itemCategoryName" class="form-select" name="CategoryId">
+                                            @foreach (var category in Model.AllCategories)
+                                            {
+                                                <option value="@category.Id">@category.CategoryName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <label for="exampleFormControlInput1" class="form-label">出版日</label>
+                                    <input type="date" class="form-control" id="itemPublishDate" name="PublishDate">
+                                    <label for="exampleFormControlInput1" class="form-label">圖片檔名</label>
+                                    <input type="text" class="form-control" id="itemURL" name="ImageURL" placeholder="/image/檔案名稱.jpg" required>
+                                </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary btnCancel" data-bs-dismiss="modal">取消</button>
-                                <button type="submit" class="btn btn-primary btnEdit">新增</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                <button type="submit" class="btn btn-primary">新增</button>
                             </div>
                         </form>
                     </div>
@@ -130,6 +135,9 @@
                     });
                 </script>
             }
+            
+            <input type="hidden" id="selectedId" />
+
             <!--Table Start -->
             <div class="card mb-4">
                 <div class="card-header">
@@ -180,8 +188,7 @@
                                     <td>@item.ParentCategoryName</td>
                                     <td>
                                         <a class="btn btn-outline-info me-2" onclick="EditForm(@item.Id)" id="editForm">編輯</a>
-                                        <a class="btn btn-outline-danger" onclick="Delete(@item.Id)" id="editForm">刪除</a>
-                                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除</button>
+                                        <a class="btn btn-outline-danger" onclick="Confirm(@item.Id)">刪除</a>
                                     </td>
                                 </tr>
                             }                            
@@ -200,14 +207,43 @@
 
     <script>    
         $(document).ready(function () {
+            if (sessionStorage.getItem("deleteSuccess") === "true") {
+            alert("刪除成功");
+            // 清除標記，防止重複顯示
+            sessionStorage.removeItem("deleteSuccess");}
+        
             $('#itemCategoryName').change(function () {
-            // 取得選中的 categoryId
-            var selectedCategoryId = $(this).val();
+                // 取得選中的 categoryId
+                var selectedCategoryId = $(this).val();
 
-            // 更新隱藏欄位的值
-            $('#itemCategoryId').val(selectedCategoryId);
-        });
+                // 更新隱藏欄位的值
+                $('#itemCategoryId').val(selectedCategoryId);
+            });
+
+            $('#btnDelete').on("click",function(){
+                var idD = $("#selectedId").val();
+                $.ajax({
+                    type: "POST",
+                    url: "/Products/Delete",
+                    data: {id:idD},
+                    success: function(result){
+                        if(result) {
+                            $("#selectedId").val(null);
+                            // 設置刪除成功的標記
+                            sessionStorage.setItem("deleteSuccess", "true");
+                            window.location.href = "/Products/Index";
+                        }
+                        else{
+                            alert("操作失敗");
+                        }
+                    }
+                })
+            })
         })
+        var Confirm = function(id){
+            $("#selectedId").val(id);
+            $("#deleteModal").modal('show');
+        }
         var EditForm = function(id) {
             console.log("Sending ID: ", id); // 檢查傳入的 ID
             $.ajax({
