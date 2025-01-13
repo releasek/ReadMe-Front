@@ -19,6 +19,8 @@ public partial class User
 
     public string Name { get; set; }
 
+    public virtual ICollection<AdminUserRoleRel> AdminUserRoleRels { get; set; } = new List<AdminUserRoleRel>();
+
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();

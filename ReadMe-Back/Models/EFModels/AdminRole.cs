@@ -11,6 +11,7 @@ public partial class AdminRole
 
     public string RoleName { get; set; }
 
-    // 新增關聯屬性
-    public ICollection<AdminUserRoleRel> UserRoles { get; set; } = new List<AdminUserRoleRel>();
+    public virtual ICollection<AdminRoleFunctionRel> AdminRoleFunctionRels { get; set; } = new List<AdminRoleFunctionRel>();
+
+    public virtual ICollection<AdminUserRoleRel> AdminUserRoleRels { get; set; } = new List<AdminUserRoleRel>();
 }

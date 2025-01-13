@@ -12,8 +12,10 @@ namespace ReadMe_Front.Models.EFModels
         {
         }
 
+        public virtual DbSet<AdminRoleFunctionRel> AdminRoleFunctionRels { get; set; }
         public virtual DbSet<AdminRoleFunction> AdminRoleFunctions { get; set; }
         public virtual DbSet<AdminRole> AdminRoles { get; set; }
+        public virtual DbSet<AdminUserRoleRel> AdminUserRoleRels { get; set; }
         public virtual DbSet<AdminUser> AdminUsers { get; set; }
         public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<CartItem> CartItems { get; set; }
@@ -26,8 +28,6 @@ namespace ReadMe_Front.Models.EFModels
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Wishlist> Wishlists { get; set; }
-        public virtual DbSet<AdminRoleFunctionRel> AdminRoleFunctionRels { get; set; }
-        public virtual DbSet<AdminUserRoleRel> AdminUserRoleRels { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -47,6 +47,10 @@ namespace ReadMe_Front.Models.EFModels
                 .HasForeignKey(e => e.RoleId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<AdminUser>()
+                .Property(e => e.Password)
+                .IsUnicode(false);
+
             modelBuilder.Entity<Cart>()
                 .HasMany(e => e.CartItems)
                 .WithRequired(e => e.Cart)
@@ -56,8 +60,7 @@ namespace ReadMe_Front.Models.EFModels
             modelBuilder.Entity<Cart>()
                 .HasMany(e => e.CartItems1)
                 .WithRequired(e => e.Cart1)
-                .HasForeignKey(e => e.CartId)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.CartId);
 
             modelBuilder.Entity<Category>()
                 .HasMany(e => e.Products)

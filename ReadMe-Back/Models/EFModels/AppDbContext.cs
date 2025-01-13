@@ -10,7 +10,6 @@ public partial class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
-
     {
     }
 
@@ -66,73 +65,43 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<AdminRoleFunctionRel>(entity =>
         {
-            entity.HasKey(e => e.Id);
+            entity.HasOne(d => d.Function).WithMany(p => p.AdminRoleFunctionRels)
+                .HasForeignKey(d => d.FunctionId)
+                .HasConstraintName("FK_RoleFunctionRels_Functions");
 
-            entity.HasOne(e => e.Role)
-                  .WithMany()  // 或您也可以在 AdminRole 裡定義一個 List<AdminRoleFunctionRel>
-                  .HasForeignKey(e => e.RoleId);
-
-            entity.HasOne(e => e.Function)
-                  .WithMany()  // 同理
-                  .HasForeignKey(e => e.FunctionId);
+            entity.HasOne(d => d.Role).WithMany(p => p.AdminRoleFunctionRels)
+                .HasForeignKey(d => d.RoleId)
+                .HasConstraintName("FK_RoleFunctionRels_Roles");
         });
-
-        //modelBuilder.Entity<AdminRoleFunctionRel>(entity =>
-        //{
-        //    entity.HasNoKey();
-
-        //    entity.Property(e => e.Id).ValueGeneratedOnAdd();
-
-        //    entity.HasOne(d => d.Function).WithMany()
-        //        .HasForeignKey(d => d.FunctionId)
-        //        .HasConstraintName("FK_RoleFunctionRels_Functions");
-
-        //    entity.HasOne(d => d.Role).WithMany()
-        //        .HasForeignKey(d => d.RoleId)
-        //        .HasConstraintName("FK_RoleFunctionRels_Roles");
-        //});
 
         modelBuilder.Entity<AdminUser>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_Users");
 
+            entity.Property(e => e.Password)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.UserName)
                 .IsRequired()
                 .HasMaxLength(50);
         });
-        // 配置 AdminUser 和 AdminRole 的多對多關係
-        modelBuilder.Entity<AdminUserRoleRel>()
-            .HasKey(ur => new { ur.UserId, ur.RoleId }); // 設置組合主鍵
 
-        modelBuilder.Entity<AdminUserRoleRel>()
-            .HasOne(ur => ur.User)
-            .WithMany(u => u.UserRoles)
-            .HasForeignKey(ur => ur.UserId);
+        modelBuilder.Entity<AdminUserRoleRel>(entity =>
+        {
+            entity.HasOne(d => d.Role).WithMany(p => p.AdminUserRoleRels)
+                .HasForeignKey(d => d.RoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_UserRoleRels_Roles");
 
-        modelBuilder.Entity<AdminUserRoleRel>()
-            .HasOne(ur => ur.Role)
-            .WithMany(r => r.UserRoles)
-            .HasForeignKey(ur => ur.RoleId);
-
-        //modelBuilder.Entity<AdminUserRoleRel>(entity =>
-        //{
-        //    entity.HasNoKey();
-
-        //    entity.Property(e => e.Id).ValueGeneratedOnAdd();
-
-        //    entity.HasOne(d => d.Role).WithMany()
-        //        .HasForeignKey(d => d.RoleId)
-        //        .OnDelete(DeleteBehavior.ClientSetNull)
-        //        .HasConstraintName("FK_UserRoleRels_Roles");
-
-        //    entity.HasOne(d => d.User).WithMany()
-        //        .HasForeignKey(d => d.UserId)
-        //        .HasConstraintName("FK_UserRoleRels_Users");
-        //});
+            entity.HasOne(d => d.User).WithMany(p => p.AdminUserRoleRels)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_UserRoleRels_Users");
+        });
 
         modelBuilder.Entity<Cart>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Cart__3214EC079D5A14C8");
+            entity.HasKey(e => e.Id).HasName("PK__Cart__3214EC070EDF1900");
 
             entity.ToTable("Cart");
 
@@ -149,7 +118,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<CartItem>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__CartItem__3214EC07F57A08EC");
+            entity.HasKey(e => e.Id).HasName("PK__CartItem__3214EC071488D815");
 
             entity.ToTable("CartItem");
 
@@ -216,7 +185,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<ParentCategory>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ParentCa__3214EC078F249E44");
+            entity.HasKey(e => e.Id).HasName("PK__ParentCa__3214EC07C4E88BB9");
 
             entity.Property(e => e.ParentCategoriesName)
                 .IsRequired()
@@ -290,7 +259,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Wishlist>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Wishlist__3214EC072B523A42");
+            entity.HasKey(e => e.Id).HasName("PK__Wishlist__3214EC0781A4CB6F");
 
             entity.ToTable("Wishlist");
 

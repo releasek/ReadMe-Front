@@ -10,4 +10,6 @@ public partial class AdminRoleFunction
     public int Id { get; set; }
 
     public string FunctionName { get; set; }
+
+    public virtual ICollection<AdminRoleFunctionRel> AdminRoleFunctionRels { get; set; } = new List<AdminRoleFunctionRel>();
 }
