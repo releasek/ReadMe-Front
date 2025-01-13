@@ -89,7 +89,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-primary" onclick="saveNewRole()">保存</button>
+                        <button type="button" class="btn btn-primary" onclick="saveNewFunction()">保存</button>
+
                     </div>
                 </div>
             </div>
@@ -135,71 +136,101 @@
          //新增權限
          // 打開模態框並加載角色數據
         function openAddPermissionModal() {
-            // 1. 清空「權限名稱」等輸入欄位
+            // 清空輸入框
             document.getElementById("newRoleName").value = "";
 
-            // 2. 去抓所有角色
-            fetch("/YourController/GetAllRoles")   //  <-- 這裡改成您實際的 Controller/Action
-                .then(response => response.json())
+            // 發送請求以獲取所有角色
+            fetch("/RolesFunctions/GetAllRolesForPermissions") // 使用新的路徑
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`伺服器回應錯誤：${response.status} (${response.statusText})`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    // 3. 用您原有的 populateRoles() 填入
-                    populateRoles("unassignedRoles", data); 
-            
-                    // 由於是「新權限」，可想像「已分配角色」是空的
+                    // 填充未分配角色
+                    populateRoles("unassignedRoles", data);
+
+                    // 新權限的已分配角色應為空
                     populateRoles("assignedRoles", []);
                 })
                 .catch(error => {
                     console.error("加載角色數據失敗：", error);
-                    alert("加載角色數據失敗");
+                    alert(`加載角色數據失敗：${error.message}`);
                 });
         }
 
-         // 分配角色
-         function assignRoles() {
-             moveOptions("unassignedRoles", "assignedRoles");
-         }
+        // 填充角色下拉選單
+        function populateRoles(elementId, roles) {
+            const select = document.getElementById(elementId);
+            select.innerHTML = ''; // 清空選單
 
-         // 移除角色
-         function unassignRoles() {
-             moveOptions("assignedRoles", "unassignedRoles");
-         }
-         function saveNewRole() {
-            const newRoleName = document.getElementById("newRoleName").value.trim();
+            roles.forEach(role => {
+                const option = document.createElement('option');
+                option.value = role.id;
+                option.textContent = role.roleName; // 確保名稱正確
+                select.appendChild(option);
+            });
+        }
+
+
+        // 分配角色
+        function assignRoles() {
+            moveOptions("unassignedRoles", "assignedRoles");
+        }
+
+        // 移除角色
+        function unassignRoles() {
+            moveOptions("assignedRoles", "unassignedRoles");
+        }
+
+        // 通用移動選項
+        function moveOptions(sourceId, targetId) {
+            const source = document.getElementById(sourceId);
+            const target = document.getElementById(targetId);
+
+            Array.from(source.selectedOptions).forEach(option => {
+                target.appendChild(option);
+            });
+        }
+
+        function saveNewFunction() {
+            const newFunctionName = document.getElementById("newRoleName").value.trim();
             const assignedRoleIds = Array.from(document.getElementById("assignedRoles").options)
                 .map(opt => parseInt(opt.value));
 
-            // 檢查輸入
-            if (!newRoleName) {
-                alert("請輸入權限名稱");
+            // 驗證輸入
+            if (!newFunctionName) {
+                alert("請輸入功能名稱");
                 return;
             }
 
-            // 接下來 fetch 到後端 
-            // 後端需要一個類似 AdminPermissionsController 的 POST 動作:
-            //   POST /AdminPermissions/CreatePermission
-            //   其中 body: { newPermissionName, assignedRoleIds }
-
-            fetch("/AdminPermissions/CreatePermission", {
+            // 發送請求到後端
+            fetch("/RolesFunctions/CreateFunction", { // 確保此路徑與後端一致
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    permissionName: newRoleName,
+                    functionName: newFunctionName,
                     assignedRoleIds: assignedRoleIds
                 })
             })
-            .then(res => {
-                if (res.ok) {
-                    alert("新增權限成功");
-                    // 關閉 Modal, 或者重新載入頁面
-                } else {
-                    return res.json().then(data => { throw new Error(data.message) });
-                }
-            })
-            .catch(err => {
-                console.error("新增權限失敗:", err);
-                alert("新增權限失敗: " + err.message);
-            });
+                .then(res => {
+                    if (res.ok) {
+                        alert("新增功能成功");
+                        const modal = bootstrap.Modal.getInstance(document.getElementById("addRoleModal"));
+                        modal.hide();
+                        location.reload(); // 刷新頁面或更新表格數據
+                    } else {
+                        return res.json().then(data => { throw new Error(data.message); });
+                    }
+                })
+                .catch(err => {
+                    console.error("新增功能失敗:", err);
+                    alert("新增功能失敗: " + err.message);
+                });
         }
+
+
 
 
         //編輯權限

@@ -109,59 +109,49 @@ namespace ReadMe_Back.Controllers
 
 
         [HttpGet]
-        public IActionResult GetAllRoles()
+        [Route("RolesFunctions/GetAllRolesForPermissions")]
+        public async Task<IActionResult> GetAllRolesForPermissions()
         {
-            var roles = _context.AdminRoles
-                                .Select(r => new { r.Id, r.RoleName })
-                                .ToList();
+            try
+            {
+                // 獲取所有角色
+                var roles = await _context.AdminRoles
+                    .Select(r => new { r.Id, r.RoleName }) // 選擇需要的欄位
+                    .ToListAsync();
 
-            return Ok(roles);
+                // 回傳 JSON
+                return Ok(roles);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"取得角色列表時發生錯誤：{ex.Message}");
+                return StatusCode(500, new { message = "取得角色列表失敗", error = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        [Route("RolesFunctions/CreateFunction")]
+        public async Task<IActionResult> CreateFunction([FromBody] CreateFunctionDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.FunctionName) || dto.AssignedRoleIds == null)
+            {
+                return BadRequest(new { message = "請求參數無效" });
+            }
+
+            try
+            {
+                await _service.CreateFunctionAsync(dto.FunctionName, dto.AssignedRoleIds);
+                return Ok(new { message = "功能新增成功" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"新增功能失敗: {ex.Message}");
+                return StatusCode(500, new { message = "功能新增失敗", error = ex.Message });
+            }
         }
 
 
 
-
-        //[HttpPost]
-        //public async Task<IActionResult> CreateRole([FromBody] CreateRoleDto dto)
-        //{
-        //    if (string.IsNullOrEmpty(dto.RoleName) || dto.AssignedFunctionIds == null)
-        //    {
-        //        return BadRequest(new { message = "請求參數無效" });
-        //    }
-
-        //    try
-        //    {
-        //        await _service.CreateRoleAsync(dto.RoleName, dto.AssignedFunctionIds);
-        //        return Ok(new { message = "角色新增成功" });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"新增角色時發生錯誤: {ex.Message}");
-        //        return StatusCode(500, new { message = "角色新增失敗", error = ex.Message });
-        //    }
-        //}
-
-        //[HttpGet]
-        ////用於新增角色時取得功能
-        //[HttpGet]
-        //public async Task<IActionResult> GetAllFunctions()
-        //{
-
-        //    try
-        //    {
-        //        var functions = await _service.GetAllFunctionsAsync();
-        //        return Ok(functions.Select(f => new RoleFunctionVm
-        //        {
-        //            Id = f.Id,
-        //            FunctionName = f.FunctionName
-        //        }));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error retrieving functions: {ex.Message}");
-        //        return StatusCode(500, new { message = "取得功能失敗", error = ex.Message });
-        //    }
-        //}
 
 
 

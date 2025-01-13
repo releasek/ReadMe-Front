@@ -112,6 +112,33 @@ namespace ReadMe_Back.Models.Repositories
             await _context.SaveChangesAsync();
         }
 
+        // 獲取功能是否已存在
+        public async Task<AdminRoleFunction> GetFunctionByNameAsync(string functionName)
+        {
+            return await _context.AdminRoleFunctions.FirstOrDefaultAsync(f => f.FunctionName == functionName);
+        }
+
+        // 添加新功能
+        public async Task<AdminRoleFunction> AddFunctionAsync(string functionName)
+        {
+            var function = new AdminRoleFunction { FunctionName = functionName };
+            await _context.AdminRoleFunctions.AddAsync(function);
+            await _context.SaveChangesAsync();
+            return function;
+        }
+
+        // 為功能分配角色
+        public async Task AssignRoleToFunctionAsync(int functionId, int roleId)
+        {
+            var rel = new AdminRoleFunctionRel
+            {
+                FunctionId = functionId,
+                RoleId = roleId
+            };
+            await _context.AdminRoleFunctionRels.AddAsync(rel);
+            await _context.SaveChangesAsync();
+        }
+
 
 
     }
