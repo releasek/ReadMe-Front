@@ -3,10 +3,16 @@
 }
 
 <style>
-	.carousel-item img {
-		height: 500px; /* 設定輪播圖高度 */
-		object-fit: cover; /* 確保圖片比例 */
-	}
+    .carousel-item img {
+        width: 100%; /* 圖片寬度填滿容器 */
+        height: 100%; /* 圖片高度填滿容器 */
+        object-fit: cover; /* 圖片裁剪以填滿容器 */
+        object-position: center; /* 圖片內容置中 */
+    }
+
+    .carousel-inner {
+        height: 400px; /* 根據需求設置容器高度 */
+    }
 
     .banner {
         margin: 0 auto; /* 置中 */
@@ -58,27 +64,38 @@
 </style>
 
 <div class="banner">
-	<div class="containerbanner">
-		<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-			<div class="carousel-inner">
-				<div class="carousel-item active">
-					<img src="~/image/banner/banner1.jpg" class="d-block w-100" alt="Banner 1">
-				</div>
-				<div class="carousel-item">
-					<img src="~/image/banner/banner1.jpg" class="d-block w-100" alt="Banner 2">
-				</div>
-				<div class="carousel-item">
-					<img src="~/image/banner/banner1.jpg" class="d-block w-100" alt="Banner 2">
-				</div>
-			</div>
-			<button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-			</button>
-			<button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-				<span class="carousel-control-next-icon" aria-hidden="true"></span>
-			</button>
-		</div>
-	</div>
+    <!-- 輪播start -->
+    <div id="carouselExampleIndicators" class="carousel slide">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="~/image/banner/banner1.jpg" class="d-block w-100" alt="...">                
+            </div>
+            <div class="carousel-item">
+                <img src="~/image/banner/banner5.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="~/image/banner/banner6.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="~/image/banner/banner7.jpg" class="d-block w-100" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <!-- 輪播end -->
 </div>
 	<!-- Content Sections -->
 <div class="container">
