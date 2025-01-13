@@ -1,0 +1,121 @@
+﻿@{
+    ViewData["Title"] = "OrderIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue 3 Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+  <div id="app">
+    <div class="container-fluid mt-4">
+      <h1 class="mb-3">總銷售</h1>
+
+      <div class="row mb-4">
+        <div class="col-lg-6 col-md-6 mb-3">
+          <div class="card bg-primary text-white">
+            <div class="card-body">
+              <h5 class="card-title">總銷售金額</h5>
+              <p class="card-text" style="font-size: 1.5rem;">$NT{{ totalAmount }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 mb-3">
+          <div class="card bg-success text-white">
+            <div class="card-body">
+              <h5 class="card-title">總銷售數量</h5>
+              <p class="card-text" style="font-size: 1.5rem;">{{ totalQuantity }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-4">
+        <div class="col-lg-6 mb-3">
+          <div class="card">
+            <div class="card-header">📈 銷售金額</div>
+            <div class="card-body">
+              <canvas ref="areaChartRef"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 mb-3">
+          <div class="card">
+            <div class="card-header">📊 銷售數量</div>
+            <div class="card-body">
+              <canvas ref="barChartRef"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <script src="/js/Api.js"></script>
+  <script>
+    const { createApp, ref, onMounted } = Vue;
+
+    createApp({
+      setup() {
+        const areaChartRef = ref(null);
+        const barChartRef = ref(null);
+        const totalAmount = ref(0);
+        const totalQuantity = ref(0);
+        const year = new Date().getFullYear();
+
+        const initAreaChart = () => {
+          if (!areaChartRef.value) return;
+          const ctx = areaChartRef.value.getContext('2d');
+          new Chart(ctx, { type: 'line', data: { labels: ['Mar 1', 'Mar 3'], datasets: [] }, options: {} });
+        };
+
+        const initBarChart = () => {
+          if (!barChartRef.value) return;
+          const ctx = barChartRef.value.getContext('2d');
+          new Chart(ctx, { type: 'bar', data: { labels: ['Jan', 'Feb'], datasets: [] }, options: {} });
+        };
+
+        const initDataTable = () => {
+          $('#dataTable').DataTable();
+        };
+
+        const GetData = async (year) => {
+  try {
+    // 獲取總銷售金額
+    const amountData = await Api.fetchAmount(year);
+    totalAmount.value = amountData;
+    console.log('獲得總銷售金額:', totalAmount.value);
+
+    // 獲取總銷售數量
+    const quantityData = await Api.fetchQuantity(year);
+    totalQuantity.value = quantityData;
+    console.log('獲得總銷售數量:', totalQuantity.value);
+  } catch (error) {
+    console.error('獲取數據時發生錯誤:', error);
+  }
+};
+
+        onMounted(async () => {
+          await GetData(year);
+          initAreaChart();
+          initBarChart();
+          initDataTable();
+        });
+
+        return { areaChartRef, barChartRef, totalAmount, totalQuantity };
+      },
+    }).mount('#app');
+  </script>
+</body>
+</html>

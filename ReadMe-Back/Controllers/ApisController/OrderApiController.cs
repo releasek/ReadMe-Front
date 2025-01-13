@@ -92,7 +92,7 @@ namespace ReadMe_Back.Controllers.ApisController
         public IActionResult GetTotalAmount(int year)
         {
             var totalAmount = _orderService.GetTotalAmount(year);
-            return Ok(new { Year = year, TotalAmount = totalAmount });
+            return Ok(totalAmount);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace ReadMe_Back.Controllers.ApisController
         public IActionResult GetTotalQuantity(int year)
         {
             var totalQuantity = _orderService.GetTotalQuantity(year);
-            return Ok(new { Year = year, TotalQuantity = totalQuantity });
+            return Ok(totalQuantity);
         }
 
         /// <summary>
