@@ -25,6 +25,8 @@ namespace ReadMe_Back
             builder.Services.AddScoped<ProductEFRepo>();
             builder.Services.AddScoped<AdminUsersEFRepo>();
             builder.Services.AddScoped<AdminUsersServices>();
+            builder.Services.AddScoped<RoleFunctionsServices>();
+            builder.Services.AddScoped<RoleFunctionsEFRepo>();
 
 
             var app = builder.Build();

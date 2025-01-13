@@ -5,24 +5,167 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ReadMe_Back.Models.DTOs;
 using ReadMe_Back.Models.EFModels;
+using ReadMe_Back.Models.Services;
+using ReadMe_Back.Models.ViewModels;
 
 namespace ReadMe_Back.Controllers
 {
     public class RolesFunctionsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly RoleFunctionsServices _service;
 
-        public RolesFunctionsController(AppDbContext context)
+        public RolesFunctionsController(AppDbContext context, RoleFunctionsServices service)
         {
             _context = context;
+            _service = service;
         }
 
         // GET: RolesFunctions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.AdminRoles.ToListAsync());
+            // 獲取 DTO 資料
+            var roleDtos = await _service.GetAllRolesAsync();
+
+            // 映射為 ViewModel
+            var roleVms = roleDtos.Select(dto => new RoleFunctionVm
+            {
+                Id = dto.Id,
+                RoleName = dto.RoleName
+            }).ToList();
+
+            // 傳遞 ViewModel 至 View
+            return View(roleVms);
         }
+        [HttpGet]
+        //傳入Function
+        public async Task<IActionResult> GetFunctions(int roleId)
+        {
+
+            if (roleId <= 0)
+            {
+                return BadRequest(new { message = "角色 ID 無效" });
+            }
+
+            try
+            {
+                var assignedFunctions = await _service.GetAssignedFunctionsAsync(roleId);
+                var unassignedFunctions = await _service.GetUnassignedFunctionsAsync(roleId);
+
+                return Ok(new
+                {
+                    assignedFunctions = assignedFunctions.Select(f => new RoleFunctionVm
+                    {
+                        Id = f.Id,
+                        FunctionName = f.FunctionName
+                    }),
+                    unassignedFunctions = unassignedFunctions.Select(f => new RoleFunctionVm
+                    {
+                        Id = f.Id,
+                        FunctionName = f.FunctionName
+                    })
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"取得功能時發生錯誤: {ex.Message}");
+                return StatusCode(500, new { message = "取得功能失敗", error = ex.Message });
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateFunctions([FromBody] UpdateFunctionsDto dto)
+        {
+            if (dto == null || dto.RoleId <= 0 || dto.AssignedFunctionIds == null)
+            {
+                return BadRequest(new { message = "請求參數無效" });
+            }
+
+            Console.WriteLine($"接收到的 RoleId: {dto.RoleId}");
+            Console.WriteLine($"接收到的 AssignedFunctionIds: {string.Join(", ", dto.AssignedFunctionIds)}");
+
+            try
+            {
+                await _service.UpdateRoleFunctionsAsync(dto.RoleId, dto.AssignedFunctionIds);
+                return Ok(new { message = "功能更新成功" });
+            }
+            catch (ArgumentException argEx)
+            {
+                Console.WriteLine($"參數錯誤: {argEx.Message}");
+                return BadRequest(new { message = "參數錯誤", error = argEx.Message });
+            }
+            catch (DbUpdateException dbEx)
+            {
+                Console.WriteLine($"資料庫更新失敗: {dbEx.InnerException?.Message ?? dbEx.Message}");
+                return StatusCode(500, new { message = "資料庫更新失敗", error = dbEx.InnerException?.Message ?? dbEx.Message });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"未知錯誤: {ex.Message}");
+                return StatusCode(500, new { message = "功能更新失敗", error = ex.Message });
+            }
+        }
+
+
+        [HttpGet]
+        public IActionResult GetAllRoles()
+        {
+            var roles = _context.AdminRoles
+                                .Select(r => new { r.Id, r.RoleName })
+                                .ToList();
+
+            return Ok(roles);
+        }
+
+
+
+
+        //[HttpPost]
+        //public async Task<IActionResult> CreateRole([FromBody] CreateRoleDto dto)
+        //{
+        //    if (string.IsNullOrEmpty(dto.RoleName) || dto.AssignedFunctionIds == null)
+        //    {
+        //        return BadRequest(new { message = "請求參數無效" });
+        //    }
+
+        //    try
+        //    {
+        //        await _service.CreateRoleAsync(dto.RoleName, dto.AssignedFunctionIds);
+        //        return Ok(new { message = "角色新增成功" });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"新增角色時發生錯誤: {ex.Message}");
+        //        return StatusCode(500, new { message = "角色新增失敗", error = ex.Message });
+        //    }
+        //}
+
+        //[HttpGet]
+        ////用於新增角色時取得功能
+        //[HttpGet]
+        //public async Task<IActionResult> GetAllFunctions()
+        //{
+
+        //    try
+        //    {
+        //        var functions = await _service.GetAllFunctionsAsync();
+        //        return Ok(functions.Select(f => new RoleFunctionVm
+        //        {
+        //            Id = f.Id,
+        //            FunctionName = f.FunctionName
+        //        }));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Error retrieving functions: {ex.Message}");
+        //        return StatusCode(500, new { message = "取得功能失敗", error = ex.Message });
+        //    }
+        //}
+
+
+
+
 
         // GET: RolesFunctions/Details/5
         public async Task<IActionResult> Details(int? id)

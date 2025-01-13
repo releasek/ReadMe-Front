@@ -26,11 +26,11 @@ namespace ReadMe_Back.Models.Repositories
         }
 
         // 獲取用戶已分配的角色
-        public async Task<List<RoleDto>> GetAssignedRolesAsync(int userId)
+        public async Task<List<CreateRoleDto>> GetAssignedRolesAsync(int userId)
         {
             return await _context.AdminUserRoleRels
                 .Where(rel => rel.UserId == userId)
-                .Select(rel => new RoleDto
+                .Select(rel => new CreateRoleDto
                 {
                     Id = rel.RoleId,
                     RoleName = rel.Role.RoleName
@@ -39,7 +39,7 @@ namespace ReadMe_Back.Models.Repositories
         }
 
         // 獲取用戶未分配的角色
-        public async Task<List<RoleDto>> GetUnassignedRolesAsync(int userId)
+        public async Task<List<CreateRoleDto>> GetUnassignedRolesAsync(int userId)
         {
             var assignedRoleIds = await _context.AdminUserRoleRels
                 .Where(rel => rel.UserId == userId)
@@ -48,7 +48,7 @@ namespace ReadMe_Back.Models.Repositories
 
             return await _context.AdminRoles
                 .Where(role => !assignedRoleIds.Contains(role.Id))
-                .Select(role => new RoleDto
+                .Select(role => new CreateRoleDto
                 {
                     Id = role.Id,
                     RoleName = role.RoleName
