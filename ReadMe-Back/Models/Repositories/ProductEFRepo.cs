@@ -34,5 +34,16 @@ namespace ReadMe_Back.Models.Repositories
             _db.SaveChanges();            // 保存所有更改
         }
 
+        public void DeleteProduct(Product product)
+        {
+            _db.Products.Remove(product);
+            _db.SaveChanges();
+        }
+
+        public void CreateProduct(Product product)
+        {
+            _db.Products.Add(product);
+            _db.SaveChanges();
+        }
     }
 }

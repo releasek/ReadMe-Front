@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ReadMe_Back.Models.EFModels;
 using ReadMe_Back.Models.Repositories;
 using ReadMe_Back.Models.ViewModels;
 
@@ -104,6 +105,55 @@ namespace ReadMe_Back.Controllers
                 return StatusCode(500, new { success = false, message = "商品更新失敗", error = ex.Message });
             }
 
+        }
+
+        [HttpPost]
+        public IActionResult Create(ProductVm model)
+        {
+            if (model == null)
+            {
+                return BadRequest(new { message = "Invalid product data." });
+            }
+
+            var product = new Product();
+
+            // 更新產品的屬性
+            product.Title = model.Title;
+            product.Author = model.Author;
+            product.Publisher = model.Publisher;
+            product.Price = model.Price;
+            product.Description = model.Description;
+            product.CategoryId = model.CategoryId;
+            product.PublishDate = model.PublishDate;
+            product.ImageUrl = model.ImageURL;
+
+            try
+            {
+                // 保存更改到資料庫
+                _repo.CreateProduct(product);
+
+                // 設置 TempData，傳遞成功消息
+                TempData["SuccessMessage"] = "新增成功";
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = "商品新增失敗", error = ex.Message });
+            }
+
+        }
+
+        public JsonResult Delete(int id)
+        {
+            bool result = false;
+            var product = _repo.GetProducts().FirstOrDefault(p => p.Id == id);
+            if (product != null)
+            {
+                result = true;
+                _repo.DeleteProduct(product);
+            }
+            return Json(result);
         }
 
         //// GET: Products/Details/5
