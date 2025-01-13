@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ReadMe_Back.Models.EFModels;
 using ReadMe_Back.Models.Repositories;
 using ReadMe_Back.Models.ViewModels;
 
 namespace ReadMe_Back.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly ProductEFRepo _repo;

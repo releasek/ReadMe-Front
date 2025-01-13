@@ -4,10 +4,10 @@ namespace ReadMe_Back.Models.ViewModels
 {
     public class LoginVm
     {
-        [Required]
-        public string Username { get; set; }
+        [Required(ErrorMessage = "帳號必填")]
+        public string Account { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "密碼必填")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

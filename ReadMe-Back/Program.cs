@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using ReadMe_Back.Models.EFModels;
 using ReadMe_Back.Models.Repositories;
@@ -27,7 +28,12 @@ namespace ReadMe_Back
             builder.Services.AddScoped<AdminUsersServices>();
             builder.Services.AddScoped<RoleFunctionsServices>();
             builder.Services.AddScoped<RoleFunctionsEFRepo>();
-
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/AdminUsers/Login";
+                    options.AccessDeniedPath = "/AdminUsers/AccessDenied";
+                });
 
             var app = builder.Build();
 
@@ -44,11 +50,12 @@ namespace ReadMe_Back
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=AdminUsers}/{action=Login}/{id?}");
 
             app.Run();
         }
