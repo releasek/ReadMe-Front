@@ -8,18 +8,10 @@ namespace ReadMe_Front.Models.EFModels
 
     public partial class AdminUserRoleRel
     {
-        [Key]
-        [Column(Order = 0)]
         public int Id { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int UserId { get; set; }
 
-        [Key]
-        [Column(Order = 2)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int RoleId { get; set; }
 
         public virtual AdminRole AdminRole { get; set; }
