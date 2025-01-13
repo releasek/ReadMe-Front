@@ -114,7 +114,8 @@ namespace ReadMe_Front.Models.Repositories
                     {
                         OrderId = order.Id,
                         ProductId =item.ProductId,
-                        UnitPrice = item.Price
+                        UnitPrice = item.Price,
+                        Quantity = 1
                     };
                     db.OrderDetails.Add(orderItem);
                 }

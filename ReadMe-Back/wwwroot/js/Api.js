@@ -222,7 +222,29 @@ window.Api = {
         return await response.json(); // 取得資料訂單資料
 
     },
-    ///api/OrderApi/GetOrder?StartDate=2025-01-01&EndDate=2025-01-10&Keyword=訂單&AmountSort=asc
+
+    // 取得年度銷售總額
+    async fetchAmount(year) {
+        const response = await fetch(`/api/memberapi/getAnnualSalesAmount?year=${year}`, {
+            method: "GET",
+        });
+        return await response.json(); // 取得年度總銷售金額
+    }
+    // 取得年度銷售總額
+    async fetchAmount(year) {
+        const response = await fetch(`/api/memberapi/getAnnualSalesAmount?year=${year}`, {
+            method: "GET",
+        });
+        return await response.json(); // 取得年度總銷售金額
+    }
+
+    // 取得每季的銷售數據
+        async fetchQuarterlyData(year) {
+        const response = await fetch(`/api/memberapi/getQuarterlySalesData?year=${year}`, {
+            method: "GET",
+        });
+        return await response.json(); // 取得每季銷售數據
+    }
 
 
 
