@@ -26,7 +26,7 @@ namespace ReadMe_Back.Models.Repositories
                             UserName = u.Name,
                             TotalQuantity = _context.OrderDetails
                                 .Where(od => od.OrderId == o.Id)
-                                .Count(),
+                                .Sum(n=>n.Quantity)
                         };
 
             // 日期篩選
@@ -82,31 +82,57 @@ namespace ReadMe_Back.Models.Repositories
             return GetOrder(parameters).Count();
         }
 
+        // 獲取指定年份的總銷售金額
         public int GetTotalPrice(int year)
         {
             return _context.Orders
                 .Where(o => o.OrderDate.Year == year)
                 .Sum(o => o.TotalAmount);
         }
+
+        // 獲取指定年份的總銷售數量
         public int GetTotalQuantity(int year)
         {
             return _context.OrderDetails
                 .Where(od => od.Order.OrderDate.Year == year)
-                .Sum(od => od.ProductId);
+                .Sum(od => od.Quantity); 
         }
+
+        // 獲取指定年份的季度銷售數據
+        public IEnumerable<OrderIndexVm> GetQuarterlySalesData(int year)
+        {
+            return _context.OrderDetails
+                .Where(od => od.Order.OrderDate.Year == year)
+                .GroupBy(od => new
+                {
+                    Year = od.Order.OrderDate.Year,
+                    Quarter = (od.Order.OrderDate.Month - 1) / 3 + 1
+                })
+                .Select(g => new OrderIndexVm
+                {
+                    Year = g.Key.Year,
+                    Quarter = g.Key.Quarter,
+                    TotalQuantity = g.Sum(od => od.Quantity) // 匯總數量
+                })
+                .OrderBy(q => q.Year)
+                .ThenBy(q => q.Quarter)
+                .ToList();
+        }
+
+        // 獲取指定年份的每季度銷售金額與數量
         public IEnumerable<OrderIndexVm> GetMonthlySalesData(int year)
         {
             return _context.Orders
                 .Where(o => o.OrderDate.Year == year)
-                .GroupBy(o => (o.OrderDate.Month-1)/3)// 每3個月分組，0: Q1, 1: Q2, 2: Q3, 3: Q4
+                .GroupBy(o => (o.OrderDate.Month - 1) / 3)
                 .Select(g => new OrderIndexVm
                 {
-                    Quarter = g.Key+1,
+                    Quarter = g.Key + 1,
                     TotalAmount = g.Sum(o => o.TotalAmount),
-                    TotalQuantity = g.Sum(o => o.OrderDetails.Count())
+                    TotalQuantity = g.Sum(o => o.OrderDetails.Sum(od => od.Quantity))
                 })
-                .OrderBy(qsd=>qsd.Quarter).ToList();
-
+                .OrderBy(q => q.Quarter)
+                .ToList();
         }
 
 

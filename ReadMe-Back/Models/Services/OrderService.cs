@@ -52,6 +52,33 @@ namespace ReadMe_Back.Models.Services
                 parameters.Keyword);
             return new Paged<OrderVm>(data, pagination, parameters.Keyword, null);
         }
+        /// <summary>
+        /// 銷售總額
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
+        public int GetTotalAmount(int year)
+        {
+            return _orderEFRepo.GetTotalPrice(year);
+        }
+        /// <summary>
+        /// 總銷售數量
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
+        public int GetTotalQuantity(int year)
+        {
+            return _orderEFRepo.GetTotalQuantity(year);
+        }
+        /// <summary>
+        /// 每季的銷售數據
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
+        public IEnumerable<OrderIndexVm> GetMonthlySalesData(int year)
+        {
+            return _orderEFRepo.GetMonthlySalesData(year);
+        }
 
     }
 }

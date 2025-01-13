@@ -79,7 +79,7 @@ namespace ReadMe_Back.Models.Repositories
             }
         }
 
-        //新增角色
+        //新增權限
         public async Task<List<AdminRoleFunction>> GetAllFunctionsAsync()
         {
             return await _context.AdminRoleFunctions.ToListAsync();

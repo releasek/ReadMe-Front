@@ -83,6 +83,40 @@ namespace ReadMe_Back.Controllers.ApisController
             }
         }
 
+        /// <summary>
+        /// 獲取年度總銷售金額
+        /// </summary>
+        /// <param name="year">年份</param>
+        /// <returns>總銷售金額</returns>
+        [HttpGet("totalAmount")]
+        public IActionResult GetTotalAmount(int year)
+        {
+            var totalAmount = _orderService.GetTotalAmount(year);
+            return Ok(totalAmount);
+        }
 
+        /// <summary>
+        /// 獲取年度總銷售數量
+        /// </summary>
+        /// <param name="year">年份</param>
+        /// <returns>總銷售數量</returns>
+        [HttpGet("totalQuantity")]
+        public IActionResult GetTotalQuantity(int year)
+        {
+            var totalQuantity = _orderService.GetTotalQuantity(year);
+            return Ok(totalQuantity);
+        }
+
+        /// <summary>
+        /// 獲取每季的銷售數據
+        /// </summary>
+        /// <param name="year">年份</param>
+        /// <returns>每季銷售數據</returns>
+        [HttpGet("quarterlyData")]
+        public IActionResult GetQuarterlySalesData(int year)
+        {
+            var salesData = _orderService.GetMonthlySalesData(year);
+            return Ok(new { Year = year, QuarterlySalesData = salesData });
+        }
     }
 }

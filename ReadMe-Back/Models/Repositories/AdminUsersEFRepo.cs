@@ -131,5 +131,76 @@ namespace ReadMe_Back.Models.Repositories
             }
         }
 
+
+
+        //新增權限
+        public async Task<List<AdminRoleFunction>> GetAllFunctionsAsync()
+        {
+            return await _context.AdminRoleFunctions.ToListAsync();
+        }
+
+        // 獲取角色是否已存在
+        public async Task<AdminRole> GetRoleByNameAsync(string roleName)
+        {
+            return await _context.AdminRoles.FirstOrDefaultAsync(r => r.RoleName == roleName);
+        }
+
+        // 添加新角色
+        public async Task<AdminRole> AddRoleAsync(string roleName)
+        {
+            var role = new AdminRole { RoleName = roleName };
+            await _context.AdminRoles.AddAsync(role);
+            await _context.SaveChangesAsync();
+            return role;
+        }
+
+        // 為角色添加功能
+        public async Task AddRoleFunctionAsync(int roleId, int functionId)
+        {
+            var rel = new AdminRoleFunctionRel
+            {
+                RoleId = roleId,
+                FunctionId = functionId
+            };
+            await _context.AdminRoleFunctionRels.AddAsync(rel);
+            await _context.SaveChangesAsync();
+        }
+
+        // 獲取功能是否已存在
+        public async Task<AdminRoleFunction> GetFunctionByNameAsync(string functionName)
+        {
+            return await _context.AdminRoleFunctions.FirstOrDefaultAsync(f => f.FunctionName == functionName);
+        }
+
+        // 添加新功能
+        public async Task<AdminRoleFunction> AddFunctionAsync(string functionName)
+        {
+            var function = new AdminRoleFunction { FunctionName = functionName };
+            await _context.AdminRoleFunctions.AddAsync(function);
+            await _context.SaveChangesAsync();
+            return function;
+        }
+
+        // 為功能分配角色
+        public async Task AssignRoleToFunctionAsync(int functionId, int roleId)
+        {
+            var rel = new AdminRoleFunctionRel
+            {
+                FunctionId = functionId,
+                RoleId = roleId
+            };
+            await _context.AdminRoleFunctionRels.AddAsync(rel);
+            await _context.SaveChangesAsync();
+        }
+
+
+        public async Task<List<AdminRole>> GetAllRolesAsync()
+        {
+            // 從資料庫獲取角色資料
+            return await _context.AdminRoles.ToListAsync();
+        }
+
+
+
     }
 }

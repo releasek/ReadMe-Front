@@ -126,6 +126,62 @@ namespace ReadMe_Back.Controllers
         }
 
 
+        [HttpGet]
+        [Route("RolesFunctions/GetAllRolesForPermissions")]
+        public async Task<IActionResult> GetAllRolesForPermissions()
+        {
+            try
+            {
+                // 檢查資料庫中的角色是否存在
+                var roles = await _context.AdminRoles
+                    .Select(r => new { r.Id, r.RoleName }) // 確保欄位名稱與資料庫一致
+                    .ToListAsync();
+
+                // 如果沒有角色，檢查資料是否為空
+                if (!roles.Any())
+                {
+                    Console.WriteLine("角色列表為空");
+                }
+
+                return Ok(roles);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"取得角色列表時發生錯誤：{ex.Message}");
+                return StatusCode(500, new { message = "取得角色列表失敗", error = ex.Message });
+            }
+        }
+
+
+        [HttpPost]
+        [Route("RolesFunctions/CreateFunction")]
+        public async Task<IActionResult> CreateFunction([FromBody] CreateFunctionDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.FunctionName) || dto.AssignedRoleIds == null)
+            {
+                return BadRequest(new { message = "請求參數無效" });
+            }
+
+            try
+            {
+                await _service.CreateFunctionAsync(dto.FunctionName, dto.AssignedRoleIds);
+                return Ok(new { message = "功能新增成功" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"新增功能失敗: {ex.Message}");
+                return StatusCode(500, new { message = "功能新增失敗", error = ex.Message });
+            }
+        }
+
+
+
+
+
+
+
+
+
         // GET: AdminUsers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
