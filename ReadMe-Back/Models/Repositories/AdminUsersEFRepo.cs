@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReadMe_Back.Models.DTOs;
 using ReadMe_Back.Models.EFModels;
-using ReadMe_Back.Models.ViewModels;
 
 namespace ReadMe_Back.Models.Repositories
 {
@@ -12,6 +11,23 @@ namespace ReadMe_Back.Models.Repositories
         public AdminUsersEFRepo(AppDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
+        public async Task<AdminUserDto> GetUser(string account, string password)
+        {
+            var user = _context.AdminUsers.FirstOrDefault(u => u.UserName == account && u.Password == password);
+
+            if (user == null) return null;
+
+            // 將 AdminUser 轉換為 AdminUserDto
+            var userDto = new AdminUserDto
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+            };
+
+            return userDto;
+
         }
 
         public async Task<List<AdminUserDto>> GetAllAdminUsers()

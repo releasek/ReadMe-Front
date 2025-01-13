@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ReadMe_Back.Models.EFModels;
-using ReadMe_Back.Models.ViewModels;
-using ReadMe_Back.Models.Services;
 using ReadMe_Back.Models.DTOs;
+using ReadMe_Back.Models.EFModels;
+using ReadMe_Back.Models.Repositories;
+using ReadMe_Back.Models.Services;
+using ReadMe_Back.Models.ViewModels;
+using System.Security.Claims;
 
 namespace ReadMe_Back.Controllers
 {
@@ -19,13 +15,15 @@ namespace ReadMe_Back.Controllers
     {
         private readonly AppDbContext _context;
         private readonly AdminUsersServices _service;
+        private readonly AdminUsersEFRepo _repo;
+
 
         // 單一建構函數，注入兩個依賴
-        public AdminUsersController(AppDbContext context, AdminUsersServices service)
+        public AdminUsersController(AppDbContext context, AdminUsersServices service, AdminUsersEFRepo repo)
         {
             _context = context;
             _service = service;
-
+            _repo = repo;
         }
 
         public IActionResult Login(string returnUrl = "/")
@@ -34,26 +32,41 @@ namespace ReadMe_Back.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Login(LoginVm vm, string returnUrl = "/")
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginVm vm, string returnUrl = "/")
         {
             ViewBag.ReturnUrl = returnUrl;
             if (!ModelState.IsValid) return View(vm);
-            if (vm.Username == "admin" && vm.Password == "123")
+
+            var user = await _repo.GetUser(vm.Account, vm.Password);
+            if (user == null)
             {
-                var calims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, vm.Username),
-                    new Claim("fullname", "Allen Kuo"),
-                    new Claim("function", "home_privacy"),
-                    new Claim("function", "products")
-                };
-                var calimsIdentity = new ClaimsIdentity(calims, "CookieAuth");
-                var userPrincipal = new ClaimsPrincipal(new[] { calimsIdentity });
-                HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userPrincipal);
-                return Redirect(returnUrl);
+                ModelState.AddModelError("Account", "帳號或密碼有誤"); // 寫Account是要決定ErrorMessage要顯示在哪裡
+                return View(vm);
             }
-            ModelState.AddModelError(string.Empty, "Account or password is invalid");
-            return View(vm);
+
+            var calims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, vm.Account)
+            };
+            var calimsIdentity = new ClaimsIdentity(calims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var userPrincipal = new ClaimsPrincipal(calimsIdentity);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userPrincipal);
+
+            // 如果 returnUrl 是預設值，設定為目標頁面
+            if (returnUrl == "/")
+            {
+                returnUrl = "/OrderSearch/OrderMain";
+            }
+
+            // 跳轉至指定頁面
+            return Redirect(returnUrl);
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
         }
 
         // GET: AdminUsers
