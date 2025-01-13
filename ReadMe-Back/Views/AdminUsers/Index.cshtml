@@ -25,7 +25,7 @@
 <body>
     <div class="container mt-4">
         <h2>帳號管理</h2>
-
+        <button class="btn btn-success" onclick="openAddPermissionModal()" data-bs-toggle="modal" data-bs-target="#addRoleModal">新增使用者</button>
         <!-- 用戶列表 -->
         <table id="userTable" class="table">
             <thead>
@@ -50,6 +50,43 @@
             </tbody>
         </table>
 
+        <!-- 模態框：新增權限 -->
+        <div class="modal fade" id="addRoleModal" tabindex="-1" aria-labelledby="addRoleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addRoleModalLabel">新增使用者</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="newRoleName" class="form-label">使用者名稱</label>
+                            <input type="text" class="form-control" id="newRoleName" placeholder="輸入使用者名稱">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label>未分配角色</label>
+                                <select id="unassignedRoles" class="form-control" size="10" multiple></select>
+                            </div>
+                            <div class="col-md-2 text-center d-flex flex-column justify-content-center">
+                                <button class="btn btn-success mb-2" onclick="assignRoles()">>> 分配</button>
+                                <button class="btn btn-warning" onclick="unassignRoles()"><< 移除</button>
+                            </div>
+                            <div class="col-md-5">
+                                <label>已分配角色</label>
+                                <select id="assignedRoles" class="form-control" size="10" multiple></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" onclick="saveNewFunction()">保存</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- 模態框：角色維護 -->
         <div class="modal fade" id="editRolesModal" tabindex="-1" aria-labelledby="editRolesModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -88,6 +125,108 @@
 
 
     <script>
+        //新增使用者
+        // 打開模態框並加載角色數據
+        function openAddPermissionModal() {
+            // 清空輸入框
+            document.getElementById("newRoleName").value = "";
+
+            // 發送請求以獲取所有角色
+            fetch("/RolesFunctions/GetAllRolesForPermissions") // 使用新的路徑
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`伺服器回應錯誤：${response.status} (${response.statusText})`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 填充未分配角色
+                    populateRoles("unassignedRoles", data);
+
+                    // 新權限的已分配角色應為空
+                    populateRoles("assignedRoles", []);
+                })
+                .catch(error => {
+                    console.error("加載角色數據失敗：", error);
+                    alert(`加載角色數據失敗：${error.message}`);
+                });
+        }
+
+        // 填充角色下拉選單
+        function populateRoles(elementId, roles) {
+            const select = document.getElementById(elementId);
+            select.innerHTML = ''; // 清空選單
+
+            roles.forEach(role => {
+                const option = document.createElement('option');
+                option.value = role.id;
+                option.textContent = role.roleName; // 確保名稱正確
+                select.appendChild(option);
+            });
+        }
+
+
+        // 分配角色
+        function assignRoles() {
+            moveOptions("unassignedRoles", "assignedRoles");
+        }
+
+        // 移除角色
+        function unassignRoles() {
+            moveOptions("assignedRoles", "unassignedRoles");
+        }
+
+        // 通用移動選項
+        function moveOptions(sourceId, targetId) {
+            const source = document.getElementById(sourceId);
+            const target = document.getElementById(targetId);
+
+            Array.from(source.selectedOptions).forEach(option => {
+                target.appendChild(option);
+            });
+        }
+
+        function saveNewFunction() {
+            const newFunctionName = document.getElementById("newRoleName").value.trim();
+            const assignedRoleIds = Array.from(document.getElementById("assignedRoles").options)
+                .map(opt => parseInt(opt.value));
+
+            // 驗證輸入
+            if (!newFunctionName) {
+                alert("請輸入功能名稱");
+                return;
+            }
+
+            // 發送請求到後端
+            fetch("/RolesFunctions/CreateFunction", { // 確保此路徑與後端一致
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    functionName: newFunctionName,
+                    assignedRoleIds: assignedRoleIds
+                })
+            })
+                .then(res => {
+                    if (res.ok) {
+                        alert("新增功能成功");
+                        const modal = bootstrap.Modal.getInstance(document.getElementById("addRoleModal"));
+                        modal.hide();
+                        location.reload(); // 刷新頁面或更新表格數據
+                    } else {
+                        return res.json().then(data => { throw new Error(data.message); });
+                    }
+                })
+                .catch(err => {
+                    console.error("新增功能失敗:", err);
+                    alert("新增功能失敗: " + err.message);
+                });
+        }
+
+
+
+
+
+
         // 打開模態框並加載角色數據
          function openEditModal(userId, userName) {
              document.getElementById("currentUserId").value = userId;
