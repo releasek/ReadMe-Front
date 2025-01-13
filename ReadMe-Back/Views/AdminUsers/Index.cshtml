@@ -127,101 +127,85 @@
     <script>
         //新增使用者
         // 打開模態框並加載角色數據
-        function openAddPermissionModal() {
-            // 清空輸入框
-            document.getElementById("newRoleName").value = "";
+                     function openAddUserModal() {
+            // 清空输入框
+            document.getElementById("txtUserName").value = "";
 
-            // 發送請求以獲取所有角色
-            fetch("/RolesFunctions/GetAllRolesForPermissions") // 使用新的路徑
+            // 加载角色数据
+            fetch("/Roles/GetAllRoles")
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error(`伺服器回應錯誤：${response.status} (${response.statusText})`);
+                        throw new Error("无法加载角色数据：" + response.statusText);
                     }
                     return response.json();
                 })
                 .then(data => {
-                    // 填充未分配角色
                     populateRoles("unassignedRoles", data);
-
-                    // 新權限的已分配角色應為空
                     populateRoles("assignedRoles", []);
                 })
                 .catch(error => {
-                    console.error("加載角色數據失敗：", error);
-                    alert(`加載角色數據失敗：${error.message}`);
+                    console.error("加载角色失败：", error);
+                    alert("加载角色失败：" + error.message);
                 });
         }
 
-        // 填充角色下拉選單
+
+        // 填充角色
         function populateRoles(elementId, roles) {
             const select = document.getElementById(elementId);
-            select.innerHTML = ''; // 清空選單
-
-            roles.forEach(role => {
-                const option = document.createElement('option');
-                option.value = role.id;
-                option.textContent = role.roleName; // 確保名稱正確
+            select.innerHTML = "";
+            roles.forEach(r => {
+                const option = document.createElement("option");
+                option.value = r.id;
+                option.textContent = r.roleName;
                 select.appendChild(option);
             });
         }
 
-
-        // 分配角色
+        // 分配 & 移除 (跟原本差不多)
         function assignRoles() {
             moveOptions("unassignedRoles", "assignedRoles");
         }
-
-        // 移除角色
         function unassignRoles() {
             moveOptions("assignedRoles", "unassignedRoles");
         }
-
-        // 通用移動選項
         function moveOptions(sourceId, targetId) {
             const source = document.getElementById(sourceId);
             const target = document.getElementById(targetId);
-
-            Array.from(source.selectedOptions).forEach(option => {
-                target.appendChild(option);
-            });
+            Array.from(source.selectedOptions).forEach(opt => target.appendChild(opt));
         }
 
-        function saveNewFunction() {
-            const newFunctionName = document.getElementById("newRoleName").value.trim();
+        // 儲存(新增)使用者
+        function saveNewUser() {
+            const userName = document.getElementById("txtUserName").value.trim();
             const assignedRoleIds = Array.from(document.getElementById("assignedRoles").options)
-                .map(opt => parseInt(opt.value));
+                                         .map(opt => parseInt(opt.value));
 
-            // 驗證輸入
-            if (!newFunctionName) {
-                alert("請輸入功能名稱");
+            if (!userName) {
+                alert("請輸入使用者名稱");
                 return;
             }
 
-            // 發送請求到後端
-            fetch("/RolesFunctions/CreateFunction", { // 確保此路徑與後端一致
+            fetch("/AdminUsers/CreateUser", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    functionName: newFunctionName,
+                    userName: userName,
                     assignedRoleIds: assignedRoleIds
                 })
             })
-                .then(res => {
-                    if (res.ok) {
-                        alert("新增功能成功");
-                        const modal = bootstrap.Modal.getInstance(document.getElementById("addRoleModal"));
-                        modal.hide();
-                        location.reload(); // 刷新頁面或更新表格數據
-                    } else {
-                        return res.json().then(data => { throw new Error(data.message); });
-                    }
-                })
-                .catch(err => {
-                    console.error("新增功能失敗:", err);
-                    alert("新增功能失敗: " + err.message);
-                });
+            .then(res => {
+                if (res.ok) {
+                    alert("新增使用者成功");
+                    // 關閉 modal、重整頁面 ...
+                } else {
+                    return res.json().then(data => { throw new Error(data.message); });
+                }
+            })
+            .catch(err => {
+                alert("新增使用者失敗：" + err.message);
+            });
         }
-
 
 
 

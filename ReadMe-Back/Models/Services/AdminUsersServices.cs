@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReadMe_Back.Models.DTOs;
 using ReadMe_Back.Models.Repositories;
+using ReadMe_Back.Models.ViewModels;
 
 namespace ReadMe_Back.Models.Services
 {
@@ -36,44 +37,47 @@ namespace ReadMe_Back.Models.Services
 
         //-----------------------------------------------------------------
         //建立新的使用者
-         public async Task<List<AdminUserDto>> GetAllRolesAsync()
+        public async Task CreateUserAsync(string userName, List<int> assignedRoleIds)
         {
-            var roles = await _repo.GetAllRolesAsync();
-            return roles.Select(r => new AdminUserDto
+            if (string.IsNullOrWhiteSpace(userName))
             {
-                Id = r.Id,
-                RoleName = r.RoleName
-            }).ToList();
-        }
- 
-
-        public async Task CreateFunctionAsync(string functionName, List<int> assignedRoleIds)
-        {
-            if (string.IsNullOrWhiteSpace(functionName))
-            {
-                throw new ArgumentException("功能名稱不能為空");
+                throw new ArgumentException("使用者名稱不能為空");
             }
 
-            // 檢查功能是否已存在
-            var existingFunction = await _repo.GetFunctionByNameAsync(functionName);
-            if (existingFunction != null)
+            // 1. 檢查使用者是否已存在
+            var existingUser = await _repo.GetUserByNameAsync(userName);
+            if (existingUser != null)
             {
-                throw new Exception($"功能名稱 '{functionName}' 已存在");
+                throw new Exception($"使用者名稱 '{userName}' 已存在");
             }
 
-            // 創建新功能
-            var newFunction = await _repo.AddFunctionAsync(functionName);
+            // 2. 建立新使用者 (存到 AdminUsers)
+            var newUser = await _repo.AddUserAsync(userName);
 
-            // 為新功能分配角色
+            // 3. 為該使用者分配角色 (寫入 AdminUserRoleRels)
             if (assignedRoleIds != null && assignedRoleIds.Any())
             {
                 foreach (var roleId in assignedRoleIds)
                 {
-                    await _repo.AssignRoleToFunctionAsync(newFunction.Id, roleId);
+                    await _repo.AssignRoleToUserAsync(newUser.Id, roleId);
                 }
             }
         }
 
-
+        public async Task<List<UserVm>> GetAllUsersAsync()
+        {
+            var users = await _userRepo.GetAllUsersAsync();
+            return users.Select(u => new UserVm
+            {
+                Id = u.Id,
+                UserName = u.UserName
+                // 如需帶出角色，可在 Repository 做 Include 或另查 UserRoleRels
+            }).ToList();
+        }
     }
+
+
+
+
+    
 }

@@ -153,33 +153,28 @@ namespace ReadMe_Back.Controllers
         }
 
 
+
+
         [HttpPost]
-        [Route("RolesFunctions/CreateFunction")]
-        public async Task<IActionResult> CreateFunction([FromBody] CreateFunctionDto dto)
+        [Route("AdminUsers/CreateUser")]
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserDto dto)
         {
-            if (string.IsNullOrWhiteSpace(dto.FunctionName) || dto.AssignedRoleIds == null)
+            if (string.IsNullOrWhiteSpace(dto.UserName) || dto.AssignedRoleIds == null)
             {
                 return BadRequest(new { message = "請求參數無效" });
             }
 
             try
             {
-                await _service.CreateFunctionAsync(dto.FunctionName, dto.AssignedRoleIds);
-                return Ok(new { message = "功能新增成功" });
+                await _service.CreateUserAsync(dto.UserName, dto.AssignedRoleIds);
+                return Ok(new { message = "使用者新增成功" });
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"新增功能失敗: {ex.Message}");
-                return StatusCode(500, new { message = "功能新增失敗", error = ex.Message });
+                Console.WriteLine($"新增使用者失敗: {ex.Message}");
+                return StatusCode(500, new { message = "使用者新增失敗", error = ex.Message });
             }
         }
-
-
-
-
-
-
-
 
 
         // GET: AdminUsers/Details/5

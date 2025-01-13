@@ -135,12 +135,12 @@
     <script>
          //新增權限
          // 打開模態框並加載角色數據
-        function openAddPermissionModal() {
+               function openAddPermissionModal() {
             // 清空輸入框
             document.getElementById("newRoleName").value = "";
 
             // 發送請求以獲取所有角色
-            fetch("/RolesFunctions/GetAllRolesForPermissions") // 使用新的路徑
+            fetch("/RolesFunctions/GetAllRolesForPermissions") // 確保此路徑正確
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`伺服器回應錯誤：${response.status} (${response.statusText})`);
@@ -159,7 +159,6 @@
                     alert(`加載角色數據失敗：${error.message}`);
                 });
         }
-
         // 填充角色下拉選單
         function populateRoles(elementId, roles) {
             const select = document.getElementById(elementId);
