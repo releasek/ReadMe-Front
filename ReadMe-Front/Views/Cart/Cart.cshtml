@@ -159,7 +159,7 @@
         background-color: #f53d2d;
         color: #fff;
         border: none;
-        padding: 10px 20px;
+/*        padding: 10px 20px;*/
         cursor: pointer;
         border-radius: 5px;
     }
@@ -312,27 +312,52 @@
         color: red; /* 可選：設定折扣顏色 */
     }
 
+    .btn-primary {
+        background-color: #7AB8B8;
+        color: white;
+        border-color: white;
+    }
+
+        .btn-primary:hover {
+            background-color: #f8f9fa; /* Hover時背景變淡灰 */
+            color: black; /* Hover時文字變黑 */
+            border-color: gray; /* 邊框仍保持灰色 */
+        }
 </style>
 <body>
     <div class="container " id="app" style="margin-top:40px;">
         <!-- 導覽 strat -->
         <progress-component :current-page="1"></progress-component>
         <!-- 導覽 end -->
+        <!-- 篩選器 -->
+        <div class="dropdown-filter">
+            <label for="filter">篩選加入：</label>
+            <select id="filter" v-model="filter" v-on:change="applyFilter">
+                <option value="all">全部</option>
+                <option value="priceHigh">價格高</option>
+                <option value="priceLow">價格低</option>
+            </select>
+            <button v-on:click="removeSelectedItems" class="btn btn-primary btn-sm ms-2">選擇項目移除</button>
+        </div>
+
+
         <!-- 標籤類 -->
         <div class="cart-header">
             <div class="" style="padding-right: 5px;">商品資訊</div>
             <div class="">售價</div>
         </div>
+
+
         <!-- 商品列表區  start-->
         <div id="app" class="container">
             <section class="cart-section">
                 <!-- 檢查購物車資料是否存在 -->
                 <div v-if="cart.CartItems && cart.CartItems.length > 0">
                     <!-- 使用 Vue 的 v-for 渲染多個商品 -->
-                    <div v-for="(item, index) in cart.CartItems" :key="item.Id" class="cart-item border-bottom py-3">
+                    <div v-for="(item, index) in filteredFavorites" :key="item.Id" class="cart-item border-bottom py-3">
                         <!-- 商品項目 -->
                         <div class="item-info d-flex align-items-center">
-                            @*<input type="checkbox" v-model="item.checked" class="form-check-input me-3">*@
+                            <input type="checkbox" v-model="item.checked" class="form-check-input me-3">
                             <a :href="`/Products/ProductDetail/${item.ProductId}`">
                                 <img :src="item.ImageURL" :alt="`商品圖片 - ${item.Title}`" class="item-image me-3">
                             </a>
@@ -415,16 +440,31 @@
     <script src="~/Js/Repeat.js"></script>
     <script src="~/Js/Api.js"></script>
     <script>
-        const { createApp, ref, onMounted,watch } = Vue;
+        const { createApp, ref, onMounted, watch, computed } = Vue;
 
     const config = {
         setup() {
             // 資料
+            const filter = ref("all"); // 篩選條件
             const cart = ref([]); // 購物車資料
             const discounts = ref([]); // 折扣資訊
             const totalPrice = ref(0); // 購物車總金額
             const discountsWithWarnings = ref([]); // 包含警告訊息的折扣資訊
-           
+
+            const applyFilter = () => {
+                console.log("篩選條件變更為：", filter.value);
+            };
+
+            // 篩選後的收藏清單
+            const filteredFavorites = computed(() => {
+                if (filter.value === "priceHigh") {
+                    return [...cart.value.CartItems].sort((a, b) => b.Price - a.Price);
+                }
+                if (filter.value === "priceLow") {
+                    return [...cart.value.CartItems].sort((a, b) => a.Price - b.Price);
+                }
+                return cart.value.CartItems;
+            });
 
             // 計算警告訊息
             const calculateWarning = (minPurchase) => {
@@ -449,6 +489,7 @@
                     const data = await Api.fetchCart(); // 調用 API
                     cart.value = data; // 賦值購物車資料
                     totalPrice.value = cart.value.TotalPrice;
+
                     console.log("金額:", totalPrice.value)
                     console.log("購物車資料：", cart.value);
                 } catch (error) {
@@ -494,6 +535,31 @@
                     alert("移除購物車項目時發生錯誤！");
                 }
             };
+
+            const removeSelectedItems = async () => {
+                const selectedItems = cart.value.CartItems.filter(item => item.checked);
+                if (selectedItems.length === 0) {
+                    alert("請選擇要移除的項目！");
+                    return;
+                }
+
+                try {
+                    for (const item of selectedItems) {
+                        await Api.deleteCartItem(item.ProductId);
+                    }
+                    // 再次調用 API 獲取最新的購物車資料
+                    const updatedCartData = await Api.fetchCart(); // 調用後端 API 獲取最新資料
+                    cart.value = updatedCartData; // 更新購物車資料
+
+                    cart.value.CartItems = cart.value.CartItems.filter(item => !item.checked);
+                    // 手動更新總金額，這將觸發 watch
+                    totalPrice.value = cart.value.CartItems.reduce((sum, item) => sum + item.Price, 0);
+                    alert("選擇的項目已成功移除！");
+                } catch (error) {
+                    console.error("批量移除失敗：", error.message);
+                }
+            };
+
             const addToWishlist = async (itemId) => {
                 try {
                     // 調用 API 新增到待購清單
@@ -531,6 +597,10 @@
                 removeItem,
                 addToWishlist,
                 checkPay,
+                filter,
+                removeSelectedItems,
+                applyFilter,
+                filteredFavorites,
             };
         },
     };
