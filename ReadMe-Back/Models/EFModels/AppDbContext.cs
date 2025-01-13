@@ -66,18 +66,31 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<AdminRoleFunctionRel>(entity =>
         {
-            entity.HasNoKey();
+            entity.HasKey(e => e.Id);
 
-            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.HasOne(e => e.Role)
+                  .WithMany()  // 或您也可以在 AdminRole 裡定義一個 List<AdminRoleFunctionRel>
+                  .HasForeignKey(e => e.RoleId);
 
-            entity.HasOne(d => d.Function).WithMany()
-                .HasForeignKey(d => d.FunctionId)
-                .HasConstraintName("FK_RoleFunctionRels_Functions");
-
-            entity.HasOne(d => d.Role).WithMany()
-                .HasForeignKey(d => d.RoleId)
-                .HasConstraintName("FK_RoleFunctionRels_Roles");
+            entity.HasOne(e => e.Function)
+                  .WithMany()  // 同理
+                  .HasForeignKey(e => e.FunctionId);
         });
+
+        //modelBuilder.Entity<AdminRoleFunctionRel>(entity =>
+        //{
+        //    entity.HasNoKey();
+
+        //    entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+        //    entity.HasOne(d => d.Function).WithMany()
+        //        .HasForeignKey(d => d.FunctionId)
+        //        .HasConstraintName("FK_RoleFunctionRels_Functions");
+
+        //    entity.HasOne(d => d.Role).WithMany()
+        //        .HasForeignKey(d => d.RoleId)
+        //        .HasConstraintName("FK_RoleFunctionRels_Roles");
+        //});
 
         modelBuilder.Entity<AdminUser>(entity =>
         {

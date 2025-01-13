@@ -17,12 +17,12 @@ namespace ReadMe_Back.Models.Services
             return await _repo.GetAllAdminUsers();
         }
 
-        public async Task<List<RoleDto>> GetAssignedRolesAsync(int userId)
+        public async Task<List<CreateRoleDto>> GetAssignedRolesAsync(int userId)
         {
             return await _repo.GetAssignedRolesAsync(userId);
         }
 
-        public async Task<List<RoleDto>> GetUnassignedRolesAsync(int userId)
+        public async Task<List<CreateRoleDto>> GetUnassignedRolesAsync(int userId)
         {
             return await _repo.GetUnassignedRolesAsync(userId);
         }
