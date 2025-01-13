@@ -10,6 +10,7 @@ public partial class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
+
     {
     }
 
@@ -86,22 +87,35 @@ public partial class AppDbContext : DbContext
                 .IsRequired()
                 .HasMaxLength(50);
         });
+        // 配置 AdminUser 和 AdminRole 的多對多關係
+        modelBuilder.Entity<AdminUserRoleRel>()
+            .HasKey(ur => new { ur.UserId, ur.RoleId }); // 設置組合主鍵
 
-        modelBuilder.Entity<AdminUserRoleRel>(entity =>
-        {
-            entity.HasNoKey();
+        modelBuilder.Entity<AdminUserRoleRel>()
+            .HasOne(ur => ur.User)
+            .WithMany(u => u.UserRoles)
+            .HasForeignKey(ur => ur.UserId);
 
-            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<AdminUserRoleRel>()
+            .HasOne(ur => ur.Role)
+            .WithMany(r => r.UserRoles)
+            .HasForeignKey(ur => ur.RoleId);
 
-            entity.HasOne(d => d.Role).WithMany()
-                .HasForeignKey(d => d.RoleId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_UserRoleRels_Roles");
+        //modelBuilder.Entity<AdminUserRoleRel>(entity =>
+        //{
+        //    entity.HasNoKey();
 
-            entity.HasOne(d => d.User).WithMany()
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK_UserRoleRels_Users");
-        });
+        //    entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+        //    entity.HasOne(d => d.Role).WithMany()
+        //        .HasForeignKey(d => d.RoleId)
+        //        .OnDelete(DeleteBehavior.ClientSetNull)
+        //        .HasConstraintName("FK_UserRoleRels_Roles");
+
+        //    entity.HasOne(d => d.User).WithMany()
+        //        .HasForeignKey(d => d.UserId)
+        //        .HasConstraintName("FK_UserRoleRels_Users");
+        //});
 
         modelBuilder.Entity<Cart>(entity =>
         {

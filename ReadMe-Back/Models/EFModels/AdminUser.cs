@@ -10,4 +10,10 @@ public partial class AdminUser
     public int Id { get; set; }
 
     public string UserName { get; set; }
+    //public object UserName { get; internal set; }
+
+
+    // 新增關聯屬性
+    public ICollection<AdminUserRoleRel> UserRoles { get; set; } = new List<AdminUserRoleRel>();
+
 }
