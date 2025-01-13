@@ -82,6 +82,32 @@ namespace ReadMe_Back.Models.Repositories
             return GetOrder(parameters).Count();
         }
 
+        public int GetTotalPrice(int year)
+        {
+            return _context.Orders
+                .Where(o => o.OrderDate.Year == year)
+                .Sum(o => o.TotalAmount);
+        }
+        public int GetTotalQuantity(int year)
+        {
+            return _context.OrderDetails
+                .Where(od => od.Order.OrderDate.Year == year)
+                .Sum(od => od.ProductId);
+        }
+        public IEnumerable<OrderIndexVm> GetMonthlySalesData(int year)
+        {
+            return _context.Orders
+                .Where(o => o.OrderDate.Year == year)
+                .GroupBy(o => (o.OrderDate.Month-1)/3)// 每3個月分組，0: Q1, 1: Q2, 2: Q3, 3: Q4
+                .Select(g => new OrderIndexVm
+                {
+                    Quarter = g.Key+1,
+                    TotalAmount = g.Sum(o => o.TotalAmount),
+                    TotalQuantity = g.Sum(o => o.OrderDetails.Count())
+                })
+                .OrderBy(qsd=>qsd.Quarter).ToList();
+
+        }
 
 
 
