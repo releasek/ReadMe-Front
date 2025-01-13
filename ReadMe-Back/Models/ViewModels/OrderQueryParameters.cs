@@ -4,11 +4,8 @@
     {
         public DateTime? StartDate { get; set; } // 查詢的起始日期
         public DateTime? EndDate { get; set; } // 查詢的結束日期
-        public int? Quantity { get; set; } // 查詢的最小數量
         public int? Amount { get; set; } // 查詢的最低金額
         public string? Keyword { get; set; } // 查詢的關鍵字 (適用於名稱或訂單編號)
-
-        public string? QuantitySort { get; set; } // 數量排序 ("asc" 或 "desc")
         public string? AmountSort { get; set; } // 金額排序 ("asc" 或 "desc")
     }
 }

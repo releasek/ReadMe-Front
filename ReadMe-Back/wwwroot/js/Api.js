@@ -224,25 +224,6 @@ window.Api = {
     },
     ///api/OrderApi/GetOrder?StartDate=2025-01-01&EndDate=2025-01-10&Keyword=訂單&AmountSort=asc
 
-    // 取得訂單查詢
-
-    async fetchOrderSearch(queryParams) {
-        // 將查詢條件轉換為 Query String
-        const queryString = new URLSearchParams(queryParams).toString();
-
-        // 正確地組合 URL 和傳入參數
-        const response = await fetch(`/api/OrderApi/GetOrder?${queryString}`, {
-            method: "GET", // HTTP 方法應使用標準大寫
-        });
-
-        // 檢查回應是否成功
-        if (!response.ok) {
-            throw new Error("Failed to fetch order search results.");
-        }
-
-        // 返回 JSON 資料
-        return await response.json();
-    },
 
 
 };

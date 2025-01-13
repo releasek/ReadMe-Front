@@ -1,5 +1,6 @@
 ﻿using ReadMe_Back.Models.EFModels;
 using ReadMe_Back.Models.ViewModels;
+using System.Linq.Expressions;
 
 namespace ReadMe_Back.Models.Repositories
 {
@@ -47,28 +48,38 @@ namespace ReadMe_Back.Models.Repositories
                     o.UserName.Contains(parameters.Keyword));
             }
 
-            // 排序條件
-            if (!string.IsNullOrEmpty(parameters.QuantitySort))
+            // 金額篩選
+            if (parameters.Amount.HasValue && parameters.Amount.Value > 0)
             {
-                query = parameters.QuantitySort.ToLower() == "asc"
-                    ? query.OrderBy(o => o.TotalQuantity)
-                    : query.OrderByDescending(o => o.TotalQuantity);
+                query = query.Where(o => o.TotalAmount > parameters.Amount.Value);
             }
-            else if (!string.IsNullOrEmpty(parameters.AmountSort))
+
+            if (!string.IsNullOrEmpty(parameters.AmountSort))
             {
-                query = parameters.AmountSort.ToLower() == "asc"
-                    ? query.OrderBy(o => o.TotalAmount)
-                    : query.OrderByDescending(o => o.TotalAmount);
+                if (parameters.AmountSort.ToLower() == "asc")
+                {
+                    query = query.OrderBy(o => o.TotalAmount);
+                }
+                else if (parameters.AmountSort.ToLower() == "desc")
+                {
+                    query = query.OrderByDescending(o => o.TotalAmount);
+                }
             }
             else
             {
-                query = query.OrderBy(o => o.OrderDate); // 默認按日期排序
+                // 默認排序: 按日期排序
+                query = query.OrderBy(o => o.OrderDate);
             }
+
+
 
             return query;
         }
 
 
+
+
     }
+
 
 }

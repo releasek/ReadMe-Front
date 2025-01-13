@@ -41,24 +41,26 @@
                 <label for="end-date" class="form-label">結束時間</label>
                 <input type="date" id="end-date" class="form-control" v-model="filters.endDate">
             </div>
+                <div class="col-md-2">
+                    <label for="min-amount" class="form-label">金額</label>
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input 
+                            type="number" 
+                            id="min-amount" 
+                            class="form-control" 
+                            v-model="filters.minAmount"
+                            placeholder="輸金額"
+                            min="0"
+                        >
+                    </div>
+</div>
             <div class="col-md-2">
-                <label for="order-type" class="form-label">數量</label>
-                <select id="order-type" class="form-select" v-model="filters.orderType">
-                    <option value="">不限</option>
-                    <option value="quantity>5">數量>5</option>
-                    <option value="quantity>10">數量>10</option>
-                    <option value="quantityDesc">數量多排序</option>
-                    <option value="quantityAsc">數量少排序</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <label for="payment-method" class="form-label">金額</label>
+                <label for="payment-method" class="form-label">排序</label>
                 <select id="payment-method" class="form-select" v-model="filters.paymentMethod">
                     <option value="">不限</option>
-                    <option value="amount>1000">金額>1000</option>
-                    <option value="amount>3000">金額>3000</option>
-                    <option value="amountDesc">金額高排序</option>
-                    <option value="amountAsc">金額低排序</option>
+                    <option value="asc">金額高排序</option>
+                    <option value="dasc">金額低排序</option>
                 </select>
             </div>
             <div class="col-md-2">
@@ -86,7 +88,7 @@
                         <th>訂單日期</th>
                     </tr>
                 </thead>
-                <tbody v-if="filteredOrders && filteredOrders.length > 0">
+                <tbody v-if="filteredOrders.length > 0">
                     <tr v-for="(order, index) in filteredOrders" :key="index">
                         <td>{{ order.orderName }}</td>
                         <td>{{ order.userName }}</td>
@@ -127,69 +129,107 @@
         const appConfig = {
             setup() {
                 // 訂單資料
-                const orders = ref([]);
+                const orders = ref([]); // API 回傳的訂單資料
                 const filters = ref({
                     searchQuery: "",
                     startDate: "",
                     endDate: "",
-                    orderType: "",
+                    minAmount: "",
                     paymentMethod: "",
-                });
-                const isLoading = ref(false);
-                const errorMessage = ref("");
+                }); 
+                // 使用者輸入的篩選條件
 
-                // 根據搜尋條件過濾訂單資料
+                const activeFilters = ref({
+                    searchQuery: "",
+                    startDate: "",
+                    endDate: "",
+                    minAmount: "",
+                    paymentMethod: "",
+                }); // 按下「查詢」按鈕時的篩選條件
+                const isLoading = ref(false); // 加載狀態
+                const errorMessage = ref(""); // 錯誤訊息
+
+                // 根據 activeFilters 過濾訂單資料
                 const filteredOrders = computed(() => {
-                    if (!Array.isArray(orders.value)) return []; // 防禦性檢查
                     let filtered = orders.value;
 
-                    if (filters.value.searchQuery) {
+                    if (activeFilters.value.searchQuery) {
                         filtered = filtered.filter(order =>
-                            order.orderName.includes(filters.value.searchQuery) ||
-                            order.userName.includes(filters.value.searchQuery)
+                            order.orderName.includes(activeFilters.value.searchQuery) ||
+                            order.userName.includes(activeFilters.value.searchQuery)
                         );
                     }
 
-                    if (filters.value.startDate) {
+                    if (activeFilters.value.startDate) {
                         filtered = filtered.filter(order =>
-                            new Date(order.orderDate) >= new Date(filters.value.startDate)
+                            new Date(order.orderDate) >= new Date(activeFilters.value.startDate)
                         );
                     }
 
-                    if (filters.value.endDate) {
+                    if (activeFilters.value.endDate) {
                         filtered = filtered.filter(order =>
-                            new Date(order.orderDate) <= new Date(filters.value.endDate)
+                            new Date(order.orderDate) <= new Date(activeFilters.value.endDate)
                         );
                     }
 
                     return filtered;
                 });
 
-                // 從 API 獲取訂單資料
                 const fetchOrders = async () => {
                     try {
+                        console.log("按下查詢按鈕，開始執行搜尋");
                         isLoading.value = true;
                         errorMessage.value = "";
 
+                        // 將使用者輸入的篩選條件複製到 activeFilters
+                        activeFilters.value = { ...filters.value };
+
                         // 準備查詢參數
                         const queryParams = {
-                            search: filters.value.searchQuery,
-                            startDate: filters.value.startDate,
-                            endDate: filters.value.endDate,
-                            orderType: filters.value.orderType,
-                            paymentMethod: filters.value.paymentMethod,
+                            keyword: activeFilters.value.searchQuery,
+                            startDate: activeFilters.value.startDate,
+                            endDate: activeFilters.value.endDate,
+                            Amount: activeFilters.value.minAmount,
+                            AmountSort: activeFilters.value.paymentMethod,
                         };
 
-                        // 調用 API 函數
-                        const result = await Api.fetchOrderSearch(queryParams);
-                        orders.value = Array.isArray(result.orders) ? result.orders : []; // 防禦性處理
+                        console.log("查詢參數:", queryParams);
+
+                        // 組合查詢 URL
+                        const queryString = new URLSearchParams(queryParams).toString();
+                        const url = `/api/OrderApi/GetOrder?${queryString}`;
+                        console.log("組合的 URL:", url);
+
+                        // 調用 API，發送請求
+                        const response = await fetch(url, {
+                            method: "GET", // HTTP 方法應使用標準大寫
+                        });
+
+                        // 檢查回應是否成功
+                        if (!response.ok) {
+                            throw new Error("Failed to fetch order search results.");
+                        }
+
+                        // 獲取 JSON 資料
+                        const result = await response.json();
+                        console.log("API 回傳結果:", result);
+
+                        // 提取回傳的訂單資料
+                        if (result && Array.isArray(result.data)) {
+                            orders.value = result.data; // 確保 `orders.value` 是陣列
+                        } else {
+                            orders.value = []; // 若 API 回傳資料不是陣列，設為空陣列
+                        }
                     } catch (error) {
                         errorMessage.value = "無法獲取訂單資料，請稍後再試。";
-                        console.error(error);
+                        console.error("API 請求錯誤:", error);
                     } finally {
                         isLoading.value = false;
                     }
                 };
+
+
+
 
                 // 初始化訂單資料
                 onMounted(fetchOrders);
@@ -197,6 +237,7 @@
                 return {
                     orders,
                     filters,
+                    activeFilters,
                     filteredOrders,
                     fetchOrders,
                     isLoading,
