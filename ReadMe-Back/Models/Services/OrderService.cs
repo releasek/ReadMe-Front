@@ -1,4 +1,6 @@
-﻿using ReadMe_Back.Models.EFModels;
+﻿using Microsoft.AspNetCore.Mvc;
+using ReadMe_Back.Models.EFModels;
+using ReadMe_Back.Models.Infra;
 using ReadMe_Back.Models.Repositories;
 using ReadMe_Back.Models.ViewModels;
 
@@ -29,6 +31,26 @@ namespace ReadMe_Back.Models.Services
                 Console.WriteLine($"Error in Service Layer: {ex.Message}");
                 throw; // 將例外重新拋出
             }
+        }
+        public Paged<OrderVm> GetPageOrder(OrderQueryParameters parameters)
+        {
+            // 獲取篩選後的訂單數據
+            var query = _orderEFRepo.GetOrder(parameters);
+
+            // 獲取分頁數據
+            var totalRecords =_orderEFRepo.GettotalRecords(parameters);
+
+            //分頁處裡
+            var data = query.Skip((parameters.PageNumber-1)*parameters.PageSize)
+                .Take(parameters.PageSize)
+                .ToList();
+            // 構造 Pagination 對象
+            var pagination = new Pagination(
+                parameters.PageNumber,
+                parameters.PageSize,
+                totalRecords,
+                parameters.Keyword);
+            return new Paged<OrderVm>(data, pagination, parameters.Keyword, null);
         }
 
     }

@@ -59,8 +59,8 @@
                 <label for="payment-method" class="form-label">排序</label>
                 <select id="payment-method" class="form-select" v-model="filters.paymentMethod">
                     <option value="">不限</option>
-                    <option value="asc">金額高排序</option>
-                    <option value="dasc">金額低排序</option>
+                    <option value="asc">金額低排序</option>
+                    <option value="desc">金額高排序</option>
                 </select>
             </div>
             <div class="col-md-2">
@@ -94,7 +94,7 @@
                         <td>{{ order.userName }}</td>
                         <td>{{ order.totalQuantity }}</td>
                         <td>{{ order.totalAmount }}</td>
-                        <td>{{ new Date(order.orderDate).toISOString().split('T')[0] }}</td>
+                        <td>{{ new Date(order.orderDate).toISOString().split("T")[0] }}</td>
                     </tr>
                 </tbody>
                 <tbody v-else>
@@ -106,36 +106,18 @@
         </div>
 
         <!-- 分頁區域 -->
-        <div class="pagination-container" v-if="pagination.totalPages > 1">
+        <div class="pagination-container">
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
-                    <!-- 第一頁 -->
-                    <li class="page-item" :class="{ disabled: pagination.pageNumber === 1 }">
-                        <button class="page-link" v-on:click="changePage(1)" :disabled="pagination.pageNumber === 1">第一頁</button>
-                    </li>
-                    <!-- 上一頁 -->
-                    <li class="page-item" :class="{ disabled: pagination.pageNumber === 1 }">
-                        <button class="page-link" v-on:click="changePage(pagination.pageNumber - 1)" :disabled="pagination.pageNumber === 1">上一頁</button>
-                    </li>
-                    <!-- 分頁按鈕 -->
-                    <li class="page-item"
-                        v-for="page in totalPagesArray"
-                        :key="page"
-                        :class="{ active: page === pagination.pageNumber }">
-                        <button class="page-link" v-on:click="changePage(page)">{{ page }}</button>
-                    </li>
-                    <!-- 下一頁 -->
-                    <li class="page-item" :class="{ disabled: pagination.pageNumber === pagination.totalPages }">
-                        <button class="page-link" v-on:click="changePage(pagination.pageNumber + 1)" :disabled="pagination.pageNumber === pagination.totalPages">下一頁</button>
-                    </li>
-                    <!-- 最後一頁 -->
-                    <li class="page-item" :class="{ disabled: pagination.pageNumber === pagination.totalPages }">
-                        <button class="page-link" v-on:click="changePage(pagination.totalPages)" :disabled="pagination.pageNumber === pagination.totalPages">最後一頁</button>
-                    </li>
+                    <li class="page-item"><a class="page-link" href="#">第一頁</a></li>
+                    <li class="page-item"><a class="page-link" href="#">上一頁</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">下一頁</a></li>
+                    <li class="page-item"><a class="page-link" href="#">最後一頁</a></li>
                 </ul>
             </nav>
         </div>
-
     </div>
 
     <!-- 引入 Bootstrap 的 JavaScript -->
@@ -148,15 +130,14 @@
             setup() {
                 // 訂單資料
                 const orders = ref([]); // API 回傳的訂單資料
-
-                // 篩選條件
                 const filters = ref({
                     searchQuery: "",
                     startDate: "",
                     endDate: "",
                     minAmount: "",
                     paymentMethod: "",
-                });
+                }); 
+                // 使用者輸入的篩選條件
 
                 const activeFilters = ref({
                     searchQuery: "",
@@ -164,24 +145,9 @@
                     endDate: "",
                     minAmount: "",
                     paymentMethod: "",
-                });
-
-                // 分頁資訊
-                const pagination = ref({
-                    pageNumber: 1, // 當前頁碼
-                    pageSize: 3,   // 每頁顯示的記錄數
-                    totalRecords: 0, // 總記錄數
-                    totalPages: 0,   // 總頁數
-                });
-
-                // 加載狀態與錯誤訊息
-                const isLoading = ref(false);
-                const errorMessage = ref("");
-
-                // 計算總頁數的陣列，用於渲染分頁按鈕
-                const totalPagesArray = computed(() =>
-                    Array.from({ length: pagination.value.totalPages }, (_, i) => i + 1)
-                );
+                }); // 按下「查詢」按鈕時的篩選條件
+                const isLoading = ref(false); // 加載狀態
+                const errorMessage = ref(""); // 錯誤訊息
 
                 // 根據 activeFilters 過濾訂單資料
                 const filteredOrders = computed(() => {
@@ -209,34 +175,24 @@
                     return filtered;
                 });
 
-                // 改變頁碼的方法
-                const changePage = async (page) => {
-                    if (page >= 1 && page <= pagination.value.totalPages) {
-                        pagination.value.pageNumber = page;
-                        await fetchOrders(); // 當頁碼改變時重新獲取數據
-                    }
-                };
-
-                // 獲取訂單資料
                 const fetchOrders = async () => {
                     try {
                         console.log("按下查詢按鈕，開始執行搜尋");
                         isLoading.value = true;
                         errorMessage.value = "";
 
-                        // 更新 activeFilters 為當前的篩選條件
+                        // 將使用者輸入的篩選條件複製到 activeFilters
                         activeFilters.value = { ...filters.value };
 
-                        // 構造查詢參數
+                        // 準備查詢參數
                         const queryParams = {
                             keyword: activeFilters.value.searchQuery,
                             startDate: activeFilters.value.startDate,
                             endDate: activeFilters.value.endDate,
                             Amount: activeFilters.value.minAmount,
                             AmountSort: activeFilters.value.paymentMethod,
-                            pageNumber: pagination.value.pageNumber, // 傳遞當前頁碼
-                            pageSize: pagination.value.pageSize,     // 傳遞每頁大小
                         };
+
                         console.log("查詢參數:", queryParams);
 
                         // 組合查詢 URL
@@ -244,8 +200,10 @@
                         const url = `/api/OrderApi/GetOrder?${queryString}`;
                         console.log("組合的 URL:", url);
 
-                        // 調用 API
-                        const response = await fetch(url, { method: "GET" });
+                        // 調用 API，發送請求
+                        const response = await fetch(url, {
+                            method: "GET", // HTTP 方法應使用標準大寫
+                        });
 
                         // 檢查回應是否成功
                         if (!response.ok) {
@@ -256,20 +214,11 @@
                         const result = await response.json();
                         console.log("API 回傳結果:", result);
 
-                        // 更新分頁資訊
-                        if (result.pagination) {
-                            pagination.value.totalRecords = result.pagination.totalRecords;
-                            pagination.value.totalPages = result.pagination.totalPages;
-                        } else {
-                            pagination.value.totalRecords = 0;
-                            pagination.value.totalPages = 0;
-                        }
-
-                        // 提取訂單資料
+                        // 提取回傳的訂單資料
                         if (result && Array.isArray(result.data)) {
-                            orders.value = result.data;
+                            orders.value = result.data; // 確保 `orders.value` 是陣列
                         } else {
-                            orders.value = [];
+                            orders.value = []; // 若 API 回傳資料不是陣列，設為空陣列
                         }
                     } catch (error) {
                         errorMessage.value = "無法獲取訂單資料，請稍後再試。";
@@ -278,6 +227,9 @@
                         isLoading.value = false;
                     }
                 };
+
+
+
 
                 // 初始化訂單資料
                 onMounted(fetchOrders);
@@ -290,16 +242,12 @@
                     fetchOrders,
                     isLoading,
                     errorMessage,
-                    pagination,
-                    totalPagesArray,
-                    changePage,
                 };
             },
         };
 
         createApp(appConfig).mount("#app");
     </script>
-
 
 </body>
 </html>

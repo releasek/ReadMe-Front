@@ -71,9 +71,15 @@ namespace ReadMe_Back.Models.Repositories
                 query = query.OrderBy(o => o.OrderDate);
             }
 
-
-
             return query;
+        }
+        /// <summary>
+        /// 取得訂單總筆數
+        /// </summary>
+        /// <returns></returns>
+        public int GettotalRecords(OrderQueryParameters parameters)
+        { 
+            return GetOrder(parameters).Count();
         }
 
 
