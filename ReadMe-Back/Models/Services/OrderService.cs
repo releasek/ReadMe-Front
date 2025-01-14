@@ -15,6 +15,26 @@ namespace ReadMe_Back.Models.Services
             _orderEFRepo = orderEFRepo;
         }
 
+        public Paged<OrderVm> GetAllPageOrder(OrderQueryParameters parameters)
+        {
+            // 獲取篩選後的訂單數據
+            var query = _orderEFRepo.GetAllOrders(parameters);
+
+            // 獲取分頁數據
+            var totalRecords = _orderEFRepo.GettotalRecords(parameters);
+
+            //分頁處裡
+            var data = query.Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize)
+                .ToList();
+            // 構造 Pagination 對象
+            var pagination = new Pagination(
+                parameters.PageNumber,
+                parameters.PageSize,
+                totalRecords,
+                parameters.Keyword);
+            return new Paged<OrderVm>(data, pagination, parameters.Keyword, null);
+        }
         public List<OrderVm> GetOrder(OrderQueryParameters parameters)
         {
             try
@@ -32,6 +52,7 @@ namespace ReadMe_Back.Models.Services
                 throw; // 將例外重新拋出
             }
         }
+
         public Paged<OrderVm> GetPageOrder(OrderQueryParameters parameters)
         {
             // 獲取篩選後的訂單數據
