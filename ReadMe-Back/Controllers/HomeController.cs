@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReadMe_Back.Models;
 using ReadMe_Back.Models.EFModels;
@@ -39,6 +40,8 @@ namespace ReadMe_Back.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [Authorize]
         public IActionResult OrderIndex()
         {
             return View();

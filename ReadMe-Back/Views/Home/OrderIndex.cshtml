@@ -12,7 +12,18 @@
     <div class="container-fluid mt-4">
       <h1 class="mb-3">總銷售</h1>
 
-      <!-- 年份選擇 -->
+    <!-- 年份選擇 -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <label for="year-select" class="form-label">年份選擇</label>
+                    <select id="year-select" class="form-select" v-model="selectedYear" v-on:change="onYearChange">
+                        <option v-for="year in years" :key="year" :value="year">
+                            {{ year }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
       <div class="row mb-4">
         <div class="col-lg-6 col-md-6 mb-3">
           <div class="card bg-primary text-white">
@@ -31,7 +42,6 @@
           </div>
         </div>
       </div>
-
       <div class="row mb-4">
         <div class="col-lg-6 mb-3">
           <div class="card">
@@ -69,7 +79,13 @@
         const totalQuantity = ref(0);
         const allData = ref([]);
         const selectedYear = ref(new Date().getFullYear());
-        const years = ref([2023, 2024, 2025]); // 可選年份
+        const years = ref(
+                 Array.from({ length: 3 }, (_, i) => new Date().getFullYear() - 1 + i)
+            );
+        const onYearChange = async () => {
+             await GetData(selectedYear.value); // 傳入選擇的年份
+         };
+
 
         let areaChart = null;
         let barChart = null;
@@ -142,6 +158,7 @@
         // 獲取數據
         const GetData = async (year) => {
           try {
+
             const amountData = await Api.fetchAmount(year);
             totalAmount.value = amountData;
             const quantityData = await Api.fetchQuantity(year);
@@ -156,16 +173,11 @@
           }
         };
 
-        // 當年份切換時
-        const onYearChange = async () => {
-          await GetData(selectedYear.value);
-        };
-
         onMounted(async () => {
           await GetData(selectedYear.value);
         });
 
-        return { areaChartRef, barChartRef, totalAmount, totalQuantity, selectedYear, years };
+                return { areaChartRef, barChartRef, totalAmount, totalQuantity, selectedYear, years, onYearChange };
       },
     }).mount("#app");
   </script>

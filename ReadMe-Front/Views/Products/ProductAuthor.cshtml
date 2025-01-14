@@ -5,90 +5,123 @@
     Layout = null;
 }
 <style>
-    .card {
-        display: flex;
-        flex-direction: column; /* 垂直排列 */
-        justify-content: space-between; /* 保持內容上下對齊 */
-        height: 100%; /* 設置卡片高度填滿容器 */
-        width: 170px; /* 設置固定寬度 */
-    }
-
-    .card-img-top {
-        width: 100%; /* 保持圖片寬度適應卡片容器 */
-        height: 210px; /* 設定固定高度 */
-        object-fit: cover; /* 保持圖片比例且填滿卡片 */
-    }
-
-    .card-text {
-        font-size: 14px;
-        color: #555;
-        text-align: left; /* 將價格對齊到右側 */
-        margin-top: auto; /* 確保價格始終在底部 */
-    }
-
-    .card-title {
-        font-size: 13px;
-        font-weight: bold;
-        line-height: 1.5;
-        height: calc(1.5em * 2); /* 固定高度，確保標題區域一致 */
-        overflow: hidden; /* 隱藏溢出的部分 */
-        text-overflow: ellipsis; /* 顯示省略號 */
-        display: -webkit-box; /* 需要 Webkit 支援 */
-        -webkit-line-clamp: 2; /* 限制顯示兩行 */
-        -webkit-box-orient: vertical; /* 垂直排列子元素 */
-    }
-
-    .card-container {
-        display: flex;
-        gap: 10px;
-    }
+    /* 你的樣式區域 */
 </style>
+
 <h3 class="mb-2">相關聯的作者</h3>
 
 <div class="row">
     @if (Model != null && Model.Any())
     {
-    foreach (var item in Model)
-    {
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
-        <div class="card-body mb-4">
-            <div class="card">
-                <a href="~/Products/ProductDetail/@item.Id">
-                    <img src="@item.ImageURL" class="card-img-top" alt="@item.Title">
-                </a>
-                <div class="card-body p-2">
-                    <a href="~/Products/ProductDetail/@item.Id">
-                        <h5 class="card-title mb-1">@item.Title</h5>
-                        <p class="text-muted mb-1">NT$ @item.Price</p>
-                    </a>
-                </div>
-                <div class="card-footer bg-white border-0 d-flex justify-content-between">
-                    <!-- 購買表單 -->
-                    <form method="post" action="/Cart/AddToCart" class="d-inline">
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" name="ProductId" value="@item.Id" />
-                        <input type="hidden" name="Price" value="@item.Price" />
-                        <button type="submit" class="btn btn-primary btn-sm">購買</button>
-                    </form>
+        foreach (var item in Model)
+        {
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
+                <div class="card-body mb-4">
+                    <div class="card">
+                        <a href="~/Products/ProductDetail/@item.Id">
+                            <img src="@item.ImageURL" class="card-img-top" alt="@item.Title">
+                        </a>
+                        <div class="card-body p-2">
+                            <a href="~/Products/ProductDetail/@item.Id">
+                                <h5 class="card-title mb-1">@item.Title</h5>
+                                <p class="text-muted mb-1">NT$ @item.Price</p>
+                            </a>
+                        </div>
+                        <div class="card-footer bg-white border-0 d-flex justify-content-between">
+                            <!-- 購買表單 -->
+                            <form method="post" action="/Cart/AddToCart" class="d-inline" id="form-@item.Id">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="ProductId" value="@item.Id" />
+                                <input type="hidden" name="Price" value="@item.Price" />
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#confirmModal" onclick="setFormId('@item.Id')">
+                                    購買
+                                </button>
+                            </form>
 
-                    <!-- 加入收藏表單 -->
-                    <form method="post" action="/Cart/AddToFavorite" class="d-inline">
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" name="ProductId" value="@item.Id" />
-                        <button type="submit" class="btn btn-success btn-sm">收藏</button>
-                    </form>
+                            <!-- 加入收藏表單 -->
+                            <form method="post" action="/Cart/AddToFavorite" class="d-inline" id="favorite-form-@item.Id">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="ProductId" value="@item.Id" />
+                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#favoriteModal" onclick="setFavoriteFormId('@item.Id')">
+                                    收藏
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-
-    }
+        }
     }
     else
     {
-    <p>@ViewBag.Message</p>
+        <p>@ViewBag.Message</p>
     }
 </div>
 
+<!-- 購買模態框 -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">提示</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                確定要將此商品加入購物車嗎？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="confirmPurchase">確認</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- 收藏模態框 -->
+<div class="modal fade" id="favoriteModal" tabindex="-1" aria-labelledby="favoriteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="favoriteModalLabel">提示</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                確定要將此商品加入收藏嗎？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-success" id="confirmFavorite">確認</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 紀錄當前觸發的購買表單 ID
+    let currentFormId = null;
+
+    function setFormId(formId) {
+        currentFormId = formId;
+    }
+
+    document.getElementById('confirmPurchase').addEventListener('click', function () {
+        if (currentFormId) {
+            document.getElementById('form-' + currentFormId).submit();
+        }
+    });
+
+    // 紀錄當前觸發的收藏表單 ID
+    let currentFavoriteFormId = null;
+
+    function setFavoriteFormId(formId) {
+        currentFavoriteFormId = formId;
+    }
+
+    document.getElementById('confirmFavorite').addEventListener('click', function () {
+        if (currentFavoriteFormId) {
+            document.getElementById('favorite-form-' + currentFavoriteFormId).submit();
+        }
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReadMe_Back.Models.DTOs;
@@ -72,7 +73,7 @@ namespace ReadMe_Back.Controllers
             // 如果 returnUrl 是預設值，設定為目標頁面
             if (returnUrl == "/")
             {
-                returnUrl = "/OrderSearch/OrderMain";
+                returnUrl = "/Home/OrderIndex";
             }
 
             // 跳轉至指定頁面
@@ -201,7 +202,7 @@ namespace ReadMe_Back.Controllers
             bool result = false;
             var user = _repo.GetAdminUserById(id);
             if (user != null)
-            {               
+            {
                 result = true;
                 _repo.DeleteUser(user);
             }
