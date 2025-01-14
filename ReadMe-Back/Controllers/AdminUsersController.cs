@@ -12,8 +12,6 @@ using System.Security.Claims;
 
 namespace ReadMe_Back.Controllers
 {
-    [Authorize]
-
     public class AdminUsersController : Controller
     {
         private readonly AppDbContext _context;
@@ -72,6 +70,7 @@ namespace ReadMe_Back.Controllers
             return RedirectToAction("Login");
         }
 
+        [Authorize]
         // GET: AdminUsers
         public async Task<IActionResult> Index()
         {
@@ -185,7 +184,7 @@ namespace ReadMe_Back.Controllers
             bool result = false;
             var user = _repo.GetAdminUserById(id);
             if (user != null)
-            {               
+            {
                 result = true;
                 _repo.DeleteUser(user);
             }
