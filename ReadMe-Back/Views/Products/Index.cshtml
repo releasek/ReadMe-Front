@@ -6,6 +6,56 @@
     ViewData["Title"] = "商品管理";
     var successMessage = TempData["SuccessMessage"] as string;
 }
+<style>
+    #datatablesSimple th:nth-child(1),
+    #datatablesSimple td:nth-child(1) {
+        width: 3%; /* ID */
+    }
+
+    #datatablesSimple th:nth-child(2),
+    #datatablesSimple td:nth-child(2) {
+        width: 15%; /* 書名 */
+    }
+
+    #datatablesSimple th:nth-child(3),
+    #datatablesSimple td:nth-child(3) {
+        width: 5%; /* 作者 */
+    }
+
+    #datatablesSimple th:nth-child(4),
+    #datatablesSimple td:nth-child(4) {
+        width: 5%; /* 出版社 */
+    }
+
+    #datatablesSimple th:nth-child(5),
+    #datatablesSimple td:nth-child(5) {
+        width: 10%; /* 售價 */
+    }
+
+    #datatablesSimple th:nth-child(6),
+    #datatablesSimple td:nth-child(6) {
+        width: 10%; /* 出版日 */
+    }
+
+    #datatablesSimple th:nth-child(7),
+    #datatablesSimple td:nth-child(7) {
+        width: 10%; /* 圖片連結 */
+    }
+
+    #datatablesSimple th:nth-child(8),
+    #datatablesSimple td:nth-child(8) {
+        width: 10%; /* 分類 */
+    }
+
+    #datatablesSimple th:nth-child(9),
+    #datatablesSimple td:nth-child(9) {
+        width: 10%; /* 大分類 */
+    }
+
+    #datatablesSimple th:nth-child(10),
+    #datatablesSimple td:nth-child(10) {
+        width: 25%; /* 功能 */
+    }</style>
 
 <h1 class="ms-4 mt-4">商品管理</h1>
 
@@ -148,29 +198,29 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Title</th>
-                                <th>Author</th>
-                                <th>Publisher</th>
-                                <th>Price</th>
-                                <th>PublishDate</th>
-                                <th>ImageURL</th>
-                                <th>CategoryName</th>
-                                <th>ParentCategoryName</th>
-                                <th>Function</th>
+                                <th>書名</th>
+                                <th>作者</th>
+                                <th>出版社</th>
+                                <th>售價</th>
+                                <th>出版日</th>
+                                <th>圖片連結</th>
+                                <th>分類</th>
+                                <th>大分類</th>
+                                <th>功能</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th>#</th>
-                                <th>Title</th>
-                                <th>Author</th>
-                                <th>Publisher</th>
-                                <th>Price</th>
-                                <th>PublishDate</th>
-                                <th>ImageURL</th>
-                                <th>CategoryName</th>
-                                <th>ParentCategoryName</th>
-                                <th>Function</th>
+                                <th>書名</th>
+                                <th>作者</th>
+                                <th>出版社</th>
+                                <th>售價</th>
+                                <th>出版日</th>
+                                <th>圖片連結</th>
+                                <th>分類</th>
+                                <th>大分類</th>
+                                <th>功能</th>
                             </tr>
                         </tfoot>
                         <tbody>
@@ -182,13 +232,13 @@
                                     <td>@item.Author</td>
                                     <td>@item.Publisher</td>
                                     <td>@item.Price</td>
-                                    <td>@item.PublishDate</td>
+                                    <td>@(item.PublishDate?.ToString("yyyy/MM/dd") ?? "N/A")</td>
                                     <td>@item.ImageURL</td>
                                     <td>@item.CategoryName</td>
                                     <td>@item.ParentCategoryName</td>
                                     <td>
-                                        <a class="btn btn-outline-info me-2" onclick="EditForm(@item.Id)" id="editForm">編輯</a>
-                                        <a class="btn btn-outline-danger" onclick="Confirm(@item.Id)">刪除</a>
+                                        <a class="btn btn-outline-info me-2 btn-sm" onclick="EditForm(@item.Id)" id="editForm">編輯</a>
+                                        <a class="btn btn-outline-danger btn-sm" onclick="Confirm(@item.Id)">刪除</a>
                                     </td>
                                 </tr>
                             }                            
@@ -223,23 +273,7 @@
             $('#btnDelete').on("click",function(){
                 var idD = $("#selectedId").val();
                 var url ="/Products/Delete/" + idD;
-                location.href=url;
-                // $.ajax({
-                //     type: "POST",
-                //     url: "/Products/Delete",
-                //     data: {id:idD},
-                //     success: function(result){
-                //         if(result) {
-                //             $("#selectedId").val(null);
-                //             // 設置刪除成功的標記
-                //             sessionStorage.setItem("deleteSuccess", "true");
-                //             window.location.href = "/Products/Index";
-                //         }
-                //         else{
-                //             alert("操作失敗");
-                //         }
-                //     }
-                // })
+                location.href=url;             
             })
         })
         var Confirm = function(id){
