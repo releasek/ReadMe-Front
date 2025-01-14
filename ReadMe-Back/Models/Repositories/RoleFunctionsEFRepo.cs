@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReadMe_Back.Models.DTOs;
 using ReadMe_Back.Models.EFModels;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ReadMe_Back.Models.Repositories
 {
@@ -49,6 +50,66 @@ namespace ReadMe_Back.Models.Repositories
                 })
                 .ToListAsync();
         }
+        //更新角色
+        public async Task UpdateUserRolesAsync(int roleId, List<int> assignedFunctionIds)
+        {
+            Console.WriteLine($"開始更新用戶角色: UserId = {roleId}, AssignedRoleIds = [{string.Join(", ", assignedFunctionIds)}]");
+
+            if (roleId <= 0 || assignedFunctionIds == null || !assignedFunctionIds.Any())
+            {
+                throw new ArgumentException("無效的參數");
+            }
+
+            try
+            {
+                // 確認用戶是否存在
+                var role = await _context.AdminRoles.FirstOrDefaultAsync(u => u.Id == roleId);
+                if (role == null)
+                {
+                    throw new Exception("用戶不存在");
+                }
+
+                Console.WriteLine($"找到用戶: {role.RoleName}");
+
+                // 移除現有角色
+                var existingRoles = _context.AdminRoleFunctionRels.Where(ur => ur.RoleId == roleId).ToList();
+                Console.WriteLine($"現有角色數量: {existingRoles.Count}");
+                _context.AdminRoleFunctionRels.RemoveRange(existingRoles);
+
+                // 添加新角色
+                foreach (var funcId in assignedFunctionIds)
+                {
+                    if (!_context.AdminRoles.Any(r => r.Id == funcId))
+                    {
+                        throw new Exception($"角色 ID {funcId} 不存在");
+                    }
+
+                    _context.AdminRoleFunctionRels.Add(new AdminRoleFunctionRel
+                    {
+                        RoleId = roleId,
+                        FunctionId= funcId
+                    });
+                    Console.WriteLine($"添加角色: RoleId = {roleId}");
+                }
+
+                // 保存更改
+                await _context.SaveChangesAsync();
+                Console.WriteLine("角色更新成功");
+            }
+            catch (DbUpdateException dbEx)
+            {
+                var detailedMessage = dbEx.InnerException?.Message ?? dbEx.Message;
+                Console.WriteLine($"資料庫更新失敗: {detailedMessage}");
+                throw new Exception($"資料庫更新失敗: {detailedMessage}", dbEx);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"更新角色時發生一般錯誤: {ex.Message}");
+                throw new Exception($"更新角色失敗: {ex.Message}", ex);
+            }
+        }
+
+
 
         // 更新角色功能
         public async Task UpdateRoleFunctionsAsync(int roleId, List<int> assignedFunctionIds)

@@ -150,6 +150,34 @@ namespace ReadMe_Back.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("RoleFunctions/CreateRole")]
+        public async Task<IActionResult> CreateUser([FromBody] CreateRoleDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.RoleName) )
+            {
+                return BadRequest(new { message = "請求參數無效" });
+            }
+
+            try
+            {
+                await _service.CreateRoleAsync(dto.RoleName);
+                return Ok(new { message = "使用者新增成功" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"新增角色失敗: {ex.Message}");
+                return StatusCode(500, new { message = "新增角色失敗", error = ex.Message });
+            }
+        }
+
+
+
+
+
+
+
+
 
 
 

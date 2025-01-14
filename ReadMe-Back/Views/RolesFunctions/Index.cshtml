@@ -32,8 +32,8 @@
     <div class="container mt-4">
         <h2>權限管理</h2>
          <!-- 新增角色按鈕 -->
+        <button class="btn btn-success" onclick="" data-bs-toggle="modal" data-bs-target="#adduserRoleModal">新增角色</button>
         <button class="btn btn-success" onclick="openAddPermissionModal()" data-bs-toggle="modal" data-bs-target="#addRoleModal">新增權限</button>
-
         <!-- 角色列表 -->
         <table id="roleTable" class="table">
             <thead>
@@ -57,6 +57,28 @@
                 }
             </tbody>
         </table>
+        <!-- 模態框：新增角色 -->
+        <div class="modal fade" id="adduserRoleModal" tabindex="-1" aria-labelledby="addRoleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addRoleModalLabel">新增角色</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="newRoleName" class="form-label">角色</label>
+                            <input type="text" class="form-control" id="newRoleName" placeholder="輸入角色名稱">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" onclick="saveNewRole()">保存</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
 
          <!-- 模態框：新增權限 -->
         <div class="modal fade" id="addRoleModal" tabindex="-1" aria-labelledby="addRoleModalLabel" aria-hidden="true">
@@ -133,6 +155,35 @@
     </div>
 
     <script>
+        // 保存角色更新
+        function saveNewRole() {
+            const roleName = document.getElementById("newRoleName").value.trim();
+           
+            if (!roleName) {
+                alert("請輸入角色名稱");
+                return;
+            }
+
+            fetch("/RoleFunctions/CreateRole", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    roleName: roleName
+                   
+                })
+            })
+                .then(res => {
+                    if (res.ok) {
+                        alert("新增角色成功");
+                        window.location.href = "/RolesFunctions/Index";
+                    } else {
+                        return res.json().then(data => { throw new Error(data.message); });
+                    }
+                })
+                .catch(err => {
+                    alert("新增角色失敗：" + err.message);
+                });
+        }
          //新增權限
          // 打開模態框並加載角色數據
                function openAddPermissionModal() {

@@ -50,10 +50,29 @@ namespace ReadMe_Back.Models.Services
         {
             await _repo.UpdateRoleFunctionsAsync(roleId, assignedFunctionIds);
         }
-        
+        //新增角色
+        public async Task CreateRoleAsync(string roleName)
+        {
+            if (string.IsNullOrWhiteSpace(roleName))
+            {
+                throw new ArgumentException("角色名稱不能為空");
+            }
+
+            // 1. 檢查使用者是否已存在
+            var existingUser = await _repo.GetRoleByNameAsync(roleName);
+            if (existingUser != null)
+            {
+                throw new Exception($"角色名稱 '{roleName}' 已存在");
+            }
+
+            // 2. 建立新使用者 (存到 AdminUsers)
+            var newUser = await _repo.AddRoleAsync(roleName);
+
+        }
+
 
         //-----------------------------------------------------------------
-        //建立新的角色
+        //建立新的功能
         public async Task<List<RoleFunctionDto>> GetAllFunctionsAsync()
         {
             var functions = await _repo.GetAllFunctionsAsync();
