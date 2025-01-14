@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReadMe_Back.Models.EFModels;
+using ReadMe_Back.Models.Security;
 
 namespace ReadMe_Back.Controllers
 {
-    [Authorize]
-
+    [FunctionAuthorize("訂單管理")]
     public class OrderSearchController : Controller
     {
         private readonly AppDbContext _context;

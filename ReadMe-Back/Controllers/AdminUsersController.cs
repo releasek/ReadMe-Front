@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using ReadMe_Back.Models.DTOs;
 using ReadMe_Back.Models.EFModels;
 using ReadMe_Back.Models.Repositories;
+using ReadMe_Back.Models.Security;
 using ReadMe_Back.Models.Services;
 using ReadMe_Back.Models.ViewModels;
 using System.Security.Claims;
@@ -46,13 +47,28 @@ namespace ReadMe_Back.Controllers
                 return View(vm);
             }
 
+            var rights = _context.AdminUserRoleRels
+               .Where(x => x.UserId == user.Id)
+               .SelectMany(ur => ur.Role.AdminRoleFunctionRels)
+               .Select(rf => new { rf.FunctionId, rf.Function.FunctionName })
+               .Distinct()
+               .ToList();
+
             var calims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, vm.Account)
             };
+
+            foreach (var right in rights)
+            {
+                //calims.Add(new Claim(ClaimTypes.Role, right.FunctionName));
+                calims.Add(new Claim("function", right.FunctionName));
+            }
+
             var calimsIdentity = new ClaimsIdentity(calims, CookieAuthenticationDefaults.AuthenticationScheme);
             var userPrincipal = new ClaimsPrincipal(calimsIdentity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userPrincipal);
+
 
             // 如果 returnUrl 是預設值，設定為目標頁面
             if (returnUrl == "/")
@@ -62,6 +78,8 @@ namespace ReadMe_Back.Controllers
 
             // 跳轉至指定頁面
             return Redirect(returnUrl);
+
+
         }
 
         public IActionResult Logout()
@@ -70,7 +88,7 @@ namespace ReadMe_Back.Controllers
             return RedirectToAction("Login");
         }
 
-        [Authorize]
+        [FunctionAuthorize("權限管理")]
         // GET: AdminUsers
         public async Task<IActionResult> Index()
         {
@@ -319,6 +337,11 @@ namespace ReadMe_Back.Controllers
         private bool AdminUserExists(int id)
         {
             return _context.AdminUsers.Any(e => e.Id == id);
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

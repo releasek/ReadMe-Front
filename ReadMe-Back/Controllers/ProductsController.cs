@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using ReadMe_Back.Models.EFModels;
 using ReadMe_Back.Models.Repositories;
+using ReadMe_Back.Models.Security;
 using ReadMe_Back.Models.ViewModels;
 
 namespace ReadMe_Back.Controllers
 {
-    [Authorize]
+    //[Authorize]
+    [FunctionAuthorize("商品管理")]
     public class ProductsController : Controller
     {
         private readonly ProductEFRepo _repo;
@@ -146,7 +148,8 @@ namespace ReadMe_Back.Controllers
 
         }
 
-        public JsonResult Delete(int id)
+       
+        public IActionResult Delete(int id)
         {
             bool result = false;
             var product = _repo.GetProducts().FirstOrDefault(p => p.Id == id);
@@ -155,7 +158,8 @@ namespace ReadMe_Back.Controllers
                 result = true;
                 _repo.DeleteProduct(product);
             }
-            return Json(result);
+            // return Json(result);
+            return RedirectToAction("Index");
         }
 
     }

@@ -11,5 +11,7 @@ namespace ReadMe_Back.Models.ViewModels
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        public int Id { get; set; }
+
     }
 }

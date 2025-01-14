@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReadMe_Back.Models.DTOs;
 using ReadMe_Back.Models.EFModels;
+using ReadMe_Back.Models.Security;
 using ReadMe_Back.Models.Services;
 using ReadMe_Back.Models.ViewModels;
 
 namespace ReadMe_Back.Controllers
 {
-    [Authorize]
+    [FunctionAuthorize("權限管理")]
     public class RolesFunctionsController : Controller
     {
         private readonly AppDbContext _context;
