@@ -25,6 +25,44 @@
     .card-footer form {
         margin: 0;
     }
+
+    .card {
+        display: flex;
+        flex-direction: column; /* 垂直排列 */
+        justify-content: space-between; /* 保持內容上下對齊 */
+        height: 100%; /* 設置卡片高度填滿容器 */
+        width: 170px; /* 設置固定寬度 */
+    }
+
+    .card-img-top {
+        width: 100%; /* 保持圖片寬度適應卡片容器 */
+        height: 210px; /* 設定固定高度 */
+        object-fit: cover; /* 保持圖片比例且填滿卡片 */
+    }
+
+    .card-text {
+        font-size: 14px;
+        color: #555;
+        text-align: left; /* 將價格對齊到右側 */
+        margin-top: auto; /* 確保價格始終在底部 */
+    }
+
+    .card-title {
+        font-size: 13px;
+        font-weight: bold;
+        line-height: 1.5;
+        height: calc(1.5em * 2); /* 固定高度，確保標題區域一致 */
+        overflow: hidden; /* 隱藏溢出的部分 */
+        text-overflow: ellipsis; /* 顯示省略號 */
+        display: -webkit-box; /* 需要 Webkit 支援 */
+        -webkit-line-clamp: 2; /* 限制顯示兩行 */
+        -webkit-box-orient: vertical; /* 垂直排列子元素 */
+    }
+
+    .card-container {
+        display: flex;
+        gap: 10px;
+    }
     .btn-primary {
         background-color: #7AB8B8;
         color: white;
