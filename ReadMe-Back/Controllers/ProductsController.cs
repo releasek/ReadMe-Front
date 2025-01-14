@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ReadMe_Back.Models.EFModels;
 using ReadMe_Back.Models.Repositories;
 using ReadMe_Back.Models.Security;
@@ -148,7 +147,7 @@ namespace ReadMe_Back.Controllers
 
         }
 
-       
+
         public IActionResult Delete(int id)
         {
             bool result = false;
@@ -158,7 +157,8 @@ namespace ReadMe_Back.Controllers
                 result = true;
                 _repo.DeleteProduct(product);
             }
-            // return Json(result);
+            // 設置 TempData，傳遞成功消息
+            TempData["SuccessMessage"] = "刪除成功";
             return RedirectToAction("Index");
         }
 

@@ -169,7 +169,7 @@
                 // 分頁資訊
                 const pagination = ref({
                     pageNumber: 1, // 當前頁碼
-                    pageSize: 3,   // 每頁顯示的記錄數
+                    pageSize: 5,   // 每頁顯示的記錄數
                     totalRecords: 0, // 總記錄數
                     totalPages: 0,   // 總頁數
                 });
@@ -205,7 +205,6 @@
                             new Date(order.orderDate) <= new Date(activeFilters.value.endDate)
                         );
                     }
-
                     return filtered;
                 });
 
@@ -266,6 +265,9 @@
                         }
 
                         // 提取訂單資料
+                        console.log('result.data', result.data);
+                        console.log('result', result);
+                        console.log('Array.isArray(result.data)', Array.isArray(result.data));
                         if (result && Array.isArray(result.data)) {
                             orders.value = result.data;
                         } else {
