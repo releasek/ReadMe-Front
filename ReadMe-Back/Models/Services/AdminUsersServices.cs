@@ -37,7 +37,7 @@ namespace ReadMe_Back.Models.Services
 
         //-----------------------------------------------------------------
         //建立新的使用者
-        public async Task CreateUserAsync(string userName, List<int> assignedRoleIds)
+        public async Task CreateUserAsync(string userName, string password)
         {
             if (string.IsNullOrWhiteSpace(userName))
             {
@@ -52,28 +52,11 @@ namespace ReadMe_Back.Models.Services
             }
 
             // 2. 建立新使用者 (存到 AdminUsers)
-            var newUser = await _repo.AddUserAsync(userName);
-
-            // 3. 為該使用者分配角色 (寫入 AdminUserRoleRels)
-            if (assignedRoleIds != null && assignedRoleIds.Any())
-            {
-                foreach (var roleId in assignedRoleIds)
-                {
-                    await _repo.AssignRoleToUserAsync(newUser.Id, roleId);
-                }
-            }
+            var newUser = await _repo.AddUserAsync(userName, password);
+           
         }
 
-        public async Task<List<UserVm>> GetAllUsersAsync()
-        {
-            var users = await _userRepo.GetAllUsersAsync();
-            return users.Select(u => new UserVm
-            {
-                Id = u.Id,
-                UserName = u.UserName
-                // 如需帶出角色，可在 Repository 做 Include 或另查 UserRoleRels
-            }).ToList();
-        }
+       
     }
 
 

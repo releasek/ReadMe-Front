@@ -159,14 +159,14 @@ namespace ReadMe_Back.Controllers
         [Route("AdminUsers/CreateUser")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserDto dto)
         {
-            if (string.IsNullOrWhiteSpace(dto.UserName) || dto.AssignedRoleIds == null)
+            if (string.IsNullOrWhiteSpace(dto.UserName) || dto.Password == null)
             {
                 return BadRequest(new { message = "請求參數無效" });
             }
 
             try
             {
-                await _service.CreateUserAsync(dto.UserName, dto.AssignedRoleIds);
+                await _service.CreateUserAsync(dto.UserName, dto.Password);
                 return Ok(new { message = "使用者新增成功" });
             }
             catch (Exception ex)
@@ -174,6 +174,19 @@ namespace ReadMe_Back.Controllers
                 Console.WriteLine($"新增使用者失敗: {ex.Message}");
                 return StatusCode(500, new { message = "使用者新增失敗", error = ex.Message });
             }
+        }
+
+        [HttpPost]
+        public JsonResult Delete(int id)
+        {
+            bool result = false;
+            var user = _repo.GetAdminUserById(id);
+            if (user != null)
+            {               
+                result = true;
+                _repo.DeleteUser(user);
+            }
+            return Json(result);
         }
 
 
@@ -269,37 +282,37 @@ namespace ReadMe_Back.Controllers
         }
 
         // GET: AdminUsers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var adminUser = await _context.AdminUsers
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (adminUser == null)
-            {
-                return NotFound();
-            }
+        //    var adminUser = await _context.AdminUsers
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (adminUser == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(adminUser);
-        }
+        //    return View(adminUser);
+        //}
 
         // POST: AdminUsers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var adminUser = await _context.AdminUsers.FindAsync(id);
-            if (adminUser != null)
-            {
-                _context.AdminUsers.Remove(adminUser);
-            }
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var adminUser = await _context.AdminUsers.FindAsync(id);
+        //    if (adminUser != null)
+        //    {
+        //        _context.AdminUsers.Remove(adminUser);
+        //    }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool AdminUserExists(int id)
         {
