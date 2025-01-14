@@ -90,10 +90,9 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="newRoleName" class="form-label">權限名稱</label>
-                            <input type="text" class="form-control" id="newRoleName" placeholder="輸入權限名稱">
+                            <label for="newFunctionName" class="form-label">權限名稱</label>
+                            <input type="text" class="form-control" id="newFunctionName" placeholder="輸入權限名稱">
                         </div>
-
                        <div class="row">
                             <div class="col-md-5">
                                 <label>未分配角色</label>
@@ -303,7 +302,7 @@
         }
 
         function saveNewFunction() {
-            const newFunctionName = document.getElementById("newRoleName").value.trim();
+            const newFunctionName = document.getElementById("newFunctionName").value.trim();
             const assignedRoleIds = Array.from(document.getElementById("assignedRoles").options)
                 .map(opt => parseInt(opt.value));
 
@@ -312,6 +311,7 @@
                 alert("請輸入功能名稱");
                 return;
             }
+           console.log("Function Name:", newFunctionName);
 
             // 發送請求到後端
             fetch("/RolesFunctions/CreateFunction", { // 確保此路徑與後端一致
@@ -337,8 +337,6 @@
                     alert("新增功能失敗: " + err.message);
                 });
         }
-
-
 
 
         //編輯權限
