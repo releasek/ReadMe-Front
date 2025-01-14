@@ -41,6 +41,26 @@ namespace ReadMe_Back.Models.Repositories
                 .ToListAsync();
         }
 
+        public AdminUser GetAdminUserById(int id)
+        {
+            var user = _context.AdminUsers
+                .FirstOrDefault(u => u.Id == id);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            return user;
+        }
+
+        public void DeleteUser(AdminUser user)
+        {
+            _context.AdminUsers.Remove(user);
+            _context.SaveChanges();
+        }
+
+
         // 獲取用戶已分配的角色
         public async Task<List<CreateRoleDto>> GetAssignedRolesAsync(int userId)
         {
@@ -133,26 +153,31 @@ namespace ReadMe_Back.Models.Repositories
 
 
 
-        //新增權限
-        public async Task<List<AdminRoleFunction>> GetAllFunctionsAsync()
+        //新增使用者
+        public async Task<AdminUser> GetUserByNameAsync(string userName)
         {
-            return await _context.AdminRoleFunctions.ToListAsync();
+            return await _context.AdminUsers
+                .FirstOrDefaultAsync(u => u.UserName == userName);
         }
-
-        // 獲取角色是否已存在
-        public async Task<AdminRole> GetRoleByNameAsync(string roleName)
+        public async Task<AdminUser> AddUserAsync(string username,string password)
         {
-            return await _context.AdminRoles.FirstOrDefaultAsync(r => r.RoleName == roleName);
-        }
-
-        // 添加新角色
-        public async Task<AdminRole> AddRoleAsync(string roleName)
-        {
-            var role = new AdminRole { RoleName = roleName };
-            await _context.AdminRoles.AddAsync(role);
+            var newuser = new AdminUser { UserName = username, Password = password };
+            _context.AdminUsers.Add(newuser);
             await _context.SaveChangesAsync();
-            return role;
+            return newuser;
         }
+
+        public async Task AssignRoleToUserAsync(int userId, int roleId)
+        {
+            _context.AdminUserRoleRels.Add(new AdminUserRoleRel
+            {
+                UserId = userId,
+                RoleId = roleId
+            });
+            await _context.SaveChangesAsync();
+        }
+
+
 
         // 為角色添加功能
         public async Task AddRoleFunctionAsync(int roleId, int functionId)
@@ -166,12 +191,20 @@ namespace ReadMe_Back.Models.Repositories
             await _context.SaveChangesAsync();
         }
 
-        // 獲取功能是否已存在
-        public async Task<AdminRoleFunction> GetFunctionByNameAsync(string functionName)
-        {
-            return await _context.AdminRoleFunctions.FirstOrDefaultAsync(f => f.FunctionName == functionName);
-        }
+        //// 獲取功能是否已存在
+        //public async Task<AdminRoleFunction> GetFunctionByNameAsync(string functionName)
+        //{
+        //    return await _context.AdminRoleFunctions.FirstOrDefaultAsync(f => f.FunctionName == functionName);
+        //}   
 
+        // 添加新角色
+        public async Task<AdminRole> AddRoleAsync(string roleName)
+        {
+            var role = new AdminRole { RoleName = roleName };
+            await _context.AdminRoles.AddAsync(role);
+            await _context.SaveChangesAsync();
+            return role;
+        }
         // 添加新功能
         public async Task<AdminRoleFunction> AddFunctionAsync(string functionName)
         {
@@ -191,13 +224,6 @@ namespace ReadMe_Back.Models.Repositories
             };
             await _context.AdminRoleFunctionRels.AddAsync(rel);
             await _context.SaveChangesAsync();
-        }
-
-
-        public async Task<List<AdminRole>> GetAllRolesAsync()
-        {
-            // 從資料庫獲取角色資料
-            return await _context.AdminRoles.ToListAsync();
         }
 
 

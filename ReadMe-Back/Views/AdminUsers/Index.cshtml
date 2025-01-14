@@ -25,7 +25,7 @@
 <body>
     <div class="container mt-4">
         <h2>帳號管理</h2>
-        <button class="btn btn-success" onclick="openAddPermissionModal()" data-bs-toggle="modal" data-bs-target="#addRoleModal">新增使用者</button>
+        <button class="btn btn-success" onclick="" data-bs-toggle="modal" data-bs-target="#addRoleModal">新增使用者</button>
         <!-- 用戶列表 -->
         <table id="userTable" class="table">
             <thead>
@@ -43,14 +43,14 @@
                         <td>@user.UserName</td>
                         <td>
                             <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editRolesModal" onclick="openEditModal(@user.Id, '@user.UserName')">編輯</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteUser(@user.Id)">刪除</button>
+                            <button class="btn btn-danger btn-sm" onclick="Confirm(@user.Id)">刪除</button>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
 
-        <!-- 模態框：新增權限 -->
+        <!-- 模態框：新增使用者 -->
         <div class="modal fade" id="addRoleModal" tabindex="-1" aria-labelledby="addRoleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -60,28 +60,18 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="newRoleName" class="form-label">使用者名稱</label>
-                            <input type="text" class="form-control" id="newRoleName" placeholder="輸入使用者名稱">
+                            <label for="newRoleName" class="form-label">帳號</label>
+                            <input type="text" class="form-control" id="newRoleName" placeholder="輸入帳號">
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-5">
-                                <label>未分配角色</label>
-                                <select id="unassignedRoles" class="form-control" size="10" multiple></select>
-                            </div>
-                            <div class="col-md-2 text-center d-flex flex-column justify-content-center">
-                                <button class="btn btn-success mb-2" onclick="assignRoles()">>> 分配</button>
-                                <button class="btn btn-warning" onclick="unassignRoles()"><< 移除</button>
-                            </div>
-                            <div class="col-md-5">
-                                <label>已分配角色</label>
-                                <select id="assignedRoles" class="form-control" size="10" multiple></select>
-                            </div>
+                        <div class="mb-3">
+                            <label for="newRoleName" class="form-label">密碼</label>
+                            <input type="text" class="form-control" id="newPassword" placeholder="輸入密碼">
                         </div>
+                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-primary" onclick="saveNewFunction()">保存</button>
+                        <button type="button" class="btn btn-primary" onclick="saveNewUser()">保存</button>
 
                     </div>
                 </div>
@@ -121,106 +111,149 @@
                 </div>
             </div>
         </div>
+
+        <!-- 模態框：刪除使用者-->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="/" method="post">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">刪除使用者</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h2>確認刪除此使用者嗎?</h2>
+                            <input class="selectedId" type="hidden" id="selectedId" value="selectedId" name="Id" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btnCancel" data-bs-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" id="btnDelete">確認</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 
     <script>
+        $(document).ready(function () {
+            if (sessionStorage.getItem("deleteSuccess") === "true") {
+                alert("刪除成功");
+                // 清除標記，防止重複顯示
+                sessionStorage.removeItem("deleteSuccess");
+            }
+
+            $('#btnDelete').on("click", function () {
+                var idD = $("#selectedId").val();
+                console.log("選中的ID:", idD);
+                $.ajax({
+                    type: "POST",
+                    url: "/AdminUsers/Delete",
+                    data: { id: idD },
+                    success: function (result) {
+                        if (result) {
+                            $("#selectedId").val(null);
+                            // 設置刪除成功的標記
+                            sessionStorage.setItem("deleteSuccess", "true");
+                            window.location.href = "/AdminUsers/Index";
+                        }
+                        else {
+                            alert("操作失敗");
+                        }
+                    }
+                })
+            })
+        })
+
         //新增使用者
         // 打開模態框並加載角色數據
-        function openAddPermissionModal() {
-            // 清空輸入框
-            document.getElementById("newRoleName").value = "";
+            function openAddUserModal() {
+            // 清空输入框
+            document.getElementById("txtUserName").value = "";
 
-            // 發送請求以獲取所有角色
-            fetch("/RolesFunctions/GetAllRolesForPermissions") // 使用新的路徑
+            // 加载角色数据
+            fetch("/Roles/GetAllRoles")
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error(`伺服器回應錯誤：${response.status} (${response.statusText})`);
+                        throw new Error("无法加载角色数据：" + response.statusText);
                     }
                     return response.json();
                 })
                 .then(data => {
-                    // 填充未分配角色
                     populateRoles("unassignedRoles", data);
-
-                    // 新權限的已分配角色應為空
                     populateRoles("assignedRoles", []);
                 })
                 .catch(error => {
-                    console.error("加載角色數據失敗：", error);
-                    alert(`加載角色數據失敗：${error.message}`);
+                    console.error("加载角色失败：", error);
+                    alert("加载角色失败：" + error.message);
                 });
         }
+        
+        var Confirm = function (id) {
+            $("#selectedId").val(id);
+            $("#deleteModal").modal('show');
+        }
 
-        // 填充角色下拉選單
+        // 填充角色
+        // 填充角色
         function populateRoles(elementId, roles) {
             const select = document.getElementById(elementId);
-            select.innerHTML = ''; // 清空選單
-
-            roles.forEach(role => {
-                const option = document.createElement('option');
-                option.value = role.id;
-                option.textContent = role.roleName; // 確保名稱正確
+            select.innerHTML = "";
+            roles.forEach(r => {
+                const option = document.createElement("option");
+                option.value = r.id;
+                option.textContent = r.roleName;
                 select.appendChild(option);
             });
         }
 
-
-        // 分配角色
+        // 分配 & 移除 (跟原本差不多)
         function assignRoles() {
             moveOptions("unassignedRoles", "assignedRoles");
         }
-
-        // 移除角色
         function unassignRoles() {
             moveOptions("assignedRoles", "unassignedRoles");
         }
-
-        // 通用移動選項
         function moveOptions(sourceId, targetId) {
             const source = document.getElementById(sourceId);
             const target = document.getElementById(targetId);
-
-            Array.from(source.selectedOptions).forEach(option => {
-                target.appendChild(option);
-            });
+            Array.from(source.selectedOptions).forEach(opt => target.appendChild(opt));
         }
 
-        function saveNewFunction() {
-            const newFunctionName = document.getElementById("newRoleName").value.trim();
-            const assignedRoleIds = Array.from(document.getElementById("assignedRoles").options)
-                .map(opt => parseInt(opt.value));
+        // 儲存(新增)使用者
+        function saveNewUser() {
+            const userName = document.getElementById("newRoleName").value.trim();
+            const password = document.getElementById("newPassword").value.trim();
 
-            // 驗證輸入
-            if (!newFunctionName) {
-                alert("請輸入功能名稱");
+            if (!userName) {
+                alert("請輸入使用者名稱");
                 return;
             }
 
-            // 發送請求到後端
-            fetch("/RolesFunctions/CreateFunction", { // 確保此路徑與後端一致
+            fetch("/AdminUsers/CreateUser", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    functionName: newFunctionName,
-                    assignedRoleIds: assignedRoleIds
+                    userName: userName,
+                    password: password
                 })
             })
-                .then(res => {
-                    if (res.ok) {
-                        alert("新增功能成功");
-                        const modal = bootstrap.Modal.getInstance(document.getElementById("addRoleModal"));
-                        modal.hide();
-                        location.reload(); // 刷新頁面或更新表格數據
-                    } else {
-                        return res.json().then(data => { throw new Error(data.message); });
-                    }
-                })
-                .catch(err => {
-                    console.error("新增功能失敗:", err);
-                    alert("新增功能失敗: " + err.message);
-                });
+            .then(res => {
+                if (res.ok) {
+                    alert("新增使用者成功");
+                    window.location.href = "/AdminUsers/Index";
+                } else {
+                    return res.json().then(data => { throw new Error(data.message); });
+                }
+            })
+            .catch(err => {
+                alert("新增使用者失敗：" + err.message);
+            });
         }
+
+
 
 
 

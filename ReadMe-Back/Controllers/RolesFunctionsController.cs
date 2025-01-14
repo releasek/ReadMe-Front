@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ReadMe_Back.Models.DTOs;
 using ReadMe_Back.Models.EFModels;
@@ -12,6 +8,7 @@ using ReadMe_Back.Models.ViewModels;
 
 namespace ReadMe_Back.Controllers
 {
+    [Authorize]
     public class RolesFunctionsController : Controller
     {
         private readonly AppDbContext _context;
@@ -107,30 +104,32 @@ namespace ReadMe_Back.Controllers
             }
         }
 
-
         [HttpGet]
-        [Route("RolesFunctions/GetAllRolesForPermissions")]
+
         public async Task<IActionResult> GetAllRolesForPermissions()
         {
             try
             {
-                // 獲取所有角色
+                // 確保資料庫查詢無誤
                 var roles = await _context.AdminRoles
-                    .Select(r => new { r.Id, r.RoleName }) // 選擇需要的欄位
+                    .Select(r => new
+                    {
+                        Id = r.Id,
+                        RoleName = r.RoleName
+                    })
                     .ToListAsync();
 
-                // 回傳 JSON
-                return Ok(roles);
+                return Ok(roles); // 正常返回角色清單
             }
             catch (Exception ex)
             {
+                // 記錄例外情況並返回錯誤訊息
                 Console.WriteLine($"取得角色列表時發生錯誤：{ex.Message}");
                 return StatusCode(500, new { message = "取得角色列表失敗", error = ex.Message });
             }
         }
-
         [HttpPost]
-        [Route("RolesFunctions/CreateFunction")]
+
         public async Task<IActionResult> CreateFunction([FromBody] CreateFunctionDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.FunctionName) || dto.AssignedRoleIds == null)
