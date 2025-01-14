@@ -51,66 +51,144 @@
         flex-grow: 1; /* 讓卡片的內容區域自動填滿空間 */
         justify-content: space-between; /* 讓標題與價格分佈在頂部和底部 */
     }
+
     a {
         text-decoration: none;
         color: black;
     }
 
     .btn-primary {
-	    background-color: #7AB8B8; 
-	    color: white; 
-	    border-color: white; 
-    }
-    .btn-primary:hover {
-	    background-color: #f8f9fa; /* Hover時背景變淡灰 */
-	    color: black; /* Hover時文字變黑 */
-	    border-color: gray; /* 邊框仍保持灰色 */
-    }
-    .btn-success {
-	    background-color: #1E73BE;
-	    color: white; /* 字體顏色設置為灰色 */
-	    border-color: white; /* 邊框顏色設置為灰色 */
-    }
-    .btn-success:hover{
-	    background-color: #f8f9fa; /* Hover時背景變淡灰 */
-	    color: black; /* Hover時文字變黑 */
-	    border-color: gray; /* 邊框仍保持灰色 */
+        background-color: #7AB8B8;
+        color: white;
+        border-color: white;
     }
 
+        .btn-primary:hover {
+            background-color: #f8f9fa; /* Hover時背景變淡灰 */
+            color: black; /* Hover時文字變黑 */
+            border-color: gray; /* 邊框仍保持灰色 */
+        }
+
+    .btn-success {
+        background-color: #1E73BE;
+        color: white; /* 字體顏色設置為灰色 */
+        border-color: white; /* 邊框顏色設置為灰色 */
+    }
+
+        .btn-success:hover {
+            background-color: #f8f9fa; /* Hover時背景變淡灰 */
+            color: black; /* Hover時文字變黑 */
+            border-color: gray; /* 邊框仍保持灰色 */
+        }
+    .modal-backdrop {
+        background-color: rgba(0, 0, 0, 0.5); /* 設定透明度為 50% */
+    }
 </style>
 
 <!-- 商品卡片 -->
 <div class="row">
-	@foreach (var item in Model)
-	{
-		<div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
-			<div class="card h-100">
-				<a href="~/Products/ProductDetail/@item.Id">
-					<img src="@item.ImageURL" class="card-img-top" alt="@item.Title">
-				</a>
-				<div class="card-body p-2">
-					<a href="~/Products/ProductDetail/@item.Id">
-						<h5 class="card-title mb-1">@item.Title</h5>
-						<p class="text-muted mb-1">NT$ @item.Price</p>
-					</a>
-				</div>
+    @foreach (var item in Model)
+    {
+        <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
+            <div class="card h-100">
+                <a href="~/Products/ProductDetail/@item.Id">
+                    <img src="@item.ImageURL" class="card-img-top" alt="@item.Title">
+                </a>
+                <div class="card-body p-2">
+                    <a href="~/Products/ProductDetail/@item.Id">
+                        <h5 class="card-title mb-1">@item.Title</h5>
+                        <p class="text-muted mb-1">NT$ @item.Price</p>
+                    </a>
+                </div>
                 <div class="card-footer bg-white border-0 d-flex justify-content-between">
                     <!-- 購買表單 -->
-                    <form method="post" action="/Cart/AddToCart" class="d-inline">
+                    <form method="post" action="/Cart/AddToCart" class="d-inline" id="form-@item.Id">
                         @Html.AntiForgeryToken()
                         <input type="hidden" name="ProductId" value="@item.Id" />
                         <input type="hidden" name="Price" value="@item.Price" />
-                        <button type="submit" class="btn btn-primary btn-sm">購買</button>
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#confirmModal" onclick="setFormId('@item.Id')">
+                            購買
+                        </button>
                     </form>
 
                     <!-- 加入收藏表單 -->
-                    <form method="post" action="/Cart/AddToFavorite" class="d-inline">
+                    <form method="post" action="/Cart/AddToFavorite" class="d-inline" id="favorite-form-@item.Id">
                         @Html.AntiForgeryToken()
                         <input type="hidden" name="ProductId" value="@item.Id" />
-                        <button type="submit" class="btn btn-success btn-sm">收藏</button>
+                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#favoriteModal" onclick="setFavoriteFormId('@item.Id')">
+                            收藏
+                        </button>
                     </form>
                 </div>
-			</div>
-		</div>
-	}
+            </div>
+        </div>
+    }
 </div>
+<!-- 購買模態框 -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">提示</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                確定要將此商品加入購物車嗎？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="confirmPurchase">確認</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 收藏模態框 -->
+<div class="modal fade" id="favoriteModal" tabindex="-1" aria-labelledby="favoriteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="favoriteModalLabel">提示</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                確定要將此商品加入收藏嗎？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-success" id="confirmFavorite">確認</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 紀錄當前觸發的購買表單 ID
+    let currentFormId = null;
+
+    function setFormId(formId) {
+        currentFormId = formId;
+    }
+
+    document.getElementById('confirmPurchase').addEventListener('click', function () {
+        if (currentFormId) {
+            document.getElementById('form-' + currentFormId).submit();
+        }
+    });
+
+    // 紀錄當前觸發的收藏表單 ID
+    let currentFavoriteFormId = null;
+
+    function setFavoriteFormId(formId) {
+        currentFavoriteFormId = formId;
+    }
+
+    document.getElementById('confirmFavorite').addEventListener('click', function () {
+        if (currentFavoriteFormId) {
+            document.getElementById('favorite-form-' + currentFavoriteFormId).submit();
+        }
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
