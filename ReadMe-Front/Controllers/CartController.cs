@@ -1,10 +1,6 @@
 ﻿using ReadMe_Front.Models.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Services.Description;
 
 namespace ReadMe_Front.Controllers
 {
@@ -33,7 +29,7 @@ namespace ReadMe_Front.Controllers
             try
             {
                 _service.AddFavorite(userId, productId);
-                TempData["Message"] = "商品已成功加入收藏清單！";
+                TempData["FavMessage"] = "商品已成功加入收藏清單！";
                 //return RedirectToAction("Products", "Cart");
                 return RedirectToAction("Favorite", "Products");
             }
@@ -54,7 +50,7 @@ namespace ReadMe_Front.Controllers
             try
             {
                 // 添加到購物車的業務邏輯
-                _service.AddCartItem(account,productId,price);
+                _service.AddCartItem(account, productId, price);
                 TempData["Message"] = "商品已成功加入購物車！";
                 return RedirectToAction("Cart", "Cart"); // 跳轉到購物車頁面
             }
@@ -65,7 +61,7 @@ namespace ReadMe_Front.Controllers
             }
         }
         [HttpGet]
-        
+
         public ActionResult OrderDetails()
         {
             return View();
