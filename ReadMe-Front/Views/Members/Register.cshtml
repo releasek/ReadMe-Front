@@ -24,14 +24,15 @@
         margin-top: 50px;
         margin-left: auto;
         margin-right: auto;
-        height:580px;
+        max-height: 80vh;
+        overflow-y: auto;
     }
     h2 {
         text-align: center;
         font-size: 20px;
     }
 
-    .form-group {
+    .mb-3 {
         margin-bottom: 15px;
     }
 
@@ -80,30 +81,30 @@
         @Html.AntiForgeryToken()
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
+        <div class="mb-2">
             @Html.LabelFor(model => model.Account)
-            @Html.EditorFor(model => model.Account, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入帳號" } })
+            @Html.EditorFor(model => model.Account, new { htmlAttributes = new { @class = "form-control form-control-sm", placeholder = "請輸入帳號" } })
             @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
         </div>
-        <div class="form-group">
+        <div class="mb-2">
             @Html.LabelFor(model => model.Name)
-            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入姓名" } })
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control form-control-sm", placeholder = "請輸入姓名" } })
             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
         </div>
-        <div class="form-group">
+        <div class="mb-2">
             @Html.LabelFor(model => model.Password)
-            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入密碼" } })
+            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control form-control-sm", placeholder = "請輸入密碼" } })
             @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
         </div>
 
-        <div class="form-group">
+        <div class="mb-2">
             @Html.LabelFor(model => model.ConfirmPassword)
-            @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入密碼" } })
+            @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control form-control-sm", placeholder = "請輸入密碼" } })
             @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
         </div>
-        <div class="form-group">
+        <div class="mb-2">
             @Html.LabelFor(model => model.Email)
-            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入信箱" } })
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control form-control-sm", placeholder = "請輸入信箱" } })
             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
         </div>
         <div class="form-actions">

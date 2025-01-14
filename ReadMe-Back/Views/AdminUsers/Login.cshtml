@@ -14,12 +14,12 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="mb-3">
                             <label asp-for="Account" class="form-label"></label>
-                            <input asp-for="Account" class="form-control form-control-sm" />
+                            <input asp-for="Account" class="form-control form-control-sm" placeholder="請輸入帳號，區分大小寫"/>
                             <span asp-validation-for="Account" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label asp-for="Password" class="form-label"></label>
-                            <input asp-for="Password" class="form-control form-control-sm" />
+                            <input asp-for="Password" class="form-control form-control-sm" placeholder="請輸入密碼" />
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
                         <div class="mb-3 d-flex justify-content-center">
@@ -27,6 +27,12 @@
                             <input type="submit" value="登入" class="btn btn-secondary mt-3" />
                         </div>
                     </form>
+
+                    <div class="mt-5 text-center">
+                        <p style="font-size:12px;">帳號Admin 密碼123456admin</p>
+                        <p style="font-size:12px;">帳號Allen 密碼123456</p>
+                        <p style="font-size:12px;">帳號Simon 密碼123456</p>
+                    </div>
                 </div>
             </div>
         </div>
