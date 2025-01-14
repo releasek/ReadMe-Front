@@ -109,8 +109,6 @@ namespace ReadMe_Back.Models.Repositories
             }
         }
 
-
-
         // 更新角色功能
         public async Task UpdateRoleFunctionsAsync(int roleId, List<int> assignedFunctionIds)
         {
@@ -139,6 +137,25 @@ namespace ReadMe_Back.Models.Repositories
                 throw;
             }
         }
+
+        //刪除角色
+        public AdminRole GetRoleById(int id)
+        {
+            var role = _context.AdminRoles.FirstOrDefault(r => r.Id == id);
+            if(role == null)
+            {
+                return null;
+            }
+
+            return role;
+        }
+        public void DeleteRole(AdminRole role)
+        {
+            _context.AdminRoles.Remove(role);
+            _context.SaveChanges();
+        }
+
+
 
         //新增權限
         public async Task<List<AdminRoleFunction>> GetAllFunctionsAsync()

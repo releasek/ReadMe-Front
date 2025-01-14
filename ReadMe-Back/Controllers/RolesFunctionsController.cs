@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReadMe_Back.Models.DTOs;
 using ReadMe_Back.Models.EFModels;
+using ReadMe_Back.Models.Repositories;
 using ReadMe_Back.Models.Security;
 using ReadMe_Back.Models.Services;
 using ReadMe_Back.Models.ViewModels;
@@ -14,11 +15,13 @@ namespace ReadMe_Back.Controllers
     {
         private readonly AppDbContext _context;
         private readonly RoleFunctionsServices _service;
+        private readonly RoleFunctionsEFRepo _repo;
 
-        public RolesFunctionsController(AppDbContext context, RoleFunctionsServices service)
+        public RolesFunctionsController(AppDbContext context, RoleFunctionsServices service, RoleFunctionsEFRepo repo)
         {
             _context = context;
             _service = service;
+            _repo = repo;
         }
 
         // GET: RolesFunctions
@@ -171,19 +174,18 @@ namespace ReadMe_Back.Controllers
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        [HttpPost]
+        public JsonResult Delete(int id)
+        {
+            bool result = false;
+            var role = _repo.GetRoleById(id);
+            if (role != null)
+            {
+                result = true;
+                _repo.DeleteRole(role);
+            }
+            return Json(result);
+        }
 
         // GET: RolesFunctions/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -276,38 +278,38 @@ namespace ReadMe_Back.Controllers
             return View(adminRole);
         }
 
-        // GET: RolesFunctions/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //// GET: RolesFunctions/Delete/5
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var adminRole = await _context.AdminRoles
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (adminRole == null)
-            {
-                return NotFound();
-            }
+        //    var adminRole = await _context.AdminRoles
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (adminRole == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(adminRole);
-        }
+        //    return View(adminRole);
+        //}
 
-        // POST: RolesFunctions/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var adminRole = await _context.AdminRoles.FindAsync(id);
-            if (adminRole != null)
-            {
-                _context.AdminRoles.Remove(adminRole);
-            }
+        //// POST: RolesFunctions/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var adminRole = await _context.AdminRoles.FindAsync(id);
+        //    if (adminRole != null)
+        //    {
+        //        _context.AdminRoles.Remove(adminRole);
+        //    }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool AdminRoleExists(int id)
         {

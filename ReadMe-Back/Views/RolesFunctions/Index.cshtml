@@ -51,7 +51,7 @@
                         <td>@role.RoleName</td>
                         <td>
                             <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editFunctionsModal" onclick="openEditModal(@role.Id, '@role.RoleName')">編輯</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteUser(@role.Id)">刪除</button>
+                            <button class="btn btn-danger btn-sm" onclick="Confirm(@role.Id)">刪除</button>
                         </td>
                     </tr>
                 }
@@ -153,9 +153,31 @@
             </div>
         </div>
     </div>
+    <!-- 模態框：刪除角色-->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="/" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">角色使用者</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h2>確認刪除此角色嗎?</h2>
+                        <input class="selectedId" type="hidden" id="selectedId" value="selectedId" name="Id" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btnCancel" data-bs-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="btnDelete">確認</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <script>
-        // 保存角色更新
+        // 新增角色更新
         function saveNewRole() {
             const roleName = document.getElementById("newRoleName").value.trim();
            
@@ -186,7 +208,7 @@
         }
          //新增權限
          // 打開模態框並加載角色數據
-               function openAddPermissionModal() {
+         function openAddPermissionModal() {
             // 清空輸入框
             document.getElementById("newRoleName").value = "";
 
@@ -210,6 +232,42 @@
                     alert(`加載角色數據失敗：${error.message}`);
                 });
         }
+
+            var Confirm = function (id) {
+                $("#selectedId").val(id);
+                $("#deleteModal").modal('show');
+
+        }
+        //刪除角色
+        $(document).ready(function () {
+            if (sessionStorage.getItem("deleteSuccess") === "true") {
+                alert("刪除成功");
+                // 清除標記，防止重複顯示
+                sessionStorage.removeItem("deleteSuccess");
+            }
+
+            $('#btnDelete').on("click", function () {
+                var idD = $("#selectedId").val();
+                console.log("選中的ID:", idD);
+                $.ajax({
+                    type: "POST",
+                    url: "/RolesFunctions/Delete",
+                    data: { id: idD },
+                    success: function (result) {
+                        if (result) {
+                            $("#selectedId").val(null);
+                            // 設置刪除成功的標記
+                            sessionStorage.setItem("deleteSuccess", "true");
+                            window.location.href = "/RolesFunctions/Index";
+                        }
+                        else {
+                            alert("操作失敗");
+                        }
+                    }
+                })
+            })
+        })
+
         // 填充角色下拉選單
         function populateRoles(elementId, roles) {
             const select = document.getElementById(elementId);
