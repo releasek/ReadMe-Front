@@ -9,7 +9,7 @@
         public string? AmountSort { get; set; } // 金額排序 ("asc" 或 "desc")
 
         // 新增的屬性
-        public int PageNumber { get; set; } = 1; // 頁碼
-        public int PageSize { get; set; } = 10; // 每頁數量
+        public int PageNumber { get; set; } // 頁碼
+        public int PageSize { get; set; }  // 每頁數量
     }
 }

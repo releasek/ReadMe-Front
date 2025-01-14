@@ -29,16 +29,17 @@ namespace ReadMe_Back.Controllers.ApisController
                     string.IsNullOrWhiteSpace(parameters.Keyword) &&
                     string.IsNullOrWhiteSpace(parameters.AmountSort)))
                 {
+                    var data = _orderService.GetAllPageOrder(parameters);
                     return Ok(new
                     {
-                        message = "沒有符合條件的訂單。",
-                        data = new List<OrderVm>(), // 回傳空列表
+                        message = "成功獲取訂單資料。",
+                        data = data.Data,
                         pagination = new
                         {
-                            pageNumber = 0,
-                            pageSize = 0,
-                            totalRecords = 0,
-                            totalPages = 0
+                            pageNumber = data.Pagination.PageNumber,
+                            pageSize = data.Pagination.PageSize,
+                            totalRecords = data.Pagination.TotalRecords,
+                            totalPages = data.Pagination.TotalPages
                         }
                     });
                 }

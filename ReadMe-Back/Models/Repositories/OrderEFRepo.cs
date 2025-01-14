@@ -12,7 +12,20 @@ namespace ReadMe_Back.Models.Repositories
         {
             _context = context;
         }
-
+        public List<OrderVm> GetAllOrders(OrderQueryParameters parameters)
+        {
+            return _context.Orders
+                .Select(o => new OrderVm
+                {
+                    OrderId = o.Id,
+                    OrderName = o.OrderName,
+                    TotalAmount = o.TotalAmount,
+                    OrderDate = o.OrderDate,
+                    UserName = o.User.Name,
+                    TotalQuantity = o.OrderDetails.Sum(n => n.Quantity)
+                })
+                .ToList();
+        }
         public IQueryable<OrderVm> GetOrder(OrderQueryParameters parameters)
         {
             var query = from o in _context.Orders
