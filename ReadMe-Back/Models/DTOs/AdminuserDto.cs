@@ -8,7 +8,7 @@ namespace ReadMe_Back.Models.DTOs
 
         public string UserName { get; set; }
 
-        //public string GroupName { get; set; }
+        public string Password { get; set; }
 
         public string RoleName { get; set; }
 

@@ -41,6 +41,26 @@ namespace ReadMe_Back.Models.Repositories
                 .ToListAsync();
         }
 
+        public AdminUser GetAdminUserById(int id)
+        {
+            var user = _context.AdminUsers
+                .FirstOrDefault(u => u.Id == id);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            return user;
+        }
+
+        public void DeleteUser(AdminUser user)
+        {
+            _context.AdminUsers.Remove(user);
+            _context.SaveChanges();
+        }
+
+
         // 獲取用戶已分配的角色
         public async Task<List<CreateRoleDto>> GetAssignedRolesAsync(int userId)
         {
@@ -139,11 +159,12 @@ namespace ReadMe_Back.Models.Repositories
             return await _context.AdminUsers
                 .FirstOrDefaultAsync(u => u.UserName == userName);
         }
-        public async Task<User> AddUserAsync(User user)
+        public async Task<AdminUser> AddUserAsync(string username,string password)
         {
-            _context.Users.Add(user);
+            var newuser = new AdminUser { UserName = username, Password = password };
+            _context.AdminUsers.Add(newuser);
             await _context.SaveChangesAsync();
-            return user;
+            return newuser;
         }
 
         public async Task AssignRoleToUserAsync(int userId, int roleId)
