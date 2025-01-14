@@ -222,22 +222,24 @@
 
             $('#btnDelete').on("click",function(){
                 var idD = $("#selectedId").val();
-                $.ajax({
-                    type: "POST",
-                    url: "/Products/Delete",
-                    data: {id:idD},
-                    success: function(result){
-                        if(result) {
-                            $("#selectedId").val(null);
-                            // 設置刪除成功的標記
-                            sessionStorage.setItem("deleteSuccess", "true");
-                            window.location.href = "/Products/Index";
-                        }
-                        else{
-                            alert("操作失敗");
-                        }
-                    }
-                })
+                var url ="/Products/Delete/" + idD;
+                location.href=url;
+                // $.ajax({
+                //     type: "POST",
+                //     url: "/Products/Delete",
+                //     data: {id:idD},
+                //     success: function(result){
+                //         if(result) {
+                //             $("#selectedId").val(null);
+                //             // 設置刪除成功的標記
+                //             sessionStorage.setItem("deleteSuccess", "true");
+                //             window.location.href = "/Products/Index";
+                //         }
+                //         else{
+                //             alert("操作失敗");
+                //         }
+                //     }
+                // })
             })
         })
         var Confirm = function(id){

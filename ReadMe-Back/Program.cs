@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using ReadMe_Back.Models.EFModels;
 using ReadMe_Back.Models.Repositories;
+using ReadMe_Back.Models.Security;
 using ReadMe_Back.Models.Services;
 
 namespace ReadMe_Back
@@ -35,6 +37,8 @@ namespace ReadMe_Back
                     options.AccessDeniedPath = "/AdminUsers/AccessDenied";
                 });
 
+            builder.Services.AddSingleton<IAuthorizationHandler, FunctionAuthorizeHandler>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -59,5 +63,9 @@ namespace ReadMe_Back
 
             app.Run();
         }
+        
+
+
+
     }
 }
