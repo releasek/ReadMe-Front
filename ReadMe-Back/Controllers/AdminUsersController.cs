@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReadMe_Back.Models.DTOs;
@@ -11,6 +12,8 @@ using System.Security.Claims;
 
 namespace ReadMe_Back.Controllers
 {
+    [Authorize]
+
     public class AdminUsersController : Controller
     {
         private readonly AppDbContext _context;
@@ -56,7 +59,7 @@ namespace ReadMe_Back.Controllers
             // 如果 returnUrl 是預設值，設定為目標頁面
             if (returnUrl == "/")
             {
-                returnUrl = "/OrderSearch/OrderMain";
+                returnUrl = "/Home/OrderIndex";
             }
 
             // 跳轉至指定頁面
