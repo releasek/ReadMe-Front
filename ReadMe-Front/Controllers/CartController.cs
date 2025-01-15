@@ -51,7 +51,7 @@ namespace ReadMe_Front.Controllers
             {
                 // 添加到購物車的業務邏輯
                 _service.AddCartItem(account, productId, price);
-                TempData["Message"] = "商品已成功加入購物車！";
+                TempData["MessageXXX"] = "商品已成功加入購物車！";
                 return RedirectToAction("Cart", "Cart"); // 跳轉到購物車頁面
             }
             catch (Exception ex)
