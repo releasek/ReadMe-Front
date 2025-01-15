@@ -97,10 +97,10 @@ namespace ReadMe_Back.Models.Repositories
         {
             Console.WriteLine($"開始更新用戶角色: UserId = {userId}, AssignedRoleIds = [{string.Join(", ", assignedRoleIds)}]");
 
-            if (userId <= 0 || assignedRoleIds == null || !assignedRoleIds.Any())
-            {
-                throw new ArgumentException("無效的參數");
-            }
+            //if (userId <= 0 || assignedRoleIds == null || !assignedRoleIds.Any())
+            //{
+            //    throw new ArgumentException("無效的參數");
+            //}
 
             try
             {
@@ -159,7 +159,7 @@ namespace ReadMe_Back.Models.Repositories
             return await _context.AdminUsers
                 .FirstOrDefaultAsync(u => u.UserName == userName);
         }
-        public async Task<AdminUser> AddUserAsync(string username,string password)
+        public async Task<AdminUser> AddUserAsync(string username, string password)
         {
             var newuser = new AdminUser { UserName = username, Password = password };
             _context.AdminUsers.Add(newuser);
