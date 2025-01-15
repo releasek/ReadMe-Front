@@ -466,14 +466,14 @@
                 return cart.value.CartItems;
             });
 
-            // 計算警告訊息
-            const calculateWarning = (minPurchase) => {
-                if (totalPrice.value < minPurchase) {
-                    return `未達成，還差 ${minPurchase - totalPrice.value} 元`;
-                } else {
-                    return "已達成";
-                }
-            };
+             // 計算警告訊息
+             const calculateWarning = (minPurchase) => {
+                 if (totalPrice.value < minPurchase) {
+                     return `未達成，還差 ${minPurchase - totalPrice.value} 元`;
+                 } else {
+                     return "已達成";
+                 }
+             };
 
             // 監聽折扣資訊和總金額變化，更新 discountsWithWarnings
             watch([discounts, totalPrice], () => {
