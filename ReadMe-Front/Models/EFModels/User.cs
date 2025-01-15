@@ -11,7 +11,6 @@ namespace ReadMe_Front.Models.EFModels
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            AdminUserRoleRels = new HashSet<AdminUserRoleRel>();
             Orders = new HashSet<Order>();
         }
 
@@ -34,9 +33,6 @@ namespace ReadMe_Front.Models.EFModels
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AdminUserRoleRel> AdminUserRoleRels { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }

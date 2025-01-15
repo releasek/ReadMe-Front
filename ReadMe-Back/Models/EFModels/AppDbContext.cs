@@ -101,7 +101,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Cart>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Cart__3214EC070EDF1900");
+            entity.HasKey(e => e.Id).HasName("PK__Cart__3214EC079D5A14C8");
 
             entity.ToTable("Cart");
 
@@ -118,7 +118,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<CartItem>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__CartItem__3214EC071488D815");
+            entity.HasKey(e => e.Id).HasName("PK__CartItem__3214EC07F57A08EC");
 
             entity.ToTable("CartItem");
 
@@ -185,7 +185,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<ParentCategory>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ParentCa__3214EC07C4E88BB9");
+            entity.HasKey(e => e.Id).HasName("PK__ParentCa__3214EC078F249E44");
 
             entity.Property(e => e.ParentCategoriesName)
                 .IsRequired()
@@ -259,7 +259,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Wishlist>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Wishlist__3214EC0781A4CB6F");
+            entity.HasKey(e => e.Id).HasName("PK__Wishlist__3214EC072B523A42");
 
             entity.ToTable("Wishlist");
 

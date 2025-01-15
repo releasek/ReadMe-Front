@@ -15,5 +15,5 @@ public partial class AdminUserRoleRel
 
     public virtual AdminRole Role { get; set; }
 
-    public virtual User User { get; set; }
+    public virtual AdminUser User { get; set; }
 }

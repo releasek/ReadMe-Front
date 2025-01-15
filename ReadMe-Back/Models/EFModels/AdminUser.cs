@@ -12,4 +12,6 @@ public partial class AdminUser
     public string UserName { get; set; }
 
     public string Password { get; set; }
+
+    public virtual ICollection<AdminUserRoleRel> AdminUserRoleRels { get; set; } = new List<AdminUserRoleRel>();
 }

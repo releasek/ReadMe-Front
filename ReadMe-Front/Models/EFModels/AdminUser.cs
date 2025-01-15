@@ -8,6 +8,12 @@ namespace ReadMe_Front.Models.EFModels
 
     public partial class AdminUser
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public AdminUser()
+        {
+            AdminUserRoleRels = new HashSet<AdminUserRoleRel>();
+        }
+
         public int Id { get; set; }
 
         [Required]
@@ -17,5 +23,8 @@ namespace ReadMe_Front.Models.EFModels
         [Required]
         [StringLength(50)]
         public string Password { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AdminUserRoleRel> AdminUserRoleRels { get; set; }
     }
 }
