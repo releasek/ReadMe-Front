@@ -1,10 +1,10 @@
-using System;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity;
-using System.Linq;
-
 namespace ReadMe_Front.Models.EFModels
 {
+    using System;
+    using System.Data.Entity;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Linq;
+
     public partial class AppDbContext : DbContext
     {
         public AppDbContext()
@@ -50,6 +50,11 @@ namespace ReadMe_Front.Models.EFModels
             modelBuilder.Entity<AdminUser>()
                 .Property(e => e.Password)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<AdminUser>()
+                .HasMany(e => e.AdminUserRoleRels)
+                .WithRequired(e => e.AdminUser)
+                .HasForeignKey(e => e.UserId);
 
             modelBuilder.Entity<Cart>()
                 .HasMany(e => e.CartItems)

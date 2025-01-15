@@ -16,6 +16,6 @@ namespace ReadMe_Front.Models.EFModels
 
         public virtual AdminRole AdminRole { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual AdminUser AdminUser { get; set; }
     }
 }
