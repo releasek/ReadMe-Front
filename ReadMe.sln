@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35208.52
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadMe-Front", "ReadMe-Front\ReadMe-Front.csproj", "{3D1511AD-2E4C-4FEC-AB25-9C08E442938D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadMe-Back", "ReadMe-Back\ReadMe-Back.csproj", "{0AE1EC5F-C619-4DD4-AEC1-99CE88A96141}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadMe-Back", "ReadMe-Back\ReadMe-Back.csproj", "{0AE1EC5F-C619-4DD4-AEC1-99CE88A96141}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
