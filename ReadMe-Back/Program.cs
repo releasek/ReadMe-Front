@@ -26,6 +26,8 @@ namespace ReadMe_Back
             builder.Services.AddScoped<AdminUsersServices>();
             builder.Services.AddScoped<RoleFunctionsServices>();
             builder.Services.AddScoped<RoleFunctionsEFRepo>();
+            builder.Services.AddScoped<PromotionEFRepo>();
+            builder.Services.AddScoped<PromotionService>();
 
             // 設定資料庫
             string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -44,19 +46,11 @@ namespace ReadMe_Back
                 options.LogoutPath = "/AdminUsers/Logout";
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(minutes);
 
-                // 以下不一定要寫
-                //options.AccessDeniedPath = "/AdminUsers/AccessDenied";
-                //options.Cookie.Name = "SecurityDemo01.Cookie";
-                //options.Cookie.HttpOnly = true; // 預設就是 true, 不允許用 JavaScript 存取
-                //options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                //options.Cookie.SameSite = SameSiteMode.Strict;
-                //options.Cookie.IsEssential = true;
             })
             .AddGoogle(GoogleDefaults.AuthenticationScheme, googleOptions =>
             {
                 googleOptions.ClientId = builder.Configuration["GoogleLogin:ClientId"];
                 googleOptions.ClientSecret = builder.Configuration["GoogleLogin:ClientSecret"];
-                googleOptions.CallbackPath = "/signin-google"; // ✅ 確保與 Google Cloud Console 相符
 
             });
 

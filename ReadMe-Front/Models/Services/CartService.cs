@@ -31,7 +31,7 @@ namespace ReadMe_Front.Models.Services
             var discount = _cartEFRepo.GetPromotionsVmItem();
             int  totalPrice = cart.TotalPrice;
 
-            // 找到适用的优惠券
+            // 找到適合優惠卷
             var applicablePromotion = discount
                  .Where(p => totalPrice >= p.MinPurchase)
                  .OrderByDescending(p => p.MinPurchase)
@@ -48,7 +48,7 @@ namespace ReadMe_Front.Models.Services
 
             int finalPrice = totalPrice - discountAmount;
 
-            // 设置购物车的折扣信息
+            // 設置購物車折扣
             var cartItem = new CartVm
             {
                 Id = cart.Id,
