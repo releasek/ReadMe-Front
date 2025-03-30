@@ -317,39 +317,6 @@ namespace ReadMe_Back.Controllers
             return View(adminUser);
         }
 
-        // GET: AdminUsers/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var adminUser = await _context.AdminUsers
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (adminUser == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(adminUser);
-        //}
-
-        // POST: AdminUsers/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var adminUser = await _context.AdminUsers.FindAsync(id);
-        //    if (adminUser != null)
-        //    {
-        //        _context.AdminUsers.Remove(adminUser);
-        //    }
-
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
-
         private bool AdminUserExists(int id)
         {
             return _context.AdminUsers.Any(e => e.Id == id);

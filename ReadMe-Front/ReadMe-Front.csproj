@@ -55,7 +55,13 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.2.2\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -145,17 +151,18 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\CartApiController.cs" />
+    <Compile Include="Controllers\Api\CartApiController.cs" />
+    <Compile Include="Controllers\Api\CouponApiController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\CouponController.cs" />
-    <Compile Include="Controllers\FavoriteApiController.cs" />
+    <Compile Include="Controllers\Api\FavoriteApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\MemberApiController.cs" />
+    <Compile Include="Controllers\Api\MemberApiController.cs" />
     <Compile Include="Controllers\MemberOrderController.cs" />
     <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\OrderdetailsDto.cs" />
-    <Compile Include="Controllers\ProductApiController.cs" />
+    <Compile Include="Controllers\Api\ProductApiController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Global.asax.cs">
@@ -178,12 +185,13 @@
     <Compile Include="Models\EFModels\Cart.cs" />
     <Compile Include="Models\EFModels\CartItem.cs" />
     <Compile Include="Models\EFModels\Category.cs" />
+    <Compile Include="Models\EFModels\Coupon.cs" />
+    <Compile Include="Models\EFModels\Member_Coupons.cs" />
     <Compile Include="Models\EFModels\Order.cs" />
     <Compile Include="Models\EFModels\OrderDetail.cs" />
     <Compile Include="Models\EFModels\ParentCategory.cs" />
     <Compile Include="Models\EFModels\Product.cs" />
     <Compile Include="Models\EFModels\Promotion.cs" />
-    <Compile Include="Models\EFModels\sysdiagram.cs" />
     <Compile Include="Models\EFModels\User.cs" />
     <Compile Include="Models\EFModels\Wishlist.cs" />
     <Compile Include="Models\Infra\DAHealper.cs" />
@@ -193,11 +201,15 @@
     <Compile Include="Models\Repositories\CartEFRepo.cs" />
     <Compile Include="Models\Repositories\CategoryDapperRepo.cs" />
     <Compile Include="Models\Repositories\CategoryEFRepo.cs" />
+    <Compile Include="Models\Repositories\CouponEFRepo.cs" />
+    <Compile Include="Models\Repositories\MemberCouponEFRepo.cs" />
     <Compile Include="Models\Repositories\MemberEFRepo.cs" />
     <Compile Include="Models\Repositories\ProductEFRepo.cs" />
     <Compile Include="Models\Repositories\SearchEFRepo.cs" />
     <Compile Include="Models\Services\CartService.cs" />
     <Compile Include="Models\Services\CategoryService.cs" />
+    <Compile Include="Models\Services\CouponService.cs" />
+    <Compile Include="Models\Services\MemberCouponService.cs" />
     <Compile Include="Models\Services\MemberService.cs" />
     <Compile Include="Models\Services\ProductService.cs" />
     <Compile Include="Models\ViewModels\CartItemVm.cs" />
@@ -429,6 +441,7 @@
     <Content Include="Views\Products\Favorite.cshtml" />
     <Content Include="Views\Products\NoFavorite.cshtml" />
     <Content Include="Views\Coupon\Coupon.cshtml" />
+    <Content Include="Views\Coupon\MemberCoupon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

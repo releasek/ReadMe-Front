@@ -1,0 +1,180 @@
+﻿@{
+    ViewBag.Title = "MemberCoupon";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<title>優惠券管理</title>
+<style>
+    /* styles.css */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        padding: 20px;
+    }
+
+    h1 {
+        color: #333;
+        text-align: center;
+    }
+
+    .coupons-list,
+    .claim-coupon {
+        margin: 20px 0;
+        padding: 15px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+        .coupons-list h2,
+        .claim-coupon h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+    ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+        ul li {
+            background-color: #f9f9f9;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            color: #555;
+        }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+        form label {
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        form input {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        form button {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            form button:hover {
+                background-color: #0056b3;
+            }
+</style>
+
+<body>
+    <div id="app" style="margin-top : 120px;">
+
+        <!-- 顯示所有優惠券 -->
+        <div class="coupons-list">
+            <h2>所有優惠券</h2>
+            <ul>
+                <li v-for="coupon in coupons" :key="coupon.id">
+                    {{ coupon.CouponCode }}
+                    <button v-on:click="claimCoupon(coupon.id)">領取</button>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 領取優惠券 -->
+        <div class="claim-coupon">
+            <h2>領取優惠券</h2>
+            <form v-on:submit.prevent="claimCoupon">
+                <label for="couponId">優惠券 ID</label>
+                <input v-model="selectedCouponId" type="number" id="couponId" required />
+                <button type="submit">領取優惠券</button>
+            </form>
+            <p v-if="message">{{ message }}</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.37/dist/vue.global.js"></script>
+    <script>
+        const { createApp, ref, onMounted } = Vue;
+
+        createApp({
+            setup() {
+                // 儲存優惠券資料
+                const coupons = ref([]);
+                const selectedCouponId = ref('');
+                const message = ref('');
+
+                // 取得所有優惠券
+                const getCoupons = async () => {
+                    try {
+                        const response = await fetch('http://localhost:5000/api/coupon');
+                        if (response.ok) {
+                            const data = await response.json();
+                            coupons.value = data;
+                        } else {
+                            console.error('獲取優惠券失敗');
+                        }
+                    } catch (error) {
+                        console.error('錯誤:', error);
+                    }
+                };
+
+                // 會員領取優惠券
+                const claimCoupon = async (couponId) => {
+                    if (!couponId) {
+                        couponId = selectedCouponId.value;
+                    }
+                    if (couponId) {
+                        try {
+                            const response = await fetch('http://localhost:44395/api/membercoupon', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    CouponId: couponId,
+                                    MemberId: 1,  // 假設會員ID為1
+                                }),
+                            });
+                            if (response.ok) {
+                                message.value = '成功領取優惠券';
+                                getCoupons(); // 領取成功後重新獲取所有優惠券
+                                selectedCouponId.value = ''; // 清空輸入框
+                            } else {
+                                console.error('領取優惠券失敗');
+                                message.value = '領取優惠券失敗，請稍後再試';
+                            }
+                        } catch (error) {
+                            console.error('錯誤:', error);
+                            message.value = '領取優惠券時發生錯誤';
+                        }
+                    } else {
+                        message.value = '請輸入有效的優惠券ID';
+                    }
+                };
+
+                // 在元件掛載後，取得所有優惠券
+                onMounted(() => {
+                    getCoupons();
+                });
+
+                return {
+                    coupons,
+                    selectedCouponId,
+                    message,
+                    claimCoupon,
+                };
+            },
+        }).mount('#app');
+    </script>
+</body>
+</html>

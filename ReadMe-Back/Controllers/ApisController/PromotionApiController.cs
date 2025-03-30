@@ -45,7 +45,7 @@ namespace ReadMe_Back.Controllers.ApisController
             try
             {
                 await _promotionService.DeletePromotions(id);
-                return Ok("刪除成功");
+                return Ok(new {message="刪除成功"});
             }
             catch (KeyNotFoundException)
             {
@@ -61,7 +61,7 @@ namespace ReadMe_Back.Controllers.ApisController
             try
             {
                 await _promotionService.UpdatePrmotions(promotion);
-                return Ok("更新成功");
+                return Ok(new {message="更新成功"});
             }
             catch (KeyNotFoundException)
             {

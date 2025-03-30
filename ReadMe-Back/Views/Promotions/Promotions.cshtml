@@ -166,15 +166,52 @@
                     const method = isEditing.value ? "PUT" : "POST";
                     const url = isEditing.value ? `${apiUrl}/${formData.value.id}` : apiUrl;
 
-                    await fetch(url, {
+                    // 🔍 確保 ID 為數字 (避免後端錯誤)
+                    if (!formData.value.id) {
+                        delete formData.value.id;
+                    } else {
+                        formData.value.id = parseInt(formData.value.id, 10);
+                    }
+
+                    // 🔍 確保 `promotionName` 不是空值
+                    if (!formData.value.promotionName) {
+                        alert("請輸入優惠名稱！");
+                        return;
+                    }
+
+                    console.log("🚀 API 請求:", JSON.stringify(formData.value, null, 2));
+
+                    fetch(url, {
                         method,
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(formData.value),
-                    });
+                    })
+                        .then(response => {
+                            console.log("✅ API 回應狀態:", response.status);
 
-                    modalInstance.hide();
-                    loadPromotions();
+                            if (!response.ok) {
+                                return response.text().then(errorText => {
+                                    console.error("❌ API 錯誤:", errorText);
+                                    alert("❌ 發送請求失敗：" + errorText);
+                                });
+                            }
+
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data) {
+                                console.log("🎉 API 成功:", data);
+                                modalInstance.hide();
+                                loadPromotions();
+                            }
+                        })
+                        .catch(error => {
+                            console.error("🔥 API 請求錯誤:", error);
+                            alert("⚠️ 伺服器發生錯誤，請稍後再試！");
+                        });
                 };
+
+
 
                 // 📌 刪除優惠
                 const deletePromotion = async (id) => {

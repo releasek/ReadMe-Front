@@ -16,5 +16,7 @@ namespace ReadMe_Front.Models.EFModels
         public int? ProductId { get; set; }
 
         public virtual Product Product { get; set; }
+
+        public virtual User User { get; set; }
     }
 }

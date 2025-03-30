@@ -97,11 +97,6 @@ namespace ReadMe_Back.Models.Repositories
         {
             Console.WriteLine($"開始更新用戶角色: UserId = {userId}, AssignedRoleIds = [{string.Join(", ", assignedRoleIds)}]");
 
-            //if (userId <= 0 || assignedRoleIds == null || !assignedRoleIds.Any())
-            //{
-            //    throw new ArgumentException("無效的參數");
-            //}
-
             try
             {
                 // 確認用戶是否存在
@@ -190,12 +185,6 @@ namespace ReadMe_Back.Models.Repositories
             await _context.AdminRoleFunctionRels.AddAsync(rel);
             await _context.SaveChangesAsync();
         }
-
-        //// 獲取功能是否已存在
-        //public async Task<AdminRoleFunction> GetFunctionByNameAsync(string functionName)
-        //{
-        //    return await _context.AdminRoleFunctions.FirstOrDefaultAsync(f => f.FunctionName == functionName);
-        //}   
 
         // 添加新角色
         public async Task<AdminRole> AddRoleAsync(string roleName)

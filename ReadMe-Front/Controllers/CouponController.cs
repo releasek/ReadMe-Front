@@ -13,5 +13,9 @@ namespace ReadMe_Front.Controllers
         {
             return View();
         }
+        public ActionResult MemberCoupon()
+        {
+            return View();
+        }
     }
 }

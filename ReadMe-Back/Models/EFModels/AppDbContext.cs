@@ -89,19 +89,22 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<AdminUserRoleRel>(entity =>
         {
-            entity.HasOne(d => d.Role).WithMany(p => p.AdminUserRoleRels)
+            entity.HasNoKey();
+
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+            entity.HasOne(d => d.Role).WithMany()
                 .HasForeignKey(d => d.RoleId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UserRoleRels_Roles");
 
-            entity.HasOne(d => d.User).WithMany(p => p.AdminUserRoleRels)
+            entity.HasOne(d => d.User).WithMany()
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK_UserRoleRels_Users");
         });
 
         modelBuilder.Entity<Cart>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Cart__3214EC079D5A14C8");
+            entity.HasKey(e => e.Id).HasName("PK__Cart__3214EC07CCD5C5B3");
 
             entity.ToTable("Cart");
 
@@ -118,13 +121,12 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<CartItem>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__CartItem__3214EC07F57A08EC");
+            entity.HasKey(e => e.Id).HasName("PK__CartItem__3214EC07E4CB1767");
 
             entity.ToTable("CartItem");
 
             entity.HasOne(d => d.Cart).WithMany(p => p.CartItems)
                 .HasForeignKey(d => d.CartId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__CartItem__CartId__5812160E");
 
             entity.HasOne(d => d.Product).WithMany(p => p.CartItems)
@@ -185,7 +187,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<ParentCategory>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ParentCa__3214EC078F249E44");
+            entity.HasKey(e => e.Id).HasName("PK__ParentCa__3214EC0797F3D2DE");
 
             entity.Property(e => e.ParentCategoriesName)
                 .IsRequired()
@@ -266,6 +268,11 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.Product).WithMany(p => p.Wishlists)
                 .HasForeignKey(d => d.ProductId)
                 .HasConstraintName("FK__Wishlist__Produc__5DCAEF64");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Wishlists)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Wishlist_Users");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -9,7 +9,8 @@ namespace ReadMe_Front
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API 設定和服務
+            // 移除 XML 格式，強制 API 回傳 JSON
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
 
             // Web API 路由
             config.MapHttpAttributeRoutes();

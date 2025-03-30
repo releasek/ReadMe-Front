@@ -12,6 +12,4 @@ public partial class AdminRole
     public string RoleName { get; set; }
 
     public virtual ICollection<AdminRoleFunctionRel> AdminRoleFunctionRels { get; set; } = new List<AdminRoleFunctionRel>();
-
-    public virtual ICollection<AdminUserRoleRel> AdminUserRoleRels { get; set; } = new List<AdminUserRoleRel>();
 }
