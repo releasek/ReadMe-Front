@@ -107,7 +107,14 @@ namespace ReadMe_Front.Models.Repositories
 			_context.SaveChanges();
 		}
 
-
+		public int GetMemberId(string name)
+		{
+			using (var db = new AppDbContext())
+			{
+				var user = db.Users.FirstOrDefaultAsync(m => m.Name == name);
+				return user.Id;
+			}
+		}
 
 
 	}

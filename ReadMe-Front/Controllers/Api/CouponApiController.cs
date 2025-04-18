@@ -1,4 +1,5 @@
 ﻿using ReadMe_Front.Models.EFModels;
+using ReadMe_Front.Models.Repositories;
 using ReadMe_Front.Models.Services;
 using System;
 using System.Collections.Generic;
@@ -31,14 +32,20 @@ namespace ReadMe_Front.Controllers.Api
         [Route("api/membercoupon")]
         public IHttpActionResult AddMemberCoupon([FromBody] Member_Coupons memberCoupon)
         {
-			string account = User.Identity.Name;           
-            if (memberCoupon == null)
+			string account = User.Identity.Name;
+
+            var member = new MemberEFRepo();
+
+            var userId = member.GetMemberId(account);
+
+			if (memberCoupon == null)
             {
                 return BadRequest("請輸入優惠券");
             }
             try 
-            { 
-                _memberCouponService.AddMemberCoupon(memberCoupon);
+            {
+				memberCoupon.member_id = userId;
+				_memberCouponService.AddMemberCoupon(memberCoupon);
                 return Ok(new {message="優惠券新增成功" });
             }
             catch (Exception ex)
