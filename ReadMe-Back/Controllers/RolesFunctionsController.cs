@@ -278,38 +278,6 @@ namespace ReadMe_Back.Controllers
             return View(adminRole);
         }
 
-        //// GET: RolesFunctions/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var adminRole = await _context.AdminRoles
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (adminRole == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(adminRole);
-        //}
-
-        //// POST: RolesFunctions/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var adminRole = await _context.AdminRoles.FindAsync(id);
-        //    if (adminRole != null)
-        //    {
-        //        _context.AdminRoles.Remove(adminRole);
-        //    }
-
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
 
         private bool AdminRoleExists(int id)
         {

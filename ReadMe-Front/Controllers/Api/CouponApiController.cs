@@ -31,6 +31,7 @@ namespace ReadMe_Front.Controllers.Api
         [Route("api/membercoupon")]
         public IHttpActionResult AddMemberCoupon([FromBody] Member_Coupons memberCoupon)
         {
+			string account = User.Identity.Name;           
             if (memberCoupon == null)
             {
                 return BadRequest("請輸入優惠券");

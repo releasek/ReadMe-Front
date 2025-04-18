@@ -84,7 +84,7 @@
             <h2>所有優惠券</h2>
             <ul>
                 <li v-for="coupon in coupons" :key="coupon.id">
-                    {{ coupon.CouponCode }}
+                    {{ coupon.name }}
                     <button v-on:click="claimCoupon(coupon.id)">領取</button>
                 </li>
             </ul>
@@ -115,16 +115,13 @@
 
                 // 取得所有優惠券
                 const getCoupons = async () => {
-                    try {
-                        const response = await fetch('http://localhost:5000/api/coupon');
-                        if (response.ok) {
-                            const data = await response.json();
-                            coupons.value = data;
-                        } else {
-                            console.error('獲取優惠券失敗');
-                        }
-                    } catch (error) {
-                        console.error('錯誤:', error);
+                    const response = await fetch('https://localhost:44395/api/coupon');
+                    if (response.ok) {
+                        const data = await response.json();
+                        coupons.value = data;
+                        console.log('資料:', data);
+                    } else {
+                        console.error('獲取優惠券失敗');
                     }
                 };
 
@@ -135,7 +132,7 @@
                     }
                     if (couponId) {
                         try {
-                            const response = await fetch('http://localhost:44395/api/membercoupon', {
+                            const response = await fetch('https://localhost:44395/api/membercoupon', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
